@@ -3,11 +3,13 @@
 This is an experimental POC to explore what
 a GraphQL + YARPC combination would look like,
 with only a small subset of functionality
-implemented. THis is missing a lot of
+implemented. Specifically query operations and
+partial selection set support.
+This is missing a lot of
 major functionality, specifically type
 inspection, which I believe can be handled
 by `reflect` with auto-generation filling
-in the missing pieces
+in the missing pieces.
 
 Packages
 
