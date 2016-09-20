@@ -6,8 +6,9 @@ package starwars
 import (
 	"errors"
 	"fmt"
-	"github.com/thriftrw/thriftrw-go/wire"
 	"strings"
+
+	"github.com/thriftrw/thriftrw-go/wire"
 )
 
 type Character struct {

@@ -55,5 +55,25 @@ func (s service) Human(ctx context.Context, reqMeta yarpc.ReqMeta, selection *as
 		return nil, err
 	}
 
-	return &encoding.Result{Body: success, Meta: resMeta}, nil
+	return &encoding.Result{Body: &HumanResponse{h: success}, Meta: resMeta}, nil
+}
+
+type HumanResponse struct {
+	h *starwars.Human
+}
+
+func (r *HumanResponse) ValueByName(name string) interface{} {
+	switch name {
+	case "id":
+		return r.h.ID
+	case "name":
+		return r.h.Name
+	case "friends":
+		return r.h.Friends
+	case "appearsIn":
+		return r.h.AppearsIn
+	case "home_planet":
+		return r.h.HomePlanet
+	}
+	return nil
 }
