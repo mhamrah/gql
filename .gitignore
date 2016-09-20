@@ -11,4 +11,3 @@ debug
 # Ignore generated code
 *_gen.go
 *.output
-example
