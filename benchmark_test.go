@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/mhamrah/gql/example/starwars"
+
+	"github.com/mhamrah/gql/ast"
 )
 
 func BenchmarkNoReflect(b *testing.B) {
@@ -28,11 +30,51 @@ func BenchmarkReflect(b *testing.B) {
 }
 
 func BenchmarkFieldByName(b *testing.B) {
-	foo := "foo"
-	h := &starwars.Human{Name: &foo}
-	result := make(map[string]interface{})
+	// foo := "foo"
+	// h := &starwars.Human{Name: &foo}
+	// result := make(map[string]interface{})
 
+	// for i := 0; i < b.N; i++ {
+	// 	//result["name"] = h.FieldByName("name")
+	// }
+}
+
+var s ast.Field
+
+func BenchmarkReturnStruct(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		result["name"] = h.FieldByName("name")
+		s = wraps(i)
+	}
+}
+
+var p *ast.Field
+
+func BenchmarkReturnPointer(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		p = wrapp(i)
+	}
+}
+
+func wraps(i int) ast.Field {
+	s := ReturnStruct(i)
+	s.Ix = s.Ix - 1
+	return s
+}
+func wrapp(i int) *ast.Field {
+	p := ReturnPointer(i)
+	p.Ix = p.Ix - 1
+	return p
+}
+func ReturnStruct(i int) ast.Field {
+	return ast.Field{
+		Name: "foo",
+		Ix:   i,
+	}
+}
+
+func ReturnPointer(i int) *ast.Field {
+	return &ast.Field{
+		Name: "foo",
+		Ix:   i,
 	}
 }

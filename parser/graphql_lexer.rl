@@ -16,7 +16,7 @@ import (
 }%%
 
 type lexer struct {
-    doc *ast.Document
+    doc ast.Document
     err error
     parseFailed bool
 
