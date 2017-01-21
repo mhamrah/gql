@@ -1,9 +1,8 @@
 package query
 
 import (
+	"fmt"
 	"testing"
-
-	"github.com/kr/pretty"
 )
 
 const q = `query FetchLukeQuery {
@@ -22,5 +21,5 @@ const m = `mutation  {
 
 func TestGraphQLParse(t *testing.T) {
 
-	pretty.Println(ParseString(q))
+	fmt.Println(ParseString(q))
 }
