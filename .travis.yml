@@ -3,5 +3,5 @@ go:
   - 1.7
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get ragel -y
+  - sudo apt-get install ragel -y
 script: make test
