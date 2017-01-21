@@ -1,9 +1,12 @@
 SHELL=/bin/bash -o pipefail
 
 auto_gen := .ci/auto-gen.sh
-parser_dir := parser
+gen_dirs = query
 
 parse-gen:
-	$(auto_gen) $(parser_dir)
+	$(auto_gen) $(gen_dirs)
 
 generate: parse-gen
+
+test: generate
+	go test ./...
