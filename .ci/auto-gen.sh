@@ -10,4 +10,5 @@ find . -name "*_gen.go" -exec rm {} \;
 
 go generate $PACKAGE/$1
 
+cat $PACKAGE/$1/graphql_lexer_gen.go
 
