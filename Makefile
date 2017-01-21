@@ -8,5 +8,5 @@ parse-gen:
 
 generate: parse-gen
 
-test: generate
+test:
 	go test ./...
