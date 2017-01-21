@@ -78,7 +78,7 @@ func (lex *lexer) Lex(out *yySymType) int {
             };
 
             space;
-            any => { fmt.Println("any!", string(lex.data[lex.ts:lex.te])) };
+            any => { };
         *|;
 
          write exec;
