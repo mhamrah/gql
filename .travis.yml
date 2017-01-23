@@ -1,4 +1,10 @@
 language: go
 go:
   - 1.7
-script: make test
+install:
+  - make dependencies
+script:
+  - make test
+  - make coveralls
+notifications:
+  email: false
