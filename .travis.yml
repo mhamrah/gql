@@ -4,7 +4,6 @@ go:
 install:
   - make dependencies
 script:
-  - make test
   - make coveralls
 notifications:
   email: false

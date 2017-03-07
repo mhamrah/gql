@@ -18,8 +18,8 @@ generate:
 
 .PHONY: test
 test:
-	go test -v -covermode=count -coverprofile=cover.out ./query
+	go test -v ./...
 
 .PHONY: coveralls
 coveralls:
-	goveralls -coverprofile=cover.out -service=travis-ci
+	goveralls -service=travis-ci
