@@ -18,7 +18,7 @@ generate:
 
 .PHONY: test
 test:
-	go test -v -covermode=count -coverprofile=cover.out ./...
+	go test -v -covermode=count -coverprofile=cover.out ./query
 
 .PHONY: coveralls
 coveralls:
