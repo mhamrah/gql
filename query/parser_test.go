@@ -1,9 +1,7 @@
 package query
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
+import "github.com/stretchr/testify/assert"
 
 const q = `query FetchLukeQuery {
 			human(id: "1000") {
@@ -20,6 +18,7 @@ const m = `mutation  {
 					}`
 
 func TestGraphQLParse(t *testing.T) {
-
-	fmt.Println(ParseString(q))
+	doc, err := ParseString(q)
+	assert.NoError(t, err)
+	assert.NotNil(t, doc)
 }

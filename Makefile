@@ -10,17 +10,15 @@ dependencies:
 	glide install
 	@echo "Installing test dependencies..."
 	go get github.com/mattn/goveralls
-
-.PHONY: parse-gen
-parse-gen:
-	$(auto_gen) $(gen_dirs)
+	go get golang.org/x/tools/cmd/goyacc
 
 .PHONY: generate
-generate: parse-gen
+generate:
+	$(auto_gen) $(gen_dirs)
 
 .PHONY: test
 test:
-	go test -v -covermode=count -coverprofile=cover.out ./...
+	go test -v -covermode=count -coverprofile=cover.out ./query
 
 .PHONY: coveralls
 coveralls:
