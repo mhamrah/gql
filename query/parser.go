@@ -1,5 +1,5 @@
 //go:generate ragel -Z -G2 -o graphql_lexer_gen.go graphql_lexer.rl
-//go:generate go tool yacc -o graphql_parser_gen.go -v graphql_parser.output graphql_parser.y
+//go:generate goyacc -o graphql_parser_gen.go -v graphql_parser.output graphql_parser.y
 
 package query
 
@@ -10,7 +10,8 @@ func ParseString(q string) (*Document, error) {
 
 func ParseBytes(b []byte) (*Document, error) {
 	lex := newLexer(b)
-	e := yyParse(lex)
+	p := yyNewParser()
+	e := p.Parse(lex)
 	if e != 0 || lex.parseFailed {
 		return nil, lex.err
 	}

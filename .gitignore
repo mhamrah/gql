@@ -7,7 +7,7 @@
 *.a
 *.so
 debug
-coverage.out
+*.out
 
 # Ignore generated code
 example/example
