@@ -1,24 +1,32 @@
 package query
 
-import "testing"
-import "github.com/stretchr/testify/assert"
+import (
+	"testing"
 
-const q = `query FetchLukeQuery {
-			human(id: "1000") {
-				name
-			}
-		}`
+	"github.com/stretchr/testify/assert"
+)
 
-const m = `mutation  {
-						likeStory(storyID: 12345) {
-							story {
-								likeCount
-							}
-						}
-					}`
-
-func TestGraphQLParse(t *testing.T) {
-	doc, err := ParseString(q)
+func TestQueryParse(t *testing.T) {
+	doc, err := ParseString(simpleQuery)
 	assert.NoError(t, err)
 	assert.NotNil(t, doc)
+
+	op := doc.Definitions[0].operation
+	assert.NotNil(t, op)
+	assert.Equal(t, "FetchLukeQuery", op.Name)
+	assert.Equal(t, Query, op.OpType)
+	assert.Len(t, op.SelectionSet, 1)
+	assert.Equal(t, "human", op.SelectionSet[0].Field.Name)
+	assert.Equal(t, "id", op.SelectionSet[0].Field.Arguments[0].Name)
+}
+
+func TestMutationParse(t *testing.T) {
+	doc, err := ParseString(mutation)
+	assert.NoError(t, err)
+	assert.NotNil(t, doc)
+	op := doc.Definitions[0].operation
+	assert.NotNil(t, op)
+	assert.Empty(t, op.Name)
+	assert.Equal(t, Mutation, op.OpType)
+	assert.Equal(t, "likeStory", op.SelectionSet[0].Field.Name)
 }
