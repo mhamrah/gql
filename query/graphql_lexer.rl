@@ -42,17 +42,30 @@ func (lex *lexer) Lex(out *yySymType) int {
         value = ["_A-Za-z]["_0-9A-Za-z]*;
         stringValue = ('"' ([^"\n\\] | '\\' any)* '"');
         intValue = ('-'? [1-9] digit*);
+        var = '$'[_0-9A-Za-z]+;
+
         # Symbols are sent to the parser as-is.
-        symbol = [\{\}\(\):];
+        symbol = [\{\}\(\):=\[\]@];
+
+        spread = '...';
+        on = 'on';
 
         main := |*
-           'query' => { tok = QUERY; fbreak;};
-           'mutation' => { tok = MUTATION; fbreak;};
-           'true' | 'false' => {
+            'query' => { tok = QUERY; fbreak;};
+            'mutation' => { tok = MUTATION; fbreak;};
+            'true' | 'false' => {
                out.val = reflect.ValueOf(string(lex.data[lex.ts:lex.te]) == "true");
                tok = VALUE
                fbreak;
-           };
+            };
+            spread => {
+                tok = SPREAD;
+                fbreak;
+            };
+            on => {
+                tok = ON;
+                fbreak;
+            };
             name => {
                 out.str = string(lex.data[lex.ts:lex.te]);
                 tok = NAME;
@@ -73,10 +86,15 @@ func (lex *lexer) Lex(out *yySymType) int {
                 fbreak;
             };
             symbol => {
+
                 tok = int(lex.data[lex.ts])
                 fbreak;
             };
-
+            var => {
+                out.str = string(lex.data[lex.ts+1:lex.te]);
+                tok = VARIABLE
+                fbreak;
+            };
             space;
             any => { };
         *|;
@@ -89,6 +107,6 @@ func (lex *lexer) Lex(out *yySymType) int {
 
 func (lex *lexer) Error(e string) {
     fmt.Println("errorx:", e)
-    fmt.Println("p", string(lex.data[lex.p:lex.pe]))
     fmt.Println("t", string(lex.data[lex.ts:lex.te]))
+    fmt.Println("p", string(lex.data[lex.p:lex.pe]))
 }

@@ -17,7 +17,7 @@ generate:
 	$(auto_gen) $(gen_dirs)
 
 .PHONY: test
-test:
+test: generate
 	go test -v ./...
 
 .PHONY: coveralls

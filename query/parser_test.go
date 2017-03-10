@@ -30,3 +30,9 @@ func TestMutationParse(t *testing.T) {
 	assert.Equal(t, Mutation, op.OpType)
 	assert.Equal(t, "likeStory", op.SelectionSet[0].Field.Name)
 }
+
+func TestKitchenSinkParse(t *testing.T) {
+	doc, err := ParseString(kitchenSink)
+	assert.NoError(t, err)
+	assert.NotNil(t, doc)
+}

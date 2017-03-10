@@ -9,24 +9,29 @@ import (
 %union {
     str string
     val reflect.Value
+    vals []reflect.Value
     doc Document
 
     definitions []Definition
     definition Definition
-    operationDefinition Operation
-    opType OpType
-    selectionSet []Selection
-    selection Selection
-    field Field
+
+    directives []Directive
+    directive Directive
+
     arguments []Argument
     argument Argument
-    fragment Fragment
-    directive Directive
-    directives []Directive
+
     variables []Variable
     variable Variable
-    fragmentSpread FragmentSpread
 
+    selectionSet []Selection
+    selection Selection
+
+    operation Operation
+    opType OpType
+    field Field
+    fragment Fragment
+    fragmentSpread FragmentSpread
 }
 
 %token <str> NAME
@@ -35,11 +40,10 @@ import (
 %token FRAGMENT SPREAD ON
 %token <str> VARIABLE
 %token <str> FRAGMENT_NAME
-%token <str> type_name
 
 %type <doc> document
 %type <definitions> definition_list
-%type <operationDefinition> operation_definition
+%type <operation> operation_definition
 %type <definition> definition
 %type <opType> operation_type
 %type <selectionSet> selection_set
@@ -60,6 +64,9 @@ import (
 %type <str> type
 %type <val> default_value_opt
 %type <val> default_value
+%type <val> value_const
+%type <vals> value_list
+%type <vals> list_value
 %type <fragmentSpread> fragment_spread
 %type <fragment> inline_fragment
 %type <directives> directives_opt
@@ -147,8 +154,7 @@ default_value_opt
         ;
 
 default_value
-        : '=' VALUE { $$ = $2 }
-        ;
+        : '=' value_const { $$ = $2; }
 
 selection_set
         : '{' selection_list '}' { $$ = $2 }
@@ -171,7 +177,15 @@ selection
         ;
 
 field
-        : NAME ':' NAME arguments_opt directives_opt selection_set_opt {
+        : NAME arguments_opt directives_opt selection_set_opt {
+                $$ = Field{
+                        Name: $1,
+                        Arguments: $2,
+                        Directives: $3,
+                        SelectionSet: $4,
+                        }
+                }
+        | NAME ':' NAME arguments_opt directives_opt selection_set_opt {
                 $$ = Field{
                         Name: $1,
                         Arguments: $4,
@@ -180,15 +194,6 @@ field
                         Alias: $3,
                         }
                 }
-        | NAME arguments_opt directives_opt selection_set_opt {
-                $$ = Field{
-                        Name: $1,
-                        Arguments: $2,
-                        Directives: $3,
-                        SelectionSet: $4,
-                        }
-                }
-
         ;
 
 arguments
@@ -206,12 +211,12 @@ argument_list
         ;
 
 argument
-        : NAME ':' VALUE { $$ = Argument{Name: $1, Value: $3} }
+        : NAME ':' value_const { $$ = Argument{Name: $1, Value: $3} }
         ;
 
 /* 2.2.6 Fragments */
 fragment_spread
-        : SPREAD FRAGMENT_NAME directives_opt { $$ = FragmentSpread{ Name: $2, Directives: $3 } }
+        : SPREAD NAME directives_opt { $$ = FragmentSpread{ Name: $2, Directives: $3 } }
         ;
 
 inline_fragment
@@ -245,10 +250,27 @@ fragment_definition
         ;
 
 type_condition
-        : type_name { $$ = $1 }
+        : NAME { $$ = $1 }
         ;
 
 /* 2.2.7 Input Values */
+
+value_const
+        : VALUE { $$ = $1 }
+        | NAME { $$ = reflect.ValueOf($1) }
+        | list_value { $$ = reflect.ValueOf($1) }
+        | VARIABLE { $$ = reflect.ValueOf($1) }
+        ;
+
+/* 2.2.7.6 List Value */
+
+list_value
+        : '[' value_list ']' { $$ = $2 }
+
+value_list
+        : /* nothing */ { $$ = nil }
+        | value_list value_const { $$ = append($1, $2) }
+        ;
 
 /* 2.2.9 Types */
 
