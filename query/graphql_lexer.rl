@@ -47,22 +47,20 @@ func (lex *lexer) Lex(out *yySymType) int {
         # Symbols are sent to the parser as-is.
         symbol = [\{\}\(\):=\[\]@];
 
-        spread = '...';
-        on = 'on';
-
         main := |*
             'query' => { tok = QUERY; fbreak;};
             'mutation' => { tok = MUTATION; fbreak;};
+            'subscription' => { tok = SUBSCRIPTION; fbreak; };
             'true' | 'false' => {
                out.val = reflect.ValueOf(string(lex.data[lex.ts:lex.te]) == "true");
                tok = VALUE
                fbreak;
             };
-            spread => {
+            '...' => {
                 tok = SPREAD;
                 fbreak;
             };
-            on => {
+            'on' => {
                 tok = ON;
                 fbreak;
             };

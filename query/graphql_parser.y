@@ -293,7 +293,4 @@ directive
         : '@' NAME arguments_opt { $$ = Directive{ Name: $2, Arguments: $3}; }
         ;
 
-/* todo add test for query name is optional */
-/* todo fix string regex and validate index bounds */
-/* todo bail if "any" is reached */
 /* todo subscriptions */

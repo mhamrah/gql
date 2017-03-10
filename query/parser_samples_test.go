@@ -1,5 +1,9 @@
 package query
 
+const failure = `
+  a{s}s... sss 123 aaaa aaa
+`
+
 const simpleQuery = `query FetchLukeQuery {
 			human(id: "1000") {
 				name

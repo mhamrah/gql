@@ -36,3 +36,10 @@ func TestKitchenSinkParse(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, doc)
 }
+
+func TestFailureParse(t *testing.T) {
+	t.Skip()
+	doc, err := ParseString(failure)
+	assert.Error(t, err)
+	assert.Nil(t, doc)
+}
