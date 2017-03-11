@@ -45,17 +45,27 @@ func (lex *lexer) Lex(out *yySymType) int {
         var = '$'[_0-9A-Za-z]+;
 
         # Symbols are sent to the parser as-is.
-        symbol = [\{\}\(\):=\[\]@];
+        symbol = [\{\}\(\):=\[\]@!\|];
 
         main := |*
-            'query' => { tok = QUERY; fbreak;};
+            'directive' => { tok = DIRECTIVE; fbreak; };
+            'enum' => { tok = ENUM; fbreak; };
+            'extend' => { tok = EXTEND; fbreak; };
+            'false' => { tok = FALSE; fbreak; };
+            'fragment' => { tok = FRAGMENT; fbreak; };
+            'implements' => { tok = IMPLEMENTS; fbreak; };
+            'input' => { tok = INPUT; fbreak; };
+            'interface' => { tok = INTERFACE; fbreak; };
             'mutation' => { tok = MUTATION; fbreak;};
+            'null' => { tok = NULL; fbreak; };
+            'query' => { tok = QUERY; fbreak;};
+            'on' => { tok = ON; fbreak; };
+            'scalar' => { tok = SCALAR; fbreak; };
+            'schema' => { tok = SCHEMA; fbreak; };
             'subscription' => { tok = SUBSCRIPTION; fbreak; };
-            'true' | 'false' => {
-               out.val = reflect.ValueOf(string(lex.data[lex.ts:lex.te]) == "true");
-               tok = VALUE
-               fbreak;
-            };
+            'true' => { tok = TRUE; fbreak; };
+            'type' => { tok = TYPE; fbreak; };
+            'union' => { tok = UNION; fbreak; };
             '...' => {
                 tok = SPREAD;
                 fbreak;
@@ -66,7 +76,7 @@ func (lex *lexer) Lex(out *yySymType) int {
             };
             name => {
                 out.str = string(lex.data[lex.ts:lex.te]);
-                tok = NAME;
+                tok = IDENTIFIER;
                 fbreak;
             };
             intValue => {
@@ -84,7 +94,6 @@ func (lex *lexer) Lex(out *yySymType) int {
                 fbreak;
             };
             symbol => {
-
                 tok = int(lex.data[lex.ts])
                 fbreak;
             };

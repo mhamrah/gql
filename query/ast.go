@@ -71,3 +71,8 @@ type FragmentSpread struct {
 	Name       string
 	Directives []Directive
 }
+
+type ObjectField struct {
+	Key string
+	Value reflect.Value
+}

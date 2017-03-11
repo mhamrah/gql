@@ -3,6 +3,7 @@ package query
 
 import (
         "reflect"
+        "fmt"
 )
 %}
 
@@ -32,16 +33,43 @@ import (
     field Field
     fragment Fragment
     fragmentSpread FragmentSpread
+    objectField ObjectField
+    objectFields []ObjectField
 }
 
-%token <str> NAME
-%token <val> VALUE
-%token QUERY MUTATION SUBSCRIPTION
-%token FRAGMENT SPREAD ON
+%token <str> DIRECTIVE
+%token <str> ENUM
+%token <str> EXTEND
+%token <str> FALSE
+%token <str> FRAGMENT
+%token <str> IMPLEMENTS
+%token <str> INPUT
+%token <str> INTERFACE
+%token <str> MUTATION
+%token <str> NULL
+%token <str> QUERY
+%token <str> ON
+%token <str> SCALAR
+%token <str> SCHEMA
+%token <str> SUBSCRIPTION
+%token <str> TRUE
+%token <str> TYPE
+%token <str> UNION
+
 %token <str> VARIABLE
+%token <str> IDENTIFIER
+%token <val> VALUE
+
+%token SPREAD ON
+
 %token <str> FRAGMENT_NAME
 
+%type <doc> start
 %type <doc> document
+%type <str> fragment_name
+%type <str> name
+%type <str> name_opt
+
 %type <definitions> definition_list
 %type <operation> operation_definition
 %type <definition> definition
@@ -55,16 +83,18 @@ import (
 %type <arguments> arguments
 %type <arguments> argument_list
 %type <argument> argument
-%type <str> name_opt
 %type <fragment> fragment_definition
 %type <directive> directive
 %type <variables> variable_definitions
 %type <variables> variable_definition_list
 %type <variable> variable_definition
 %type <str> type
+%type <str> type_name
+%type <str> enum_value
 %type <val> default_value_opt
 %type <val> default_value
 %type <val> value_const
+%type <val> boolean_value
 %type <vals> value_list
 %type <vals> list_value
 %type <fragmentSpread> fragment_spread
@@ -72,9 +102,51 @@ import (
 %type <directives> directives_opt
 %type <directives> directives
 %type <str> type_condition
-
+%type <objectField> object_field
+%type <objectFields> object_field_list
+%type <objectFields> object_value
 
 %%
+
+start:  document
+                {
+                        fmt.Println("doc:", $1)
+                        fmt.Println("err:", yylex.(*lexer).err )
+                        fmt.Println("failed:", yylex.(*lexer).parseFailed )
+                        // TODO check error?
+                        yylex.(*lexer).doc = $1
+                        return 0
+                }
+                ;
+
+// Fragment names are all names (identifiers) except ON
+fragment_name:  DIRECTIVE       { $$ = $1 }
+        |       ENUM            { $$ = $1 }
+        |       EXTEND          { $$ = $1 }
+        |       FALSE           { $$ = $1 }
+        |       FRAGMENT        { $$ = $1 }
+        |       IDENTIFIER      { $$ = $1 }
+        |       IMPLEMENTS      { $$ = $1 }
+        |       INPUT           { $$ = $1 }
+        |       INTERFACE       { $$ = $1 }
+        |       MUTATION        { $$ = $1 }
+        |       NULL            { $$ = $1 }
+        |       QUERY           { $$ = $1 }
+        |       SCALAR          { $$ = $1 }
+        |       SCHEMA          { $$ = $1 }
+        |       SUBSCRIPTION    { $$ = $1 }
+        |       TRUE            { $$ = $1 }
+        |       TYPE            { $$ = $1 }
+        |       UNION           { $$ = $1 }
+        ;
+
+name: fragment_name { $$ = $1 }
+        |       ON { $$ = $1 }
+        ;
+
+name_opt: /* nothing */ { $$ = "" }
+        | name
+        ;
 
 /* 2.2 Document */
 
@@ -82,15 +154,9 @@ document
         : definition_list
                 {
                        $$ = Document{Definitions: $1}
-                       yylex.(*lexer).doc = $$
-                       return 0
                 }
         ;
 
-name_opt
-        : /* nothing */ { $$ = "" }
-        | NAME { $$ = $1 }
-        ;
 
 definition_list
         : /* nothing */ { $$ = nil }
@@ -177,7 +243,7 @@ selection
         ;
 
 field
-        : NAME arguments_opt directives_opt selection_set_opt {
+        : name arguments_opt directives_opt selection_set_opt {
                 $$ = Field{
                         Name: $1,
                         Arguments: $2,
@@ -185,7 +251,7 @@ field
                         SelectionSet: $4,
                         }
                 }
-        | NAME ':' NAME arguments_opt directives_opt selection_set_opt {
+        | name ':' name arguments_opt directives_opt selection_set_opt {
                 $$ = Field{
                         Name: $1,
                         Arguments: $4,
@@ -211,12 +277,12 @@ argument_list
         ;
 
 argument
-        : NAME ':' value_const { $$ = Argument{Name: $1, Value: $3} }
+        : name ':' value_const { $$ = Argument{Name: $1, Value: $3} }
         ;
 
 /* 2.2.6 Fragments */
 fragment_spread
-        : SPREAD NAME directives_opt { $$ = FragmentSpread{ Name: $2, Directives: $3 } }
+        : SPREAD fragment_name directives_opt { $$ = FragmentSpread{ Name: $2, Directives: $3 } }
         ;
 
 inline_fragment
@@ -238,7 +304,7 @@ inline_fragment
         ;
 
 fragment_definition
-        : FRAGMENT FRAGMENT_NAME ON type_condition directives_opt selection_set
+        : FRAGMENT fragment_name ON type_condition directives_opt selection_set
                 {
                         $$ = Fragment{
                                         Name: $2,
@@ -249,33 +315,68 @@ fragment_definition
                 }
         ;
 
-type_condition
-        : NAME { $$ = $1 }
+type_condition: type_name { $$ = $1 }
         ;
 
 /* 2.2.7 Input Values */
 
-value_const
-        : VALUE { $$ = $1 }
-        | NAME { $$ = reflect.ValueOf($1) }
-        | list_value { $$ = reflect.ValueOf($1) }
-        | VARIABLE { $$ = reflect.ValueOf($1) }
+value_const:    VALUE { $$ = $1 }
+        |       boolean_value { $$ = $1 }
+        |       VARIABLE { $$ = reflect.ValueOf($1) }
+        |       list_value { $$ = reflect.ValueOf($1) }
+        |       enum_value { $$ = reflect.ValueOf($1) }
+        |       object_value { $$ = reflect.ValueOf($1) }
+        |       NULL { $$ = reflect.ValueOf(nil) }
+        ;
+
+boolean_value:  TRUE { $$ = reflect.ValueOf(true) }
+        |       FALSE { $$ = reflect.ValueOf(false) }
+        ;
+
+enum_value:     DIRECTIVE { $$ = $1; }
+        |       ENUM { $$ = $1; }
+        |       EXTEND { $$ = $1; }
+        |       FRAGMENT { $$ = $1; }
+        |       IDENTIFIER { $$ = $1; }
+        |       IMPLEMENTS { $$ = $1; }
+        |       INPUT { $$ = $1; }
+        |       INTERFACE { $$ = $1; }
+        |       MUTATION { $$ = $1; }
+        |       ON { $$ = $1; }
+        |       QUERY { $$ = $1; }
+        |       SCALAR { $$ = $1; }
+        |       SCHEMA { $$ = $1; }
+        |       SUBSCRIPTION  { $$ = $1; }
+        |       TYPE { $$ = $1; }
+        |       UNION { $$ = $1; }
         ;
 
 /* 2.2.7.6 List Value */
 
-list_value
-        : '[' value_list ']' { $$ = $2 }
+list_value: '[' value_list ']' { $$ = $2 }
+        ;
 
-value_list
-        : /* nothing */ { $$ = nil }
+value_list: /* nothing */ { $$ = nil }
         | value_list value_const { $$ = append($1, $2) }
+        ;
+
+/* 2.2.7.7 Object Value */
+object_value: '{' object_field_list '}' { $$ = $2 }
+        ;
+
+object_field_list: /* nothing */ { $$ = nil }
+        | object_field_list object_field { $$ = append($1, $2) }
+        ;
+
+object_field: name ':' value_const { $$ = ObjectField{ Key: $1, Value: $3 }}
         ;
 
 /* 2.2.9 Types */
 
-type
-        : NAME { $$ = $1 }
+type: type_name { $$ = $1 }
+        ;
+
+type_name: name { $$ = $1 }
         ;
 
 /* 2.2.10 Directives */
@@ -290,7 +391,7 @@ directives
         ;
 
 directive
-        : '@' NAME arguments_opt { $$ = Directive{ Name: $2, Arguments: $3}; }
+        : '@' name arguments_opt { $$ = Directive{ Name: $2, Arguments: $3}; }
         ;
 
 /* todo subscriptions */

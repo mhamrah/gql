@@ -5,10 +5,11 @@ import __yyfmt__ "fmt"
 
 //line graphql_parser.y:2
 import (
+	"fmt"
 	"reflect"
 )
 
-//line graphql_parser.y:9
+//line graphql_parser.y:10
 type yySymType struct {
 	yys  int
 	str  string
@@ -36,32 +37,60 @@ type yySymType struct {
 	field          Field
 	fragment       Fragment
 	fragmentSpread FragmentSpread
+	objectField    ObjectField
+	objectFields   []ObjectField
 }
 
-const NAME = 57346
-const VALUE = 57347
-const QUERY = 57348
-const MUTATION = 57349
-const SUBSCRIPTION = 57350
-const FRAGMENT = 57351
-const SPREAD = 57352
-const ON = 57353
-const VARIABLE = 57354
-const FRAGMENT_NAME = 57355
+const DIRECTIVE = 57346
+const ENUM = 57347
+const EXTEND = 57348
+const FALSE = 57349
+const FRAGMENT = 57350
+const IMPLEMENTS = 57351
+const INPUT = 57352
+const INTERFACE = 57353
+const MUTATION = 57354
+const NULL = 57355
+const QUERY = 57356
+const ON = 57357
+const SCALAR = 57358
+const SCHEMA = 57359
+const SUBSCRIPTION = 57360
+const TRUE = 57361
+const TYPE = 57362
+const UNION = 57363
+const VARIABLE = 57364
+const IDENTIFIER = 57365
+const VALUE = 57366
+const SPREAD = 57367
+const FRAGMENT_NAME = 57368
 
 var yyToknames = [...]string{
 	"$end",
 	"error",
 	"$unk",
-	"NAME",
-	"VALUE",
-	"QUERY",
-	"MUTATION",
-	"SUBSCRIPTION",
+	"DIRECTIVE",
+	"ENUM",
+	"EXTEND",
+	"FALSE",
 	"FRAGMENT",
-	"SPREAD",
+	"IMPLEMENTS",
+	"INPUT",
+	"INTERFACE",
+	"MUTATION",
+	"NULL",
+	"QUERY",
 	"ON",
+	"SCALAR",
+	"SCHEMA",
+	"SUBSCRIPTION",
+	"TRUE",
+	"TYPE",
+	"UNION",
 	"VARIABLE",
+	"IDENTIFIER",
+	"VALUE",
+	"SPREAD",
 	"FRAGMENT_NAME",
 	"'('",
 	"')'",
@@ -84,92 +113,139 @@ var yyExca = [...]int{
 	-1, 1,
 	1, -1,
 	-2, 0,
-	-1, 34,
-	22, 53,
-	-2, 54,
+	-1, 55,
+	35, 100,
+	-2, 101,
 }
 
-const yyNprod = 56
+const yyNprod = 103
 const yyPrivate = 57344
 
 var yyTokenNames []string
 var yyStates []string
 
-const yyLast = 95
+const yyLast = 302
 
 var yyAct = [...]int{
 
-	77, 62, 61, 38, 6, 35, 21, 36, 79, 78,
-	79, 78, 57, 9, 9, 17, 81, 35, 81, 20,
-	30, 32, 19, 9, 82, 85, 82, 10, 11, 12,
-	8, 75, 28, 45, 34, 71, 44, 66, 29, 9,
-	41, 31, 39, 50, 41, 51, 56, 23, 64, 54,
-	58, 55, 60, 59, 48, 22, 63, 46, 15, 42,
-	69, 37, 67, 52, 49, 14, 43, 27, 26, 72,
-	70, 80, 84, 76, 74, 73, 83, 68, 47, 33,
-	18, 5, 13, 65, 53, 86, 40, 25, 24, 16,
-	7, 3, 4, 2, 1,
+	99, 59, 84, 83, 58, 57, 7, 60, 79, 42,
+	15, 10, 40, 56, 10, 56, 97, 38, 110, 111,
+	112, 108, 113, 115, 116, 117, 118, 106, 120, 119,
+	121, 122, 123, 107, 124, 125, 102, 114, 100, 49,
+	16, 135, 51, 53, 63, 126, 61, 109, 130, 41,
+	36, 55, 52, 10, 93, 67, 80, 63, 71, 70,
+	66, 43, 105, 74, 129, 68, 133, 72, 48, 78,
+	73, 77, 47, 103, 76, 82, 128, 88, 101, 81,
+	96, 95, 85, 104, 90, 91, 69, 89, 54, 39,
+	6, 64, 94, 87, 75, 92, 98, 62, 127, 110,
+	111, 112, 108, 113, 115, 116, 117, 118, 106, 120,
+	119, 121, 122, 123, 107, 124, 125, 102, 114, 100,
+	46, 45, 37, 8, 4, 5, 126, 3, 109, 131,
+	14, 134, 2, 1, 0, 0, 136, 18, 19, 20,
+	21, 22, 24, 25, 26, 27, 28, 29, 17, 30,
+	31, 32, 33, 34, 35, 0, 23, 0, 50, 0,
+	0, 0, 0, 0, 0, 44, 18, 19, 20, 21,
+	22, 24, 25, 26, 27, 28, 29, 17, 30, 31,
+	32, 33, 34, 35, 0, 23, 0, 0, 0, 0,
+	0, 0, 0, 0, 132, 18, 19, 20, 21, 22,
+	24, 25, 26, 27, 28, 29, 17, 30, 31, 32,
+	33, 34, 35, 0, 23, 0, 0, 0, 0, 86,
+	18, 19, 20, 21, 22, 24, 25, 26, 27, 28,
+	29, 17, 30, 31, 32, 33, 34, 35, 0, 23,
+	18, 19, 20, 21, 22, 24, 25, 26, 27, 28,
+	29, 65, 30, 31, 32, 33, 34, 35, 0, 23,
+	18, 19, 20, 21, 22, 24, 25, 26, 27, 28,
+	29, 0, 30, 31, 32, 33, 34, 35, 9, 23,
+	0, 0, 12, 0, 11, 0, 0, 0, 13, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 10,
 }
 var yyPact = [...]int{
 
-	-1000, -1000, 21, -1000, -1000, -1000, -1000, 61, 45, -1000,
-	-1000, -1000, -1000, 5, -1000, 44, 28, -1000, -4, -4,
-	-1000, -17, 57, -1000, -1000, -1000, -1000, -1000, 26, 55,
-	-1000, -4, -1000, 42, -1000, 60, -1000, -1000, -1000, 59,
-	-1000, -1000, -1000, 57, -5, -1000, -1000, -1000, 34, 30,
-	-5, -5, 30, 33, -17, -1000, -1000, -1000, 56, -1000,
-	-1000, -1000, -1000, -1000, -1000, -1000, 19, -5, 14, -1000,
-	-5, 6, -1000, -1000, -1000, 6, -1000, -1000, -1000, -1000,
-	-1000, -1000, -1000, -1000, 4, -1000, -1000,
+	-1000, -1000, -1000, 270, -1000, -1000, -1000, -1000, 216, 256,
+	-1000, -1000, -1000, -1000, 22, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, 46, 133, -1000, -17,
+	-17, -1000, -22, 216, -1000, -1000, -1000, -1000, -1000, 17,
+	236, -1000, -17, -1000, 37, -1000, 216, -1000, -1000, -1000,
+	-1000, 216, -1000, -1000, -1000, 216, -20, -1000, -1000, -1000,
+	27, 30, -20, -20, 30, 191, -22, -1000, -1000, -1000,
+	216, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 25, -20,
+	-14, -1000, -20, 95, -1000, -1000, -1000, 95, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000,
+	-1000, -1000, -1000, -1000, -1000, -1000, -1000, -1000, 14, 162,
+	-1000, -1000, -1000, -1000, 12, 95, -1000,
 }
 var yyPgo = [...]int{
 
-	0, 94, 93, 92, 91, 90, 1, 2, 89, 88,
-	87, 3, 86, 84, 83, 82, 81, 12, 80, 79,
-	78, 77, 75, 74, 0, 72, 71, 68, 67, 6,
-	22, 7,
+	0, 133, 132, 40, 1, 130, 127, 125, 124, 123,
+	2, 3, 122, 121, 120, 7, 97, 94, 93, 90,
+	8, 89, 88, 86, 84, 4, 83, 81, 80, 0,
+	78, 76, 73, 72, 68, 9, 12, 5, 66, 64,
+	62,
 }
 var yyR1 = [...]int{
 
-	0, 1, 15, 15, 2, 2, 4, 4, 3, 3,
-	3, 3, 3, 5, 5, 5, 18, 19, 19, 20,
-	22, 22, 23, 6, 7, 7, 8, 8, 9, 9,
-	9, 10, 10, 12, 11, 11, 13, 13, 14, 27,
-	28, 28, 16, 31, 24, 24, 24, 24, 26, 25,
-	25, 21, 29, 29, 30, 17,
+	0, 1, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	4, 4, 5, 5, 2, 6, 6, 8, 8, 7,
+	7, 7, 7, 7, 9, 9, 9, 21, 22, 22,
+	23, 27, 27, 28, 10, 11, 11, 12, 12, 13,
+	13, 13, 14, 14, 16, 15, 15, 17, 17, 18,
+	33, 34, 34, 19, 37, 29, 29, 29, 29, 29,
+	29, 29, 30, 30, 26, 26, 26, 26, 26, 26,
+	26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
+	32, 31, 31, 40, 39, 39, 38, 24, 25, 35,
+	35, 36, 20,
 }
 var yyR2 = [...]int{
 
-	0, 1, 0, 1, 0, 2, 1, 1, 1, 3,
-	4, 4, 5, 1, 1, 1, 3, 0, 2, 4,
-	0, 1, 2, 3, 0, 1, 0, 2, 1, 1,
-	1, 4, 6, 3, 0, 1, 0, 2, 3, 3,
-	5, 3, 6, 1, 1, 1, 1, 1, 3, 0,
-	2, 1, 0, 2, 2, 3,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 0, 1, 1, 0, 2, 1, 1, 1,
+	3, 4, 4, 5, 1, 1, 1, 3, 0, 2,
+	4, 0, 1, 2, 3, 0, 1, 0, 2, 1,
+	1, 1, 4, 6, 3, 0, 1, 0, 2, 3,
+	3, 5, 3, 6, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	3, 0, 2, 3, 0, 2, 3, 1, 1, 0,
+	2, 2, 3,
 }
 var yyChk = [...]int{
 
-	-1000, -1, -2, -4, -3, -16, -6, -5, 9, 18,
-	6, 7, 8, -15, 4, 13, -8, -6, -18, -30,
-	14, -29, 11, 19, -9, -10, -27, -28, 4, 10,
-	-6, -30, -6, -19, -17, 22, -31, 4, -11, 16,
-	-12, 14, 4, 11, -29, -6, 15, -20, 12, 4,
-	-29, -29, 4, -13, -29, -31, -6, -17, 16, -11,
-	-6, -7, -6, -11, 15, -14, 4, -29, -21, 4,
-	-29, 16, -6, -22, -23, 17, -7, -24, 5, 4,
-	-26, 12, 20, -24, -25, 21, -24,
+	-1000, -1, -2, -6, -8, -7, -19, -10, -9, 8,
+	31, 14, 12, 18, -5, -4, -3, 15, 4, 5,
+	6, 7, 8, 23, 9, 10, 11, 12, 13, 14,
+	16, 17, 18, 19, 20, 21, -3, -12, -10, -21,
+	-36, 27, -35, 15, 32, -13, -14, -33, -34, -4,
+	25, -10, -36, -10, -22, -20, 35, -37, -25, -4,
+	-15, 29, -16, 27, -3, 15, -35, -10, 28, -23,
+	22, -4, -35, -35, -4, -17, -35, -37, -10, -20,
+	29, -15, -10, -11, -10, -15, 28, -18, -4, -35,
+	-24, -25, -35, 29, -10, -27, -28, 30, -11, -29,
+	24, -30, 22, -32, -26, -40, 13, 19, 7, 33,
+	4, 5, 6, 8, 23, 9, 10, 11, 12, 15,
+	14, 16, 17, 18, 20, 21, 31, -29, -31, -39,
+	34, -29, 32, -38, -4, 29, -29,
 }
 var yyDef = [...]int{
 
-	4, -2, 1, 5, 6, 7, 8, 2, 0, 26,
-	13, 14, 15, 52, 3, 0, 0, 9, 52, 0,
-	17, 0, 0, 23, 27, 28, 29, 30, 34, 52,
-	10, 0, 11, 0, -2, 0, 52, 43, 52, 0,
-	35, 36, 52, 0, 0, 12, 16, 18, 0, 34,
-	0, 24, 34, 0, 39, 52, 41, 53, 0, 55,
-	42, 31, 25, 52, 33, 37, 0, 0, 20, 51,
-	24, 0, 40, 19, 21, 0, 32, 38, 44, 45,
-	46, 47, 49, 22, 0, 48, 50,
+	25, -2, 1, 24, 26, 27, 28, 29, 22, 0,
+	47, 34, 35, 36, 99, 23, 20, 21, 2, 3,
+	4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+	14, 15, 16, 17, 18, 19, 0, 0, 30, 99,
+	0, 38, 0, 0, 44, 48, 49, 50, 51, 55,
+	99, 31, 0, 32, 0, -2, 0, 99, 64, 98,
+	99, 0, 56, 57, 99, 0, 0, 33, 37, 39,
+	0, 55, 0, 45, 55, 0, 60, 99, 62, 100,
+	0, 102, 63, 52, 46, 99, 54, 58, 0, 0,
+	41, 97, 45, 0, 61, 40, 42, 0, 53, 59,
+	65, 66, 67, 68, 69, 70, 71, 72, 73, 91,
+	74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
+	84, 85, 86, 87, 88, 89, 94, 43, 0, 0,
+	90, 92, 93, 95, 0, 0, 96,
 }
 var yyTok1 = [...]int{
 
@@ -177,20 +253,21 @@ var yyTok1 = [...]int{
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	14, 15, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 16, 3,
-	3, 17, 3, 3, 22, 3, 3, 3, 3, 3,
+	27, 28, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 3, 3, 29, 3,
+	3, 30, 3, 3, 35, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 20, 3, 21, 3, 3, 3, 3, 3, 3,
+	3, 33, 3, 34, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 18, 3, 19,
+	3, 3, 3, 31, 3, 32,
 }
 var yyTok2 = [...]int{
 
 	2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-	12, 13,
+	12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+	22, 23, 24, 25, 26,
 }
 var yyTok3 = [...]int{
 	0,
@@ -535,183 +612,306 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:83
+		//line graphql_parser.y:112
 		{
-			yyVAL.doc = Document{Definitions: yyDollar[1].definitions}
-			yylex.(*lexer).doc = yyVAL.doc
+			fmt.Println("doc:", yyDollar[1].doc)
+			fmt.Println("err:", yylex.(*lexer).err)
+			fmt.Println("failed:", yylex.(*lexer).parseFailed)
+			// TODO check error?
+			yylex.(*lexer).doc = yyDollar[1].doc
 			return 0
 		}
 	case 2:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:91
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:123
 		{
-			yyVAL.str = ""
+			yyVAL.str = yyDollar[1].str
 		}
 	case 3:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:92
+		//line graphql_parser.y:124
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 4:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:96
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:125
 		{
-			yyVAL.definitions = nil
+			yyVAL.str = yyDollar[1].str
 		}
 	case 5:
-		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:97
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:126
 		{
-			yyVAL.definitions = append(yyDollar[1].definitions, yyDollar[2].definition)
+			yyVAL.str = yyDollar[1].str
 		}
 	case 6:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:101
+		//line graphql_parser.y:127
 		{
-			yyVAL.definition = Definition{operation: yyDollar[1].operation}
+			yyVAL.str = yyDollar[1].str
 		}
 	case 7:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:102
+		//line graphql_parser.y:128
 		{
-			yyVAL.definition = Definition{fragment: yyDollar[1].fragment}
+			yyVAL.str = yyDollar[1].str
 		}
 	case 8:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:108
+		//line graphql_parser.y:129
 		{
-			yyVAL.operation = Operation{OpType: Query, SelectionSet: yyDollar[1].selectionSet}
+			yyVAL.str = yyDollar[1].str
 		}
 	case 9:
-		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:112
-		{
-			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, SelectionSet: yyDollar[3].selectionSet}
-		}
-	case 10:
-		yyDollar = yyS[yypt-4 : yypt+1]
-		//line graphql_parser.y:116
-		{
-			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, Variables: yyDollar[3].variables, SelectionSet: yyDollar[4].selectionSet}
-		}
-	case 11:
-		yyDollar = yyS[yypt-4 : yypt+1]
-		//line graphql_parser.y:120
-		{
-			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, Directives: yyDollar[3].directives, SelectionSet: yyDollar[4].selectionSet}
-		}
-	case 12:
-		yyDollar = yyS[yypt-5 : yypt+1]
-		//line graphql_parser.y:124
-		{
-			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, Variables: yyDollar[3].variables, Directives: yyDollar[4].directives, SelectionSet: yyDollar[5].selectionSet}
-		}
-	case 13:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		//line graphql_parser.y:130
 		{
-			yyVAL.opType = Query
+			yyVAL.str = yyDollar[1].str
 		}
-	case 14:
+	case 10:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		//line graphql_parser.y:131
 		{
-			yyVAL.opType = Mutation
+			yyVAL.str = yyDollar[1].str
 		}
-	case 15:
+	case 11:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		//line graphql_parser.y:132
 		{
-			yyVAL.opType = Subscription
+			yyVAL.str = yyDollar[1].str
 		}
-	case 16:
-		yyDollar = yyS[yypt-3 : yypt+1]
+	case 12:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:133
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 13:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:134
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 14:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:135
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 15:
+		yyDollar = yyS[yypt-1 : yypt+1]
 		//line graphql_parser.y:136
 		{
-			yyVAL.variables = yyDollar[2].variables
+			yyVAL.str = yyDollar[1].str
+		}
+	case 16:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:137
+		{
+			yyVAL.str = yyDollar[1].str
 		}
 	case 17:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:140
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:138
 		{
-			yyVAL.variables = nil
+			yyVAL.str = yyDollar[1].str
 		}
 	case 18:
-		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:141
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:139
 		{
-			yyVAL.variables = append(yyDollar[1].variables, yyDollar[2].variable)
+			yyVAL.str = yyDollar[1].str
 		}
 	case 19:
-		yyDollar = yyS[yypt-4 : yypt+1]
-		//line graphql_parser.y:146
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:140
 		{
-			yyVAL.variable = Variable{Name: yyDollar[1].str, Type: yyDollar[3].str, Default: yyDollar[4].val}
+			yyVAL.str = yyDollar[1].str
 		}
 	case 20:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:152
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:143
 		{
-			yyVAL.val = reflect.ValueOf(nil)
+			yyVAL.str = yyDollar[1].str
 		}
 	case 21:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:153
+		//line graphql_parser.y:144
 		{
-			yyVAL.val = yyDollar[1].val
+			yyVAL.str = yyDollar[1].str
 		}
 	case 22:
-		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:157
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:147
 		{
-			yyVAL.val = yyDollar[2].val
-		}
-	case 23:
-		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:160
-		{
-			yyVAL.selectionSet = yyDollar[2].selectionSet
+			yyVAL.str = ""
 		}
 	case 24:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:164
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:155
 		{
-			yyVAL.selectionSet = nil
+			yyVAL.doc = Document{Definitions: yyDollar[1].definitions}
+		}
+	case 25:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:162
+		{
+			yyVAL.definitions = nil
 		}
 	case 26:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:169
+		yyDollar = yyS[yypt-2 : yypt+1]
+		//line graphql_parser.y:163
 		{
-			yyVAL.selectionSet = nil
+			yyVAL.definitions = append(yyDollar[1].definitions, yyDollar[2].definition)
 		}
 	case 27:
-		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:170
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:167
 		{
-			yyVAL.selectionSet = append(yyDollar[1].selectionSet, yyDollar[2].selection)
+			yyVAL.definition = Definition{operation: yyDollar[1].operation}
 		}
 	case 28:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:174
+		//line graphql_parser.y:168
 		{
-			yyVAL.selection = Selection{Field: yyDollar[1].field}
+			yyVAL.definition = Definition{fragment: yyDollar[1].fragment}
 		}
 	case 29:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:175
+		//line graphql_parser.y:174
 		{
-			yyVAL.selection = Selection{FragmentSpread: yyDollar[1].fragmentSpread}
+			yyVAL.operation = Operation{OpType: Query, SelectionSet: yyDollar[1].selectionSet}
 		}
 	case 30:
-		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:176
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line graphql_parser.y:178
 		{
-			yyVAL.selection = Selection{InlineFragment: yyDollar[1].fragment}
+			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, SelectionSet: yyDollar[3].selectionSet}
 		}
 	case 31:
 		yyDollar = yyS[yypt-4 : yypt+1]
-		//line graphql_parser.y:180
+		//line graphql_parser.y:182
+		{
+			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, Variables: yyDollar[3].variables, SelectionSet: yyDollar[4].selectionSet}
+		}
+	case 32:
+		yyDollar = yyS[yypt-4 : yypt+1]
+		//line graphql_parser.y:186
+		{
+			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, Directives: yyDollar[3].directives, SelectionSet: yyDollar[4].selectionSet}
+		}
+	case 33:
+		yyDollar = yyS[yypt-5 : yypt+1]
+		//line graphql_parser.y:190
+		{
+			yyVAL.operation = Operation{OpType: yyDollar[1].opType, Name: yyDollar[2].str, Variables: yyDollar[3].variables, Directives: yyDollar[4].directives, SelectionSet: yyDollar[5].selectionSet}
+		}
+	case 34:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:196
+		{
+			yyVAL.opType = Query
+		}
+	case 35:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:197
+		{
+			yyVAL.opType = Mutation
+		}
+	case 36:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:198
+		{
+			yyVAL.opType = Subscription
+		}
+	case 37:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line graphql_parser.y:202
+		{
+			yyVAL.variables = yyDollar[2].variables
+		}
+	case 38:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:206
+		{
+			yyVAL.variables = nil
+		}
+	case 39:
+		yyDollar = yyS[yypt-2 : yypt+1]
+		//line graphql_parser.y:207
+		{
+			yyVAL.variables = append(yyDollar[1].variables, yyDollar[2].variable)
+		}
+	case 40:
+		yyDollar = yyS[yypt-4 : yypt+1]
+		//line graphql_parser.y:212
+		{
+			yyVAL.variable = Variable{Name: yyDollar[1].str, Type: yyDollar[3].str, Default: yyDollar[4].val}
+		}
+	case 41:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:218
+		{
+			yyVAL.val = reflect.ValueOf(nil)
+		}
+	case 42:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:219
+		{
+			yyVAL.val = yyDollar[1].val
+		}
+	case 43:
+		yyDollar = yyS[yypt-2 : yypt+1]
+		//line graphql_parser.y:223
+		{
+			yyVAL.val = yyDollar[2].val
+		}
+	case 44:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line graphql_parser.y:226
+		{
+			yyVAL.selectionSet = yyDollar[2].selectionSet
+		}
+	case 45:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:230
+		{
+			yyVAL.selectionSet = nil
+		}
+	case 47:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:235
+		{
+			yyVAL.selectionSet = nil
+		}
+	case 48:
+		yyDollar = yyS[yypt-2 : yypt+1]
+		//line graphql_parser.y:236
+		{
+			yyVAL.selectionSet = append(yyDollar[1].selectionSet, yyDollar[2].selection)
+		}
+	case 49:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:240
+		{
+			yyVAL.selection = Selection{Field: yyDollar[1].field}
+		}
+	case 50:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:241
+		{
+			yyVAL.selection = Selection{FragmentSpread: yyDollar[1].fragmentSpread}
+		}
+	case 51:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:242
+		{
+			yyVAL.selection = Selection{InlineFragment: yyDollar[1].fragment}
+		}
+	case 52:
+		yyDollar = yyS[yypt-4 : yypt+1]
+		//line graphql_parser.y:246
 		{
 			yyVAL.field = Field{
 				Name:         yyDollar[1].str,
@@ -720,9 +920,9 @@ yydefault:
 				SelectionSet: yyDollar[4].selectionSet,
 			}
 		}
-	case 32:
+	case 53:
 		yyDollar = yyS[yypt-6 : yypt+1]
-		//line graphql_parser.y:188
+		//line graphql_parser.y:254
 		{
 			yyVAL.field = Field{
 				Name:         yyDollar[1].str,
@@ -732,51 +932,51 @@ yydefault:
 				Alias:        yyDollar[3].str,
 			}
 		}
-	case 33:
+	case 54:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:200
+		//line graphql_parser.y:266
 		{
 			yyVAL.arguments = yyDollar[2].arguments
 		}
-	case 34:
+	case 55:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:204
+		//line graphql_parser.y:270
 		{
 			yyVAL.arguments = nil
 		}
-	case 35:
+	case 56:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:205
+		//line graphql_parser.y:271
 		{
 			yyVAL.arguments = yyDollar[1].arguments
 		}
-	case 36:
+	case 57:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:209
+		//line graphql_parser.y:275
 		{
 			yyVAL.arguments = nil
 		}
-	case 37:
+	case 58:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:210
+		//line graphql_parser.y:276
 		{
 			yyVAL.arguments = append(yyDollar[1].arguments, yyDollar[2].argument)
 		}
-	case 38:
+	case 59:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:214
+		//line graphql_parser.y:280
 		{
 			yyVAL.argument = Argument{Name: yyDollar[1].str, Value: yyDollar[3].val}
 		}
-	case 39:
+	case 60:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:219
+		//line graphql_parser.y:285
 		{
 			yyVAL.fragmentSpread = FragmentSpread{Name: yyDollar[2].str, Directives: yyDollar[3].directives}
 		}
-	case 40:
+	case 61:
 		yyDollar = yyS[yypt-5 : yypt+1]
-		//line graphql_parser.y:224
+		//line graphql_parser.y:290
 		{
 			yyVAL.fragment = Fragment{
 				TypeCondition: yyDollar[3].str,
@@ -784,18 +984,18 @@ yydefault:
 				SelectionSet:  yyDollar[5].selectionSet,
 			}
 		}
-	case 41:
+	case 62:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:232
+		//line graphql_parser.y:298
 		{
 			yyVAL.fragment = Fragment{
 				Directives:   yyDollar[2].directives,
 				SelectionSet: yyDollar[3].selectionSet,
 			}
 		}
-	case 42:
+	case 63:
 		yyDollar = yyS[yypt-6 : yypt+1]
-		//line graphql_parser.y:242
+		//line graphql_parser.y:308
 		{
 			yyVAL.fragment = Fragment{
 				Name:          yyDollar[2].str,
@@ -804,81 +1004,237 @@ yydefault:
 				SelectionSet:  yyDollar[6].selectionSet,
 			}
 		}
-	case 43:
+	case 64:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:253
+		//line graphql_parser.y:318
 		{
 			yyVAL.str = yyDollar[1].str
 		}
-	case 44:
+	case 65:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:259
+		//line graphql_parser.y:323
 		{
 			yyVAL.val = yyDollar[1].val
 		}
-	case 45:
+	case 66:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:260
+		//line graphql_parser.y:324
+		{
+			yyVAL.val = yyDollar[1].val
+		}
+	case 67:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:325
 		{
 			yyVAL.val = reflect.ValueOf(yyDollar[1].str)
 		}
-	case 46:
+	case 68:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:261
+		//line graphql_parser.y:326
 		{
 			yyVAL.val = reflect.ValueOf(yyDollar[1].vals)
 		}
-	case 47:
+	case 69:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:262
+		//line graphql_parser.y:327
 		{
 			yyVAL.val = reflect.ValueOf(yyDollar[1].str)
 		}
-	case 48:
-		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:268
-		{
-			yyVAL.vals = yyDollar[2].vals
-		}
-	case 49:
-		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:271
-		{
-			yyVAL.vals = nil
-		}
-	case 50:
-		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:272
-		{
-			yyVAL.vals = append(yyDollar[1].vals, yyDollar[2].val)
-		}
-	case 51:
+	case 70:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line graphql_parser.y:278
+		//line graphql_parser.y:328
+		{
+			yyVAL.val = reflect.ValueOf(yyDollar[1].objectFields)
+		}
+	case 71:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:329
+		{
+			yyVAL.val = reflect.ValueOf(nil)
+		}
+	case 72:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:332
+		{
+			yyVAL.val = reflect.ValueOf(true)
+		}
+	case 73:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:333
+		{
+			yyVAL.val = reflect.ValueOf(false)
+		}
+	case 74:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:336
 		{
 			yyVAL.str = yyDollar[1].str
 		}
-	case 52:
+	case 75:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:337
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 76:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:338
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 77:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:339
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 78:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:340
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 79:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:341
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 80:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:342
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 81:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:343
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 82:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:344
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 83:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:345
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 84:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:346
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 85:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:347
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 86:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:348
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 87:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:349
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 88:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:350
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 89:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:351
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 90:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line graphql_parser.y:356
+		{
+			yyVAL.vals = yyDollar[2].vals
+		}
+	case 91:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line graphql_parser.y:284
+		//line graphql_parser.y:359
+		{
+			yyVAL.vals = nil
+		}
+	case 92:
+		yyDollar = yyS[yypt-2 : yypt+1]
+		//line graphql_parser.y:360
+		{
+			yyVAL.vals = append(yyDollar[1].vals, yyDollar[2].val)
+		}
+	case 93:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line graphql_parser.y:364
+		{
+			yyVAL.objectFields = yyDollar[2].objectFields
+		}
+	case 94:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:367
+		{
+			yyVAL.objectFields = nil
+		}
+	case 95:
+		yyDollar = yyS[yypt-2 : yypt+1]
+		//line graphql_parser.y:368
+		{
+			yyVAL.objectFields = append(yyDollar[1].objectFields, yyDollar[2].objectField)
+		}
+	case 96:
+		yyDollar = yyS[yypt-3 : yypt+1]
+		//line graphql_parser.y:371
+		{
+			yyVAL.objectField = ObjectField{Key: yyDollar[1].str, Value: yyDollar[3].val}
+		}
+	case 97:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:376
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 98:
+		yyDollar = yyS[yypt-1 : yypt+1]
+		//line graphql_parser.y:379
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 99:
+		yyDollar = yyS[yypt-0 : yypt+1]
+		//line graphql_parser.y:385
 		{
 			yyVAL.directives = nil
 		}
-	case 53:
+	case 100:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:285
+		//line graphql_parser.y:386
 		{
 			yyVAL.directives = append(yyDollar[1].directives, yyDollar[2].directive)
 		}
-	case 54:
+	case 101:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line graphql_parser.y:289
+		//line graphql_parser.y:390
 		{
 			yyVAL.directives = append(yyDollar[1].directives, yyDollar[2].directive)
 		}
-	case 55:
+	case 102:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line graphql_parser.y:293
+		//line graphql_parser.y:394
 		{
 			yyVAL.directive = Directive{Name: yyDollar[2].str, Arguments: yyDollar[3].arguments}
 		}
