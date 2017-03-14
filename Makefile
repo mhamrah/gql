@@ -1,7 +1,7 @@
 SHELL=/bin/bash -o pipefail
 
 auto_gen := .ci/auto-gen.sh
-gen_dirs = query
+gen_dirs = parser
 
 .PHONY: dependencies
 dependencies:
