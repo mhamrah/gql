@@ -8,6 +8,7 @@
 *.so
 debug
 *.out
+*.output
 
 # Ignore generated code
 example/example
