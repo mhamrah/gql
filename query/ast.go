@@ -6,6 +6,7 @@ import (
 
 type Document struct {
 	Definitions []Definition
+	Schema      Schema
 }
 
 type OpType int
@@ -63,7 +64,7 @@ type Directive struct {
 
 type Variable struct {
 	Name    string
-	Type    string
+	Type    TypeDescription
 	Default reflect.Value
 }
 
@@ -73,6 +74,83 @@ type FragmentSpread struct {
 }
 
 type ObjectField struct {
-	Key string
+	Key   string
 	Value reflect.Value
+}
+
+type Schema struct {
+	OperationTypeDefinitions []OperationTypeDefinition
+	TypeDefinitions          []TypeDefinition
+}
+
+type OperationTypeDefinition struct {
+	OpType OpType
+	Name   string
+}
+
+type TypeDefinition interface {
+}
+
+type ScalarDefinition struct {
+	Name string
+	Directives []Directive
+}
+
+type ObjectDefinition struct {
+	Name       string
+	Implements []string
+	Fields []FieldDefinition
+	Directives []Directive
+}
+
+type FieldDefinition struct {
+	Name      string
+	Arguments []InputValueDefinition
+	Type      TypeDescription
+	Directives []Directive
+}
+
+type InputValueDefinition struct {
+	Name    string
+	Type    TypeDescription
+	Default reflect.Value
+	Directives []Directive
+}
+
+type InterfaceDefinition struct {
+	Name string
+
+	Fields []FieldDefinition
+	Directives []Directive
+
+}
+
+type UnionDefinition struct {
+	Name  string
+	Types []string
+	Directives []Directive
+}
+
+type EnumDefinition struct {
+	Name   string
+	Values []string
+	Directives []Directive
+}
+
+type InputObjectDefinition struct {
+	Name      string
+	InputDefs []InputValueDefinition
+	Directives []Directive
+}
+
+type TypeFlags byte
+
+const (
+	List TypeFlags = 1 << iota
+	Required
+)
+
+type TypeDescription struct {
+	Name  string
+	Flags TypeFlags
 }

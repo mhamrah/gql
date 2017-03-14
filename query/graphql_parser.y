@@ -3,12 +3,12 @@ package query
 
 import (
         "reflect"
-        "fmt"
 )
 %}
 
 %union {
     str string
+    strs []string
     val reflect.Value
     vals []reflect.Value
     doc Document
@@ -35,6 +35,17 @@ import (
     fragmentSpread FragmentSpread
     objectField ObjectField
     objectFields []ObjectField
+
+    schema Schema
+    operationTypeDefinition OperationTypeDefinition
+    operationTypeDefinitions []OperationTypeDefinition
+    typeDefinition TypeDefinition
+    typeDefinitions []TypeDefinition
+    inputDefinitions []InputValueDefinition
+    inputDefinition InputValueDefinition
+    fieldDef FieldDefinition
+    fieldsDef []FieldDefinition
+    typeDesc TypeDescription
 }
 
 %token <str> DIRECTIVE
@@ -88,8 +99,10 @@ import (
 %type <variables> variable_definitions
 %type <variables> variable_definition_list
 %type <variable> variable_definition
-%type <str> type
+%type <typeDesc> type
 %type <str> type_name
+%type <typeDesc> list_type
+%type <typeDesc> non_null_type
 %type <str> enum_value
 %type <val> default_value_opt
 %type <val> default_value
@@ -106,18 +119,38 @@ import (
 %type <objectFields> object_field_list
 %type <objectFields> object_value
 
+%type <schema> schema
+%type <operationTypeDefinition> operation_type_definition
+%type <operationTypeDefinitions>
+operation_type_definition_list
+%type <operationTypeDefinitions> schema_definition
+%type <typeDefinition> scalar_type_definition
+%type <typeDefinitions> type_definitions
+%type <typeDefinition> object_type_definition
+%type <strs> implements_interfaces_opt
+%type <strs> type_name_list
+%type <fieldDef> field_definition
+%type <fieldsDef> field_definition_list
+%type <inputDefinitions> arguments_definition_opt
+%type <inputDefinitions> arguments_definition
+%type <inputDefinitions> input_value_definition_list
+%type <inputDefinition> input_value_definition
+%type <typeDefinition> interface_type_definition
+%type <typeDefinition> union_type_definition
+%type <strs> union_members
+%type <typeDefinition> enum_type_definition
+%type <str> enum_value_definition
+%type <strs> enum_value_definition_list
+%type <typeDefinition> input_object_type_definition
 %%
 
 start:  document
                 {
-                        fmt.Println("doc:", $1)
-                        fmt.Println("err:", yylex.(*lexer).err )
-                        fmt.Println("failed:", yylex.(*lexer).parseFailed )
-                        // TODO check error?
+                        // TODO check error
                         yylex.(*lexer).doc = $1
                         return 0
                 }
-                ;
+        ;
 
 // Fragment names are all names (identifiers) except ON
 fragment_name:  DIRECTIVE       { $$ = $1 }
@@ -154,6 +187,10 @@ document
         : definition_list
                 {
                        $$ = Document{Definitions: $1}
+                }
+        | schema
+                {
+                        $$ = Document{Schema: $1}
                 }
         ;
 
@@ -373,25 +410,163 @@ object_field: name ':' value_const { $$ = ObjectField{ Key: $1, Value: $3 }}
 
 /* 2.2.9 Types */
 
-type: type_name { $$ = $1 }
+type: type_name { $$ = TypeDescription{ Name: $1 } }
+        | list_type { $$ = $1 }
+        | non_null_type { $$ = $1 }
         ;
 
 type_name: name { $$ = $1 }
         ;
 
+list_type: '[' type ']'
+        {
+                $2.Flags |= List
+                $$ = $2
+        }
+        ;
+
+non_null_type: type_name '!'
+                {
+                        $$ = TypeDescription{ Name: $1, Flags: Required }
+                }
+        | list_type '!'
+                {
+                        $1.Flags |= Required;
+                        $$ = $1
+                }
+        ;
+
 /* 2.2.10 Directives */
 
-directives_opt
-        : /* nothing */ { $$ = nil }
+directives_opt: /* nothing */ { $$ = nil }
         | directives_opt directive { $$ = append($1, $2) }
         ;
 
-directives
-        : directives_opt directive { $$ = append($1, $2) }
+directives: directives_opt directive { $$ = append($1, $2) }
         ;
 
-directive
-        : '@' name arguments_opt { $$ = Directive{ Name: $2, Arguments: $3}; }
+directive: '@' name arguments_opt { $$ = Directive{ Name: $2, Arguments: $3}; }
         ;
 
-/* todo subscriptions */
+/* Schema Support */
+
+schema: schema_definition type_definitions { $$ = Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 } }
+        ;
+
+schema_definition: SCHEMA directives_opt '{' operation_type_definition_list '}'
+        {
+                $$ = $4
+        }
+        ;
+
+operation_type_definition_list: /* nothing */ { $$ = nil }
+        | operation_type_definition_list operation_type_definition { $$ = append($1, $2)}
+        ;
+
+operation_type_definition: operation_type ':' type_name
+        {
+                $$ = OperationTypeDefinition{OpType: $1, Name: $3}
+        }
+        ;
+
+type_definitions: /* nothing */ { $$ = nil }
+        | type_definitions scalar_type_definition { $$ = append($1, $2) }
+        | type_definitions object_type_definition { $$ = append($1, $2) }
+        | type_definitions interface_type_definition { $$ = append($1, $2) }
+        | type_definitions union_type_definition { $$ = append($1, $2) }
+        | type_definitions enum_type_definition { $$ = append($1, $2) }
+        | type_definitions input_object_type_definition { $$ = append($1, $2) }
+        ;
+
+scalar_type_definition: SCALAR name directives_opt { $$ = ScalarDefinition{Name: $2, Directives: $3 } }
+        ;
+
+object_type_definition: TYPE name implements_interfaces_opt directives_opt '{' field_definition_list '}'
+                {
+                        $$ = ObjectDefinition{
+                                Name: $2,
+                                Implements: $3,
+                                Fields: $6,
+                                Directives: $4,
+                                }
+                }
+        ;
+
+implements_interfaces_opt: /* nothing */ { $$ = nil }
+        | IMPLEMENTS type_name_list { $$ = $2 }
+        ;
+
+type_name_list: type_name { $$ = []string{$1}}
+        | type_name_list type_name { $$ = append($1, $2)}
+        ;
+
+
+field_definition: name arguments_definition_opt ':' type directives_opt
+                {
+                        $$ = FieldDefinition{ Name: $1, Arguments: $2, Type: $4, Directives: $5 }
+                }
+        ;
+
+field_definition_list: field_definition { $$ = []FieldDefinition{$1} }
+        | field_definition_list field_definition { $$ = append($1, $2) }
+        ;
+
+arguments_definition_opt: /* nothing */ { $$ = nil; }
+        | arguments_definition { $$ = $1; }
+        ;
+
+arguments_definition: '(' input_value_definition_list ')' { $$ = $2; }
+        ;
+
+input_value_definition_list: input_value_definition { $$ = []InputValueDefinition{ $1 } }
+        | input_value_definition_list input_value_definition { $$ = append($1, $2) }
+        ;
+
+input_value_definition: name ':' type default_value_opt directives_opt
+        {
+                $$ = InputValueDefinition{ Name: $1, Type: $3, Default: $4, Directives: $5 }
+        }
+        ;
+
+interface_type_definition: INTERFACE name directives_opt '{' field_definition_list '}'
+        {
+                $$ = InterfaceDefinition{ Name: $2, Fields: $5, Directives: $3 }
+        }
+        ;
+
+union_type_definition: UNION name directives_opt '=' union_members
+        {
+                $$ = UnionDefinition{ Name: $2, Types: $5, Directives: $3 }
+        }
+        ;
+
+union_members: type_name { $$ = []string{$1} }
+        | union_members '|' type_name { $$ = append($1, $3)}
+        ;
+
+enum_type_definition: ENUM name directives_opt '{' enum_value_definition_list '}'
+        {
+                $$ = EnumDefinition{ Name: $2, Values: $5, Directives: $3 }
+        }
+        ;
+
+enum_value_definition: name directives_opt { $$ = $1 }
+        ;
+
+enum_value_definition_list: enum_value_definition { $$ = []string{$1} }
+        | enum_value_definition_list enum_value_definition { $$ = append($1, $2) }
+        ;
+
+input_object_type_definition: INPUT name directives_opt '{' input_value_definition_list '}'
+        {
+                $$ = InputObjectDefinition{
+                        Name: $2,
+                        InputDefs: $5,
+                        Directives: $3,
+                };
+        }
+
+/* type extension
+ directive def
+directive locs
+*/

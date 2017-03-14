@@ -35,6 +35,7 @@ func TestKitchenSinkParse(t *testing.T) {
 	doc, err := ParseString(kitchenSink)
 	assert.NoError(t, err)
 	assert.NotNil(t, doc)
+	assert.True(t, len(doc.Definitions) > 1)
 }
 
 func TestFailureParse(t *testing.T) {
@@ -42,4 +43,21 @@ func TestFailureParse(t *testing.T) {
 	doc, err := ParseString(failure)
 	assert.Error(t, err)
 	assert.Nil(t, doc)
+}
+
+func TestSchemaHelloWord(t *testing.T) {
+	schema, err := ParseString(schemaHelloWorld)
+	assert.NoError(t, err)
+	assert.NotNil(t, schema)
+	assert.NotNil(t, schema.Schema)
+
+}
+
+func TestSchemaKitchenSink(t *testing.T) {
+	doc, err := ParseString(schemaKitchenSink)
+	assert.NoError(t, err)
+	assert.NotNil(t, doc)
+	schema := doc.Schema
+	assert.Len(t, schema.OperationTypeDefinitions, 2)
+	assert.Len(t, schema.TypeDefinitions, 12)
 }

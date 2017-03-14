@@ -1,13 +1,16 @@
 
 state 0
 	$accept: .start $end 
-	definition_list: .    (25)
+	definition_list: .    (26)
 
-	.  reduce 25 (src line 161)
+	SCHEMA  shift 6
+	.  reduce 26 (src line 198)
 
 	start  goto 1
 	document  goto 2
 	definition_list  goto 3
+	schema  goto 4
+	schema_definition  goto 5
 
 state 1
 	$accept:  start.$end 
@@ -19,1306 +22,2489 @@ state 1
 state 2
 	start:  document.    (1)
 
-	.  reduce 1 (src line 111)
+	.  reduce 1 (src line 147)
 
 
 state 3
 	document:  definition_list.    (24)
 	definition_list:  definition_list.definition 
 
-	FRAGMENT  shift 9
-	MUTATION  shift 12
-	QUERY  shift 11
-	SUBSCRIPTION  shift 13
-	'{'  shift 10
-	.  reduce 24 (src line 153)
+	FRAGMENT  shift 12
+	MUTATION  shift 15
+	QUERY  shift 14
+	SUBSCRIPTION  shift 16
+	'{'  shift 13
+	.  reduce 24 (src line 186)
 
-	operation_definition  goto 5
-	definition  goto 4
-	operation_type  goto 8
-	selection_set  goto 7
-	fragment_definition  goto 6
+	operation_definition  goto 8
+	definition  goto 7
+	operation_type  goto 11
+	selection_set  goto 10
+	fragment_definition  goto 9
 
 state 4
-	definition_list:  definition_list definition.    (26)
+	document:  schema.    (25)
 
-	.  reduce 26 (src line 163)
+	.  reduce 25 (src line 191)
 
 
 state 5
-	definition:  operation_definition.    (27)
+	schema:  schema_definition.type_definitions 
+	type_definitions: .    (114)
 
-	.  reduce 27 (src line 166)
+	.  reduce 114 (src line 472)
 
+	type_definitions  goto 17
 
 state 6
-	definition:  fragment_definition.    (28)
+	schema_definition:  SCHEMA.directives_opt '{' operation_type_definition_list '}' 
+	directives_opt: .    (105)
 
-	.  reduce 28 (src line 168)
+	.  reduce 105 (src line 441)
 
+	directives_opt  goto 18
 
 state 7
-	operation_definition:  selection_set.    (29)
+	definition_list:  definition_list definition.    (27)
 
-	.  reduce 29 (src line 172)
+	.  reduce 27 (src line 200)
 
 
 state 8
+	definition:  operation_definition.    (28)
+
+	.  reduce 28 (src line 203)
+
+
+state 9
+	definition:  fragment_definition.    (29)
+
+	.  reduce 29 (src line 205)
+
+
+state 10
+	operation_definition:  selection_set.    (30)
+
+	.  reduce 30 (src line 209)
+
+
+state 11
 	operation_definition:  operation_type.name_opt selection_set 
 	operation_definition:  operation_type.name_opt variable_definitions selection_set 
 	operation_definition:  operation_type.name_opt directives selection_set 
 	operation_definition:  operation_type.name_opt variable_definitions directives selection_set 
 	name_opt: .    (22)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	.  reduce 22 (src line 147)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  reduce 22 (src line 180)
 
-	fragment_name  goto 16
-	name  goto 15
-	name_opt  goto 14
-
-state 9
-	fragment_definition:  FRAGMENT.fragment_name ON type_condition directives_opt selection_set 
-
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	.  error
-
-	fragment_name  goto 36
-
-state 10
-	selection_set:  '{'.selection_list '}' 
-	selection_list: .    (47)
-
-	.  reduce 47 (src line 234)
-
-	selection_list  goto 37
-
-state 11
-	operation_type:  QUERY.    (34)
-
-	.  reduce 34 (src line 195)
-
+	fragment_name  goto 21
+	name  goto 20
+	name_opt  goto 19
 
 state 12
-	operation_type:  MUTATION.    (35)
+	fragment_definition:  FRAGMENT.fragment_name ON type_condition directives_opt selection_set 
 
-	.  reduce 35 (src line 197)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 41
 
 state 13
-	operation_type:  SUBSCRIPTION.    (36)
+	selection_set:  '{'.selection_list '}' 
+	selection_list: .    (48)
 
-	.  reduce 36 (src line 198)
+	.  reduce 48 (src line 271)
 
+	selection_list  goto 42
 
 state 14
-	operation_definition:  operation_type name_opt.selection_set 
-	operation_definition:  operation_type name_opt.variable_definitions selection_set 
-	operation_definition:  operation_type name_opt.directives selection_set 
-	operation_definition:  operation_type name_opt.variable_definitions directives selection_set 
-	directives_opt: .    (99)
+	operation_type:  QUERY.    (35)
 
-	'('  shift 41
-	'{'  shift 10
-	.  reduce 99 (src line 384)
+	.  reduce 35 (src line 232)
 
-	selection_set  goto 38
-	variable_definitions  goto 39
-	directives_opt  goto 42
-	directives  goto 40
 
 state 15
-	name_opt:  name.    (23)
+	operation_type:  MUTATION.    (36)
 
-	.  reduce 23 (src line 148)
+	.  reduce 36 (src line 234)
 
 
 state 16
-	name:  fragment_name.    (20)
+	operation_type:  SUBSCRIPTION.    (37)
 
-	.  reduce 20 (src line 143)
+	.  reduce 37 (src line 235)
 
 
 state 17
-	name:  ON.    (21)
+	schema:  schema_definition type_definitions.    (109)
+	type_definitions:  type_definitions.scalar_type_definition 
+	type_definitions:  type_definitions.object_type_definition 
+	type_definitions:  type_definitions.interface_type_definition 
+	type_definitions:  type_definitions.union_type_definition 
+	type_definitions:  type_definitions.enum_type_definition 
+	type_definitions:  type_definitions.input_object_type_definition 
 
-	.  reduce 21 (src line 144)
+	ENUM  shift 53
+	INPUT  shift 54
+	INTERFACE  shift 51
+	SCALAR  shift 49
+	TYPE  shift 50
+	UNION  shift 52
+	.  reduce 109 (src line 453)
 
+	scalar_type_definition  goto 43
+	object_type_definition  goto 44
+	interface_type_definition  goto 45
+	union_type_definition  goto 46
+	enum_type_definition  goto 47
+	input_object_type_definition  goto 48
 
 state 18
-	fragment_name:  DIRECTIVE.    (2)
-
-	.  reduce 2 (src line 123)
-
-
-state 19
-	fragment_name:  ENUM.    (3)
-
-	.  reduce 3 (src line 124)
-
-
-state 20
-	fragment_name:  EXTEND.    (4)
-
-	.  reduce 4 (src line 125)
-
-
-state 21
-	fragment_name:  FALSE.    (5)
-
-	.  reduce 5 (src line 126)
-
-
-state 22
-	fragment_name:  FRAGMENT.    (6)
-
-	.  reduce 6 (src line 127)
-
-
-state 23
-	fragment_name:  IDENTIFIER.    (7)
-
-	.  reduce 7 (src line 128)
-
-
-state 24
-	fragment_name:  IMPLEMENTS.    (8)
-
-	.  reduce 8 (src line 129)
-
-
-state 25
-	fragment_name:  INPUT.    (9)
-
-	.  reduce 9 (src line 130)
-
-
-state 26
-	fragment_name:  INTERFACE.    (10)
-
-	.  reduce 10 (src line 131)
-
-
-state 27
-	fragment_name:  MUTATION.    (11)
-
-	.  reduce 11 (src line 132)
-
-
-state 28
-	fragment_name:  NULL.    (12)
-
-	.  reduce 12 (src line 133)
-
-
-state 29
-	fragment_name:  QUERY.    (13)
-
-	.  reduce 13 (src line 134)
-
-
-state 30
-	fragment_name:  SCALAR.    (14)
-
-	.  reduce 14 (src line 135)
-
-
-state 31
-	fragment_name:  SCHEMA.    (15)
-
-	.  reduce 15 (src line 136)
-
-
-state 32
-	fragment_name:  SUBSCRIPTION.    (16)
-
-	.  reduce 16 (src line 137)
-
-
-state 33
-	fragment_name:  TRUE.    (17)
-
-	.  reduce 17 (src line 138)
-
-
-state 34
-	fragment_name:  TYPE.    (18)
-
-	.  reduce 18 (src line 139)
-
-
-state 35
-	fragment_name:  UNION.    (19)
-
-	.  reduce 19 (src line 140)
-
-
-state 36
-	fragment_definition:  FRAGMENT fragment_name.ON type_condition directives_opt selection_set 
-
-	ON  shift 43
-	.  error
-
-
-state 37
-	selection_set:  '{' selection_list.'}' 
-	selection_list:  selection_list.selection 
-
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	SPREAD  shift 50
-	'}'  shift 44
-	.  error
-
-	fragment_name  goto 16
-	name  goto 49
-	selection  goto 45
-	field  goto 46
-	fragment_spread  goto 47
-	inline_fragment  goto 48
-
-state 38
-	operation_definition:  operation_type name_opt selection_set.    (30)
-
-	.  reduce 30 (src line 177)
-
-
-state 39
-	operation_definition:  operation_type name_opt variable_definitions.selection_set 
-	operation_definition:  operation_type name_opt variable_definitions.directives selection_set 
-	directives_opt: .    (99)
-
-	'{'  shift 10
-	.  reduce 99 (src line 384)
-
-	selection_set  goto 51
-	directives_opt  goto 42
-	directives  goto 52
-
-state 40
-	operation_definition:  operation_type name_opt directives.selection_set 
-
-	'{'  shift 10
-	.  error
-
-	selection_set  goto 53
-
-state 41
-	variable_definitions:  '('.variable_definition_list ')' 
-	variable_definition_list: .    (38)
-
-	.  reduce 38 (src line 205)
-
-	variable_definition_list  goto 54
-
-state 42
 	directives_opt:  directives_opt.directive 
-	directives:  directives_opt.directive 
+	schema_definition:  SCHEMA directives_opt.'{' operation_type_definition_list '}' 
 
-	'@'  shift 56
+	'{'  shift 56
+	'@'  shift 57
 	.  error
 
 	directive  goto 55
 
-state 43
-	fragment_definition:  FRAGMENT fragment_name ON.type_condition directives_opt selection_set 
+state 19
+	operation_definition:  operation_type name_opt.selection_set 
+	operation_definition:  operation_type name_opt.variable_definitions selection_set 
+	operation_definition:  operation_type name_opt.directives selection_set 
+	operation_definition:  operation_type name_opt.variable_definitions directives selection_set 
+	directives_opt: .    (105)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
+	'('  shift 61
+	'{'  shift 13
+	.  reduce 105 (src line 441)
+
+	selection_set  goto 58
+	variable_definitions  goto 59
+	directives_opt  goto 62
+	directives  goto 60
+
+state 20
+	name_opt:  name.    (23)
+
+	.  reduce 23 (src line 181)
+
+
+state 21
+	name:  fragment_name.    (20)
+
+	.  reduce 20 (src line 176)
+
+
+state 22
+	name:  ON.    (21)
+
+	.  reduce 21 (src line 177)
+
+
+state 23
+	fragment_name:  DIRECTIVE.    (2)
+
+	.  reduce 2 (src line 156)
+
+
+state 24
+	fragment_name:  ENUM.    (3)
+
+	.  reduce 3 (src line 157)
+
+
+state 25
+	fragment_name:  EXTEND.    (4)
+
+	.  reduce 4 (src line 158)
+
+
+state 26
+	fragment_name:  FALSE.    (5)
+
+	.  reduce 5 (src line 159)
+
+
+state 27
+	fragment_name:  FRAGMENT.    (6)
+
+	.  reduce 6 (src line 160)
+
+
+state 28
+	fragment_name:  IDENTIFIER.    (7)
+
+	.  reduce 7 (src line 161)
+
+
+state 29
+	fragment_name:  IMPLEMENTS.    (8)
+
+	.  reduce 8 (src line 162)
+
+
+state 30
+	fragment_name:  INPUT.    (9)
+
+	.  reduce 9 (src line 163)
+
+
+state 31
+	fragment_name:  INTERFACE.    (10)
+
+	.  reduce 10 (src line 164)
+
+
+state 32
+	fragment_name:  MUTATION.    (11)
+
+	.  reduce 11 (src line 165)
+
+
+state 33
+	fragment_name:  NULL.    (12)
+
+	.  reduce 12 (src line 166)
+
+
+state 34
+	fragment_name:  QUERY.    (13)
+
+	.  reduce 13 (src line 167)
+
+
+state 35
+	fragment_name:  SCALAR.    (14)
+
+	.  reduce 14 (src line 168)
+
+
+state 36
+	fragment_name:  SCHEMA.    (15)
+
+	.  reduce 15 (src line 169)
+
+
+state 37
+	fragment_name:  SUBSCRIPTION.    (16)
+
+	.  reduce 16 (src line 170)
+
+
+state 38
+	fragment_name:  TRUE.    (17)
+
+	.  reduce 17 (src line 171)
+
+
+state 39
+	fragment_name:  TYPE.    (18)
+
+	.  reduce 18 (src line 172)
+
+
+state 40
+	fragment_name:  UNION.    (19)
+
+	.  reduce 19 (src line 173)
+
+
+state 41
+	fragment_definition:  FRAGMENT fragment_name.ON type_condition directives_opt selection_set 
+
+	ON  shift 63
 	.  error
 
-	fragment_name  goto 16
-	name  goto 59
-	type_name  goto 58
-	type_condition  goto 57
+
+state 42
+	selection_set:  '{' selection_list.'}' 
+	selection_list:  selection_list.selection 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	SPREAD  shift 70
+	'}'  shift 64
+	.  error
+
+	fragment_name  goto 21
+	name  goto 69
+	selection  goto 65
+	field  goto 66
+	fragment_spread  goto 67
+	inline_fragment  goto 68
+
+state 43
+	type_definitions:  type_definitions scalar_type_definition.    (115)
+
+	.  reduce 115 (src line 473)
+
 
 state 44
-	selection_set:  '{' selection_list '}'.    (44)
+	type_definitions:  type_definitions object_type_definition.    (116)
 
-	.  reduce 44 (src line 225)
+	.  reduce 116 (src line 474)
 
 
 state 45
-	selection_list:  selection_list selection.    (48)
+	type_definitions:  type_definitions interface_type_definition.    (117)
 
-	.  reduce 48 (src line 236)
+	.  reduce 117 (src line 475)
 
 
 state 46
-	selection:  field.    (49)
+	type_definitions:  type_definitions union_type_definition.    (118)
 
-	.  reduce 49 (src line 239)
+	.  reduce 118 (src line 476)
 
 
 state 47
-	selection:  fragment_spread.    (50)
+	type_definitions:  type_definitions enum_type_definition.    (119)
 
-	.  reduce 50 (src line 241)
+	.  reduce 119 (src line 477)
 
 
 state 48
-	selection:  inline_fragment.    (51)
+	type_definitions:  type_definitions input_object_type_definition.    (120)
 
-	.  reduce 51 (src line 242)
+	.  reduce 120 (src line 478)
 
 
 state 49
-	field:  name.arguments_opt directives_opt selection_set_opt 
-	field:  name.':' name arguments_opt directives_opt selection_set_opt 
-	arguments_opt: .    (55)
+	scalar_type_definition:  SCALAR.name directives_opt 
 
-	'('  shift 63
-	':'  shift 61
-	.  reduce 55 (src line 269)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
-	arguments_opt  goto 60
-	arguments  goto 62
+	fragment_name  goto 21
+	name  goto 71
 
 state 50
-	fragment_spread:  SPREAD.fragment_name directives_opt 
-	inline_fragment:  SPREAD.ON type_condition directives_opt selection_set 
-	inline_fragment:  SPREAD.directives_opt selection_set 
-	directives_opt: .    (99)
+	object_type_definition:  TYPE.name implements_interfaces_opt directives_opt '{' field_definition_list '}' 
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 65
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	.  reduce 99 (src line 384)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
-	fragment_name  goto 64
-	directives_opt  goto 66
+	fragment_name  goto 21
+	name  goto 72
 
 state 51
-	operation_definition:  operation_type name_opt variable_definitions selection_set.    (31)
+	interface_type_definition:  INTERFACE.name directives_opt '{' field_definition_list '}' 
 
-	.  reduce 31 (src line 181)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 73
 
 state 52
-	operation_definition:  operation_type name_opt variable_definitions directives.selection_set 
+	union_type_definition:  UNION.name directives_opt '=' union_members 
 
-	'{'  shift 10
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
 	.  error
 
-	selection_set  goto 67
+	fragment_name  goto 21
+	name  goto 74
 
 state 53
-	operation_definition:  operation_type name_opt directives selection_set.    (32)
+	enum_type_definition:  ENUM.name directives_opt '{' enum_value_definition_list '}' 
 
-	.  reduce 32 (src line 185)
-
-
-state 54
-	variable_definitions:  '(' variable_definition_list.')' 
-	variable_definition_list:  variable_definition_list.variable_definition 
-
-	VARIABLE  shift 70
-	')'  shift 68
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
 	.  error
 
-	variable_definition  goto 69
+	fragment_name  goto 21
+	name  goto 75
+
+state 54
+	input_object_type_definition:  INPUT.name directives_opt '{' input_value_definition_list '}' 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
+
+	fragment_name  goto 21
+	name  goto 76
 
 state 55
-	directives_opt:  directives_opt directive.    (100)
-	directives:  directives_opt directive.    (101)
+	directives_opt:  directives_opt directive.    (106)
 
-	'@'  reduce 100 (src line 386)
-	.  reduce 101 (src line 389)
+	.  reduce 106 (src line 442)
 
 
 state 56
-	directive:  '@'.name arguments_opt 
+	schema_definition:  SCHEMA directives_opt '{'.operation_type_definition_list '}' 
+	operation_type_definition_list: .    (111)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	.  error
+	.  reduce 111 (src line 462)
 
-	fragment_name  goto 16
-	name  goto 71
+	operation_type_definition_list  goto 77
 
 state 57
-	fragment_definition:  FRAGMENT fragment_name ON type_condition.directives_opt selection_set 
-	directives_opt: .    (99)
+	directive:  '@'.name arguments_opt 
 
-	.  reduce 99 (src line 384)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
-	directives_opt  goto 72
+	fragment_name  goto 21
+	name  goto 78
 
 state 58
-	type_condition:  type_name.    (64)
+	operation_definition:  operation_type name_opt selection_set.    (31)
 
-	.  reduce 64 (src line 318)
+	.  reduce 31 (src line 214)
 
 
 state 59
-	type_name:  name.    (98)
+	operation_definition:  operation_type name_opt variable_definitions.selection_set 
+	operation_definition:  operation_type name_opt variable_definitions.directives selection_set 
+	directives_opt: .    (105)
 
-	.  reduce 98 (src line 379)
+	'{'  shift 13
+	.  reduce 105 (src line 441)
 
+	selection_set  goto 79
+	directives_opt  goto 62
+	directives  goto 80
 
 state 60
-	field:  name arguments_opt.directives_opt selection_set_opt 
-	directives_opt: .    (99)
+	operation_definition:  operation_type name_opt directives.selection_set 
 
-	.  reduce 99 (src line 384)
+	'{'  shift 13
+	.  error
 
-	directives_opt  goto 73
+	selection_set  goto 81
 
 state 61
-	field:  name ':'.name arguments_opt directives_opt selection_set_opt 
+	variable_definitions:  '('.variable_definition_list ')' 
+	variable_definition_list: .    (39)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	.  error
+	.  reduce 39 (src line 242)
 
-	fragment_name  goto 16
-	name  goto 74
+	variable_definition_list  goto 82
 
 state 62
-	arguments_opt:  arguments.    (56)
+	directives_opt:  directives_opt.directive 
+	directives:  directives_opt.directive 
 
-	.  reduce 56 (src line 271)
+	'@'  shift 57
+	.  error
 
+	directive  goto 83
 
 state 63
-	arguments:  '('.argument_list ')' 
-	argument_list: .    (57)
+	fragment_definition:  FRAGMENT fragment_name ON.type_condition directives_opt selection_set 
 
-	.  reduce 57 (src line 274)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
-	argument_list  goto 75
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 85
+	type_condition  goto 84
 
 state 64
-	fragment_spread:  SPREAD fragment_name.directives_opt 
-	directives_opt: .    (99)
+	selection_set:  '{' selection_list '}'.    (45)
 
-	.  reduce 99 (src line 384)
+	.  reduce 45 (src line 262)
 
-	directives_opt  goto 76
 
 state 65
-	inline_fragment:  SPREAD ON.type_condition directives_opt selection_set 
+	selection_list:  selection_list selection.    (49)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	.  error
+	.  reduce 49 (src line 273)
 
-	fragment_name  goto 16
-	name  goto 59
-	type_name  goto 58
-	type_condition  goto 77
 
 state 66
-	inline_fragment:  SPREAD directives_opt.selection_set 
-	directives_opt:  directives_opt.directive 
+	selection:  field.    (50)
 
-	'{'  shift 10
-	'@'  shift 56
-	.  error
+	.  reduce 50 (src line 276)
 
-	selection_set  goto 78
-	directive  goto 79
 
 state 67
-	operation_definition:  operation_type name_opt variable_definitions directives selection_set.    (33)
+	selection:  fragment_spread.    (51)
 
-	.  reduce 33 (src line 189)
+	.  reduce 51 (src line 278)
 
 
 state 68
-	variable_definitions:  '(' variable_definition_list ')'.    (37)
+	selection:  inline_fragment.    (52)
 
-	.  reduce 37 (src line 201)
+	.  reduce 52 (src line 279)
 
 
 state 69
-	variable_definition_list:  variable_definition_list variable_definition.    (39)
+	field:  name.arguments_opt directives_opt selection_set_opt 
+	field:  name.':' name arguments_opt directives_opt selection_set_opt 
+	arguments_opt: .    (56)
 
-	.  reduce 39 (src line 207)
+	'('  shift 90
+	':'  shift 88
+	.  reduce 56 (src line 306)
 
+	arguments_opt  goto 87
+	arguments  goto 89
 
 state 70
-	variable_definition:  VARIABLE.':' type default_value_opt 
+	fragment_spread:  SPREAD.fragment_name directives_opt 
+	inline_fragment:  SPREAD.ON type_condition directives_opt selection_set 
+	inline_fragment:  SPREAD.directives_opt selection_set 
+	directives_opt: .    (105)
 
-	':'  shift 80
-	.  error
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 92
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  reduce 105 (src line 441)
 
+	fragment_name  goto 91
+	directives_opt  goto 93
 
 state 71
-	directive:  '@' name.arguments_opt 
-	arguments_opt: .    (55)
+	scalar_type_definition:  SCALAR name.directives_opt 
+	directives_opt: .    (105)
 
-	'('  shift 63
-	.  reduce 55 (src line 269)
+	.  reduce 105 (src line 441)
 
-	arguments_opt  goto 81
-	arguments  goto 62
+	directives_opt  goto 94
 
 state 72
-	fragment_definition:  FRAGMENT fragment_name ON type_condition directives_opt.selection_set 
-	directives_opt:  directives_opt.directive 
+	object_type_definition:  TYPE name.implements_interfaces_opt directives_opt '{' field_definition_list '}' 
+	implements_interfaces_opt: .    (123)
 
-	'{'  shift 10
-	'@'  shift 56
-	.  error
+	IMPLEMENTS  shift 96
+	.  reduce 123 (src line 495)
 
-	selection_set  goto 82
-	directive  goto 79
+	implements_interfaces_opt  goto 95
 
 state 73
-	field:  name arguments_opt directives_opt.selection_set_opt 
-	directives_opt:  directives_opt.directive 
-	selection_set_opt: .    (45)
+	interface_type_definition:  INTERFACE name.directives_opt '{' field_definition_list '}' 
+	directives_opt: .    (105)
 
-	'{'  shift 10
-	'@'  shift 56
-	.  reduce 45 (src line 229)
+	.  reduce 105 (src line 441)
 
-	selection_set  goto 84
-	selection_set_opt  goto 83
-	directive  goto 79
+	directives_opt  goto 97
 
 state 74
-	field:  name ':' name.arguments_opt directives_opt selection_set_opt 
-	arguments_opt: .    (55)
+	union_type_definition:  UNION name.directives_opt '=' union_members 
+	directives_opt: .    (105)
 
-	'('  shift 63
-	.  reduce 55 (src line 269)
+	.  reduce 105 (src line 441)
 
-	arguments_opt  goto 85
-	arguments  goto 62
+	directives_opt  goto 98
 
 state 75
-	arguments:  '(' argument_list.')' 
-	argument_list:  argument_list.argument 
+	enum_type_definition:  ENUM name.directives_opt '{' enum_value_definition_list '}' 
+	directives_opt: .    (105)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	')'  shift 86
-	.  error
+	.  reduce 105 (src line 441)
 
-	fragment_name  goto 16
-	name  goto 88
-	argument  goto 87
+	directives_opt  goto 99
 
 state 76
-	fragment_spread:  SPREAD fragment_name directives_opt.    (60)
-	directives_opt:  directives_opt.directive 
+	input_object_type_definition:  INPUT name.directives_opt '{' input_value_definition_list '}' 
+	directives_opt: .    (105)
 
-	'@'  shift 56
-	.  reduce 60 (src line 284)
+	.  reduce 105 (src line 441)
 
-	directive  goto 79
+	directives_opt  goto 100
 
 state 77
-	inline_fragment:  SPREAD ON type_condition.directives_opt selection_set 
-	directives_opt: .    (99)
+	schema_definition:  SCHEMA directives_opt '{' operation_type_definition_list.'}' 
+	operation_type_definition_list:  operation_type_definition_list.operation_type_definition 
 
-	.  reduce 99 (src line 384)
+	MUTATION  shift 15
+	QUERY  shift 14
+	SUBSCRIPTION  shift 16
+	'}'  shift 101
+	.  error
 
-	directives_opt  goto 89
+	operation_type  goto 103
+	operation_type_definition  goto 102
 
 state 78
-	inline_fragment:  SPREAD directives_opt selection_set.    (62)
+	directive:  '@' name.arguments_opt 
+	arguments_opt: .    (56)
 
-	.  reduce 62 (src line 297)
+	'('  shift 90
+	.  reduce 56 (src line 306)
 
+	arguments_opt  goto 104
+	arguments  goto 89
 
 state 79
-	directives_opt:  directives_opt directive.    (100)
+	operation_definition:  operation_type name_opt variable_definitions selection_set.    (32)
 
-	.  reduce 100 (src line 386)
+	.  reduce 32 (src line 218)
 
 
 state 80
-	variable_definition:  VARIABLE ':'.type default_value_opt 
+	operation_definition:  operation_type name_opt variable_definitions directives.selection_set 
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
+	'{'  shift 13
 	.  error
 
-	fragment_name  goto 16
-	name  goto 59
-	type  goto 90
-	type_name  goto 91
+	selection_set  goto 105
 
 state 81
-	directive:  '@' name arguments_opt.    (102)
+	operation_definition:  operation_type name_opt directives selection_set.    (33)
 
-	.  reduce 102 (src line 393)
+	.  reduce 33 (src line 222)
 
 
 state 82
-	fragment_definition:  FRAGMENT fragment_name ON type_condition directives_opt selection_set.    (63)
+	variable_definitions:  '(' variable_definition_list.')' 
+	variable_definition_list:  variable_definition_list.variable_definition 
 
-	.  reduce 63 (src line 306)
+	VARIABLE  shift 108
+	')'  shift 106
+	.  error
 
+	variable_definition  goto 107
 
 state 83
-	field:  name arguments_opt directives_opt selection_set_opt.    (52)
+	directives_opt:  directives_opt directive.    (106)
+	directives:  directives_opt directive.    (107)
 
-	.  reduce 52 (src line 245)
+	'@'  reduce 106 (src line 442)
+	.  reduce 107 (src line 445)
 
 
 state 84
-	selection_set_opt:  selection_set.    (46)
+	fragment_definition:  FRAGMENT fragment_name ON type_condition.directives_opt selection_set 
+	directives_opt: .    (105)
 
-	.  reduce 46 (src line 231)
+	.  reduce 105 (src line 441)
 
+	directives_opt  goto 109
 
 state 85
-	field:  name ':' name arguments_opt.directives_opt selection_set_opt 
-	directives_opt: .    (99)
+	type_condition:  type_name.    (65)
 
-	.  reduce 99 (src line 384)
+	.  reduce 65 (src line 355)
 
-	directives_opt  goto 92
 
 state 86
-	arguments:  '(' argument_list ')'.    (54)
+	type_name:  name.    (101)
 
-	.  reduce 54 (src line 265)
+	.  reduce 101 (src line 418)
 
 
 state 87
-	argument_list:  argument_list argument.    (58)
+	field:  name arguments_opt.directives_opt selection_set_opt 
+	directives_opt: .    (105)
 
-	.  reduce 58 (src line 276)
+	.  reduce 105 (src line 441)
 
+	directives_opt  goto 110
 
 state 88
-	argument:  name.':' value_const 
+	field:  name ':'.name arguments_opt directives_opt selection_set_opt 
 
-	':'  shift 93
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
 	.  error
 
+	fragment_name  goto 21
+	name  goto 111
 
 state 89
-	inline_fragment:  SPREAD ON type_condition directives_opt.selection_set 
-	directives_opt:  directives_opt.directive 
+	arguments_opt:  arguments.    (57)
 
-	'{'  shift 10
-	'@'  shift 56
-	.  error
+	.  reduce 57 (src line 308)
 
-	selection_set  goto 94
-	directive  goto 79
 
 state 90
-	variable_definition:  VARIABLE ':' type.default_value_opt 
-	default_value_opt: .    (41)
+	arguments:  '('.argument_list ')' 
+	argument_list: .    (58)
 
-	'='  shift 97
-	.  reduce 41 (src line 217)
+	.  reduce 58 (src line 311)
 
-	default_value_opt  goto 95
-	default_value  goto 96
+	argument_list  goto 112
 
 state 91
-	type:  type_name.    (97)
+	fragment_spread:  SPREAD fragment_name.directives_opt 
+	directives_opt: .    (105)
 
-	.  reduce 97 (src line 376)
+	.  reduce 105 (src line 441)
 
+	directives_opt  goto 113
 
 state 92
-	field:  name ':' name arguments_opt directives_opt.selection_set_opt 
-	directives_opt:  directives_opt.directive 
-	selection_set_opt: .    (45)
+	inline_fragment:  SPREAD ON.type_condition directives_opt selection_set 
 
-	'{'  shift 10
-	'@'  shift 56
-	.  reduce 45 (src line 229)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
-	selection_set  goto 84
-	selection_set_opt  goto 98
-	directive  goto 79
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 85
+	type_condition  goto 114
 
 state 93
-	argument:  name ':'.value_const 
+	inline_fragment:  SPREAD directives_opt.selection_set 
+	directives_opt:  directives_opt.directive 
 
-	DIRECTIVE  shift 110
-	ENUM  shift 111
-	EXTEND  shift 112
-	FALSE  shift 108
-	FRAGMENT  shift 113
-	IMPLEMENTS  shift 115
-	INPUT  shift 116
-	INTERFACE  shift 117
-	MUTATION  shift 118
-	NULL  shift 106
-	QUERY  shift 120
-	ON  shift 119
-	SCALAR  shift 121
-	SCHEMA  shift 122
-	SUBSCRIPTION  shift 123
-	TRUE  shift 107
-	TYPE  shift 124
-	UNION  shift 125
-	VARIABLE  shift 102
-	IDENTIFIER  shift 114
-	VALUE  shift 100
-	'{'  shift 126
-	'['  shift 109
+	'{'  shift 13
+	'@'  shift 57
 	.  error
 
-	enum_value  goto 104
-	value_const  goto 99
-	boolean_value  goto 101
-	list_value  goto 103
-	object_value  goto 105
+	selection_set  goto 115
+	directive  goto 55
 
 state 94
-	inline_fragment:  SPREAD ON type_condition directives_opt selection_set.    (61)
+	directives_opt:  directives_opt.directive 
+	scalar_type_definition:  SCALAR name directives_opt.    (121)
 
-	.  reduce 61 (src line 288)
+	'@'  shift 57
+	.  reduce 121 (src line 481)
 
+	directive  goto 55
 
 state 95
-	variable_definition:  VARIABLE ':' type default_value_opt.    (40)
+	object_type_definition:  TYPE name implements_interfaces_opt.directives_opt '{' field_definition_list '}' 
+	directives_opt: .    (105)
 
-	.  reduce 40 (src line 210)
+	.  reduce 105 (src line 441)
 
+	directives_opt  goto 116
 
 state 96
-	default_value_opt:  default_value.    (42)
+	implements_interfaces_opt:  IMPLEMENTS.type_name_list 
 
-	.  reduce 42 (src line 219)
-
-
-state 97
-	default_value:  '='.value_const 
-
-	DIRECTIVE  shift 110
-	ENUM  shift 111
-	EXTEND  shift 112
-	FALSE  shift 108
-	FRAGMENT  shift 113
-	IMPLEMENTS  shift 115
-	INPUT  shift 116
-	INTERFACE  shift 117
-	MUTATION  shift 118
-	NULL  shift 106
-	QUERY  shift 120
-	ON  shift 119
-	SCALAR  shift 121
-	SCHEMA  shift 122
-	SUBSCRIPTION  shift 123
-	TRUE  shift 107
-	TYPE  shift 124
-	UNION  shift 125
-	VARIABLE  shift 102
-	IDENTIFIER  shift 114
-	VALUE  shift 100
-	'{'  shift 126
-	'['  shift 109
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
 	.  error
 
-	enum_value  goto 104
-	value_const  goto 127
-	boolean_value  goto 101
-	list_value  goto 103
-	object_value  goto 105
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 118
+	type_name_list  goto 117
+
+state 97
+	directives_opt:  directives_opt.directive 
+	interface_type_definition:  INTERFACE name directives_opt.'{' field_definition_list '}' 
+
+	'{'  shift 119
+	'@'  shift 57
+	.  error
+
+	directive  goto 55
 
 state 98
-	field:  name ':' name arguments_opt directives_opt selection_set_opt.    (53)
+	directives_opt:  directives_opt.directive 
+	union_type_definition:  UNION name directives_opt.'=' union_members 
 
-	.  reduce 53 (src line 254)
+	'='  shift 120
+	'@'  shift 57
+	.  error
 
+	directive  goto 55
 
 state 99
-	argument:  name ':' value_const.    (59)
+	directives_opt:  directives_opt.directive 
+	enum_type_definition:  ENUM name directives_opt.'{' enum_value_definition_list '}' 
 
-	.  reduce 59 (src line 279)
+	'{'  shift 121
+	'@'  shift 57
+	.  error
 
+	directive  goto 55
 
 state 100
-	value_const:  VALUE.    (65)
+	directives_opt:  directives_opt.directive 
+	input_object_type_definition:  INPUT name directives_opt.'{' input_value_definition_list '}' 
 
-	.  reduce 65 (src line 323)
+	'{'  shift 122
+	'@'  shift 57
+	.  error
 
+	directive  goto 55
 
 state 101
-	value_const:  boolean_value.    (66)
+	schema_definition:  SCHEMA directives_opt '{' operation_type_definition_list '}'.    (110)
 
-	.  reduce 66 (src line 324)
+	.  reduce 110 (src line 456)
 
 
 state 102
-	value_const:  VARIABLE.    (67)
+	operation_type_definition_list:  operation_type_definition_list operation_type_definition.    (112)
 
-	.  reduce 67 (src line 325)
+	.  reduce 112 (src line 463)
 
 
 state 103
-	value_const:  list_value.    (68)
+	operation_type_definition:  operation_type.':' type_name 
 
-	.  reduce 68 (src line 326)
+	':'  shift 123
+	.  error
 
 
 state 104
-	value_const:  enum_value.    (69)
+	directive:  '@' name arguments_opt.    (108)
 
-	.  reduce 69 (src line 327)
+	.  reduce 108 (src line 448)
 
 
 state 105
-	value_const:  object_value.    (70)
+	operation_definition:  operation_type name_opt variable_definitions directives selection_set.    (34)
 
-	.  reduce 70 (src line 328)
+	.  reduce 34 (src line 226)
 
 
 state 106
-	value_const:  NULL.    (71)
+	variable_definitions:  '(' variable_definition_list ')'.    (38)
 
-	.  reduce 71 (src line 329)
+	.  reduce 38 (src line 238)
 
 
 state 107
-	boolean_value:  TRUE.    (72)
+	variable_definition_list:  variable_definition_list variable_definition.    (40)
 
-	.  reduce 72 (src line 332)
+	.  reduce 40 (src line 244)
 
 
 state 108
-	boolean_value:  FALSE.    (73)
+	variable_definition:  VARIABLE.':' type default_value_opt 
 
-	.  reduce 73 (src line 333)
+	':'  shift 124
+	.  error
 
 
 state 109
-	list_value:  '['.value_list ']' 
-	value_list: .    (91)
+	fragment_definition:  FRAGMENT fragment_name ON type_condition directives_opt.selection_set 
+	directives_opt:  directives_opt.directive 
 
-	.  reduce 91 (src line 359)
+	'{'  shift 13
+	'@'  shift 57
+	.  error
 
-	value_list  goto 128
+	selection_set  goto 125
+	directive  goto 55
 
 state 110
-	enum_value:  DIRECTIVE.    (74)
+	field:  name arguments_opt directives_opt.selection_set_opt 
+	directives_opt:  directives_opt.directive 
+	selection_set_opt: .    (46)
 
-	.  reduce 74 (src line 336)
+	'{'  shift 13
+	'@'  shift 57
+	.  reduce 46 (src line 266)
 
+	selection_set  goto 127
+	selection_set_opt  goto 126
+	directive  goto 55
 
 state 111
-	enum_value:  ENUM.    (75)
+	field:  name ':' name.arguments_opt directives_opt selection_set_opt 
+	arguments_opt: .    (56)
 
-	.  reduce 75 (src line 337)
+	'('  shift 90
+	.  reduce 56 (src line 306)
 
+	arguments_opt  goto 128
+	arguments  goto 89
 
 state 112
-	enum_value:  EXTEND.    (76)
+	arguments:  '(' argument_list.')' 
+	argument_list:  argument_list.argument 
 
-	.  reduce 76 (src line 338)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	')'  shift 129
+	.  error
 
+	fragment_name  goto 21
+	name  goto 131
+	argument  goto 130
 
 state 113
-	enum_value:  FRAGMENT.    (77)
+	fragment_spread:  SPREAD fragment_name directives_opt.    (61)
+	directives_opt:  directives_opt.directive 
 
-	.  reduce 77 (src line 339)
+	'@'  shift 57
+	.  reduce 61 (src line 321)
 
+	directive  goto 55
 
 state 114
-	enum_value:  IDENTIFIER.    (78)
+	inline_fragment:  SPREAD ON type_condition.directives_opt selection_set 
+	directives_opt: .    (105)
 
-	.  reduce 78 (src line 340)
+	.  reduce 105 (src line 441)
 
+	directives_opt  goto 132
 
 state 115
-	enum_value:  IMPLEMENTS.    (79)
+	inline_fragment:  SPREAD directives_opt selection_set.    (63)
 
-	.  reduce 79 (src line 341)
+	.  reduce 63 (src line 334)
 
 
 state 116
-	enum_value:  INPUT.    (80)
+	directives_opt:  directives_opt.directive 
+	object_type_definition:  TYPE name implements_interfaces_opt directives_opt.'{' field_definition_list '}' 
 
-	.  reduce 80 (src line 342)
+	'{'  shift 133
+	'@'  shift 57
+	.  error
 
+	directive  goto 55
 
 state 117
-	enum_value:  INTERFACE.    (81)
+	implements_interfaces_opt:  IMPLEMENTS type_name_list.    (124)
+	type_name_list:  type_name_list.type_name 
 
-	.  reduce 81 (src line 343)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  reduce 124 (src line 496)
 
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 134
 
 state 118
-	enum_value:  MUTATION.    (82)
+	type_name_list:  type_name.    (125)
 
-	.  reduce 82 (src line 344)
+	.  reduce 125 (src line 499)
 
 
 state 119
-	enum_value:  ON.    (83)
+	interface_type_definition:  INTERFACE name directives_opt '{'.field_definition_list '}' 
 
-	.  reduce 83 (src line 345)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 137
+	field_definition  goto 136
+	field_definition_list  goto 135
 
 state 120
-	enum_value:  QUERY.    (84)
+	union_type_definition:  UNION name directives_opt '='.union_members 
 
-	.  reduce 84 (src line 346)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 139
+	union_members  goto 138
 
 state 121
-	enum_value:  SCALAR.    (85)
+	enum_type_definition:  ENUM name directives_opt '{'.enum_value_definition_list '}' 
 
-	.  reduce 85 (src line 347)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 142
+	enum_value_definition  goto 141
+	enum_value_definition_list  goto 140
 
 state 122
-	enum_value:  SCHEMA.    (86)
+	input_object_type_definition:  INPUT name directives_opt '{'.input_value_definition_list '}' 
 
-	.  reduce 86 (src line 348)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 145
+	input_value_definition_list  goto 143
+	input_value_definition  goto 144
 
 state 123
-	enum_value:  SUBSCRIPTION.    (87)
+	operation_type_definition:  operation_type ':'.type_name 
 
-	.  reduce 87 (src line 349)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 146
 
 state 124
-	enum_value:  TYPE.    (88)
+	variable_definition:  VARIABLE ':'.type default_value_opt 
 
-	.  reduce 88 (src line 350)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'['  shift 151
+	.  error
 
+	fragment_name  goto 21
+	name  goto 86
+	type  goto 147
+	type_name  goto 148
+	list_type  goto 149
+	non_null_type  goto 150
 
 state 125
-	enum_value:  UNION.    (89)
+	fragment_definition:  FRAGMENT fragment_name ON type_condition directives_opt selection_set.    (64)
 
-	.  reduce 89 (src line 351)
+	.  reduce 64 (src line 343)
 
 
 state 126
-	object_value:  '{'.object_field_list '}' 
-	object_field_list: .    (94)
+	field:  name arguments_opt directives_opt selection_set_opt.    (53)
 
-	.  reduce 94 (src line 367)
+	.  reduce 53 (src line 282)
 
-	object_field_list  goto 129
 
 state 127
-	default_value:  '=' value_const.    (43)
+	selection_set_opt:  selection_set.    (47)
 
-	.  reduce 43 (src line 222)
+	.  reduce 47 (src line 268)
 
 
 state 128
-	list_value:  '[' value_list.']' 
-	value_list:  value_list.value_const 
+	field:  name ':' name arguments_opt.directives_opt selection_set_opt 
+	directives_opt: .    (105)
 
-	DIRECTIVE  shift 110
-	ENUM  shift 111
-	EXTEND  shift 112
-	FALSE  shift 108
-	FRAGMENT  shift 113
-	IMPLEMENTS  shift 115
-	INPUT  shift 116
-	INTERFACE  shift 117
-	MUTATION  shift 118
-	NULL  shift 106
-	QUERY  shift 120
-	ON  shift 119
-	SCALAR  shift 121
-	SCHEMA  shift 122
-	SUBSCRIPTION  shift 123
-	TRUE  shift 107
-	TYPE  shift 124
-	UNION  shift 125
-	VARIABLE  shift 102
-	IDENTIFIER  shift 114
-	VALUE  shift 100
-	'{'  shift 126
-	'['  shift 109
-	']'  shift 130
-	.  error
+	.  reduce 105 (src line 441)
 
-	enum_value  goto 104
-	value_const  goto 131
-	boolean_value  goto 101
-	list_value  goto 103
-	object_value  goto 105
+	directives_opt  goto 152
 
 state 129
-	object_value:  '{' object_field_list.'}' 
-	object_field_list:  object_field_list.object_field 
+	arguments:  '(' argument_list ')'.    (55)
 
-	DIRECTIVE  shift 18
-	ENUM  shift 19
-	EXTEND  shift 20
-	FALSE  shift 21
-	FRAGMENT  shift 22
-	IMPLEMENTS  shift 24
-	INPUT  shift 25
-	INTERFACE  shift 26
-	MUTATION  shift 27
-	NULL  shift 28
-	QUERY  shift 29
-	ON  shift 17
-	SCALAR  shift 30
-	SCHEMA  shift 31
-	SUBSCRIPTION  shift 32
-	TRUE  shift 33
-	TYPE  shift 34
-	UNION  shift 35
-	IDENTIFIER  shift 23
-	'}'  shift 132
-	.  error
+	.  reduce 55 (src line 302)
 
-	fragment_name  goto 16
-	name  goto 134
-	object_field  goto 133
 
 state 130
-	list_value:  '[' value_list ']'.    (90)
+	argument_list:  argument_list argument.    (59)
 
-	.  reduce 90 (src line 356)
+	.  reduce 59 (src line 313)
 
 
 state 131
-	value_list:  value_list value_const.    (92)
+	argument:  name.':' value_const 
 
-	.  reduce 92 (src line 360)
+	':'  shift 153
+	.  error
 
 
 state 132
-	object_value:  '{' object_field_list '}'.    (93)
+	inline_fragment:  SPREAD ON type_condition directives_opt.selection_set 
+	directives_opt:  directives_opt.directive 
 
-	.  reduce 93 (src line 364)
+	'{'  shift 13
+	'@'  shift 57
+	.  error
 
+	selection_set  goto 154
+	directive  goto 55
 
 state 133
-	object_field_list:  object_field_list object_field.    (95)
+	object_type_definition:  TYPE name implements_interfaces_opt directives_opt '{'.field_definition_list '}' 
 
-	.  reduce 95 (src line 368)
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
 
+	fragment_name  goto 21
+	name  goto 137
+	field_definition  goto 136
+	field_definition_list  goto 155
 
 state 134
-	object_field:  name.':' value_const 
+	type_name_list:  type_name_list type_name.    (126)
 
-	':'  shift 135
-	.  error
+	.  reduce 126 (src line 500)
 
 
 state 135
-	object_field:  name ':'.value_const 
+	field_definition_list:  field_definition_list.field_definition 
+	interface_type_definition:  INTERFACE name directives_opt '{' field_definition_list.'}' 
 
-	DIRECTIVE  shift 110
-	ENUM  shift 111
-	EXTEND  shift 112
-	FALSE  shift 108
-	FRAGMENT  shift 113
-	IMPLEMENTS  shift 115
-	INPUT  shift 116
-	INTERFACE  shift 117
-	MUTATION  shift 118
-	NULL  shift 106
-	QUERY  shift 120
-	ON  shift 119
-	SCALAR  shift 121
-	SCHEMA  shift 122
-	SUBSCRIPTION  shift 123
-	TRUE  shift 107
-	TYPE  shift 124
-	UNION  shift 125
-	VARIABLE  shift 102
-	IDENTIFIER  shift 114
-	VALUE  shift 100
-	'{'  shift 126
-	'['  shift 109
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'}'  shift 157
 	.  error
 
-	enum_value  goto 104
-	value_const  goto 136
-	boolean_value  goto 101
-	list_value  goto 103
-	object_value  goto 105
+	fragment_name  goto 21
+	name  goto 137
+	field_definition  goto 156
 
 state 136
-	object_field:  name ':' value_const.    (96)
+	field_definition_list:  field_definition.    (128)
 
-	.  reduce 96 (src line 371)
+	.  reduce 128 (src line 510)
 
 
-35 terminals, 41 nonterminals
-103 grammar rules, 137/8000 states
+state 137
+	field_definition:  name.arguments_definition_opt ':' type directives_opt 
+	arguments_definition_opt: .    (130)
+
+	'('  shift 160
+	.  reduce 130 (src line 514)
+
+	arguments_definition_opt  goto 158
+	arguments_definition  goto 159
+
+state 138
+	union_type_definition:  UNION name directives_opt '=' union_members.    (137)
+	union_members:  union_members.'|' type_name 
+
+	'|'  shift 161
+	.  reduce 137 (src line 537)
+
+
+state 139
+	union_members:  type_name.    (138)
+
+	.  reduce 138 (src line 543)
+
+
+state 140
+	enum_type_definition:  ENUM name directives_opt '{' enum_value_definition_list.'}' 
+	enum_value_definition_list:  enum_value_definition_list.enum_value_definition 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'}'  shift 162
+	.  error
+
+	fragment_name  goto 21
+	name  goto 142
+	enum_value_definition  goto 163
+
+state 141
+	enum_value_definition_list:  enum_value_definition.    (142)
+
+	.  reduce 142 (src line 556)
+
+
+state 142
+	enum_value_definition:  name.directives_opt 
+	directives_opt: .    (105)
+
+	.  reduce 105 (src line 441)
+
+	directives_opt  goto 164
+
+state 143
+	input_value_definition_list:  input_value_definition_list.input_value_definition 
+	input_object_type_definition:  INPUT name directives_opt '{' input_value_definition_list.'}' 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'}'  shift 166
+	.  error
+
+	fragment_name  goto 21
+	name  goto 145
+	input_value_definition  goto 165
+
+state 144
+	input_value_definition_list:  input_value_definition.    (133)
+
+	.  reduce 133 (src line 521)
+
+
+state 145
+	input_value_definition:  name.':' type default_value_opt directives_opt 
+
+	':'  shift 167
+	.  error
+
+
+state 146
+	operation_type_definition:  operation_type ':' type_name.    (113)
+
+	.  reduce 113 (src line 466)
+
+
+state 147
+	variable_definition:  VARIABLE ':' type.default_value_opt 
+	default_value_opt: .    (42)
+
+	'='  shift 170
+	.  reduce 42 (src line 254)
+
+	default_value_opt  goto 168
+	default_value  goto 169
+
+state 148
+	type:  type_name.    (98)
+	non_null_type:  type_name.'!' 
+
+	'!'  shift 171
+	.  reduce 98 (src line 413)
+
+
+state 149
+	type:  list_type.    (99)
+	non_null_type:  list_type.'!' 
+
+	'!'  shift 172
+	.  reduce 99 (src line 414)
+
+
+state 150
+	type:  non_null_type.    (100)
+
+	.  reduce 100 (src line 415)
+
+
+state 151
+	list_type:  '['.type ']' 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'['  shift 151
+	.  error
+
+	fragment_name  goto 21
+	name  goto 86
+	type  goto 173
+	type_name  goto 148
+	list_type  goto 149
+	non_null_type  goto 150
+
+state 152
+	field:  name ':' name arguments_opt directives_opt.selection_set_opt 
+	directives_opt:  directives_opt.directive 
+	selection_set_opt: .    (46)
+
+	'{'  shift 13
+	'@'  shift 57
+	.  reduce 46 (src line 266)
+
+	selection_set  goto 127
+	selection_set_opt  goto 174
+	directive  goto 55
+
+state 153
+	argument:  name ':'.value_const 
+
+	DIRECTIVE  shift 186
+	ENUM  shift 187
+	EXTEND  shift 188
+	FALSE  shift 184
+	FRAGMENT  shift 189
+	IMPLEMENTS  shift 191
+	INPUT  shift 192
+	INTERFACE  shift 193
+	MUTATION  shift 194
+	NULL  shift 182
+	QUERY  shift 196
+	ON  shift 195
+	SCALAR  shift 197
+	SCHEMA  shift 198
+	SUBSCRIPTION  shift 199
+	TRUE  shift 183
+	TYPE  shift 200
+	UNION  shift 201
+	VARIABLE  shift 178
+	IDENTIFIER  shift 190
+	VALUE  shift 176
+	'{'  shift 202
+	'['  shift 185
+	.  error
+
+	enum_value  goto 180
+	value_const  goto 175
+	boolean_value  goto 177
+	list_value  goto 179
+	object_value  goto 181
+
+state 154
+	inline_fragment:  SPREAD ON type_condition directives_opt selection_set.    (62)
+
+	.  reduce 62 (src line 325)
+
+
+state 155
+	object_type_definition:  TYPE name implements_interfaces_opt directives_opt '{' field_definition_list.'}' 
+	field_definition_list:  field_definition_list.field_definition 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'}'  shift 203
+	.  error
+
+	fragment_name  goto 21
+	name  goto 137
+	field_definition  goto 156
+
+state 156
+	field_definition_list:  field_definition_list field_definition.    (129)
+
+	.  reduce 129 (src line 511)
+
+
+state 157
+	interface_type_definition:  INTERFACE name directives_opt '{' field_definition_list '}'.    (136)
+
+	.  reduce 136 (src line 531)
+
+
+state 158
+	field_definition:  name arguments_definition_opt.':' type directives_opt 
+
+	':'  shift 204
+	.  error
+
+
+state 159
+	arguments_definition_opt:  arguments_definition.    (131)
+
+	.  reduce 131 (src line 515)
+
+
+state 160
+	arguments_definition:  '('.input_value_definition_list ')' 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
+
+	fragment_name  goto 21
+	name  goto 145
+	input_value_definition_list  goto 205
+	input_value_definition  goto 144
+
+state 161
+	union_members:  union_members '|'.type_name 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	.  error
+
+	fragment_name  goto 21
+	name  goto 86
+	type_name  goto 206
+
+state 162
+	enum_type_definition:  ENUM name directives_opt '{' enum_value_definition_list '}'.    (140)
+
+	.  reduce 140 (src line 547)
+
+
+state 163
+	enum_value_definition_list:  enum_value_definition_list enum_value_definition.    (143)
+
+	.  reduce 143 (src line 557)
+
+
+state 164
+	directives_opt:  directives_opt.directive 
+	enum_value_definition:  name directives_opt.    (141)
+
+	'@'  shift 57
+	.  reduce 141 (src line 553)
+
+	directive  goto 55
+
+state 165
+	input_value_definition_list:  input_value_definition_list input_value_definition.    (134)
+
+	.  reduce 134 (src line 522)
+
+
+state 166
+	input_object_type_definition:  INPUT name directives_opt '{' input_value_definition_list '}'.    (144)
+
+	.  reduce 144 (src line 560)
+
+
+state 167
+	input_value_definition:  name ':'.type default_value_opt directives_opt 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'['  shift 151
+	.  error
+
+	fragment_name  goto 21
+	name  goto 86
+	type  goto 207
+	type_name  goto 148
+	list_type  goto 149
+	non_null_type  goto 150
+
+state 168
+	variable_definition:  VARIABLE ':' type default_value_opt.    (41)
+
+	.  reduce 41 (src line 247)
+
+
+state 169
+	default_value_opt:  default_value.    (43)
+
+	.  reduce 43 (src line 256)
+
+
+state 170
+	default_value:  '='.value_const 
+
+	DIRECTIVE  shift 186
+	ENUM  shift 187
+	EXTEND  shift 188
+	FALSE  shift 184
+	FRAGMENT  shift 189
+	IMPLEMENTS  shift 191
+	INPUT  shift 192
+	INTERFACE  shift 193
+	MUTATION  shift 194
+	NULL  shift 182
+	QUERY  shift 196
+	ON  shift 195
+	SCALAR  shift 197
+	SCHEMA  shift 198
+	SUBSCRIPTION  shift 199
+	TRUE  shift 183
+	TYPE  shift 200
+	UNION  shift 201
+	VARIABLE  shift 178
+	IDENTIFIER  shift 190
+	VALUE  shift 176
+	'{'  shift 202
+	'['  shift 185
+	.  error
+
+	enum_value  goto 180
+	value_const  goto 208
+	boolean_value  goto 177
+	list_value  goto 179
+	object_value  goto 181
+
+state 171
+	non_null_type:  type_name '!'.    (103)
+
+	.  reduce 103 (src line 428)
+
+
+state 172
+	non_null_type:  list_type '!'.    (104)
+
+	.  reduce 104 (src line 432)
+
+
+state 173
+	list_type:  '[' type.']' 
+
+	']'  shift 209
+	.  error
+
+
+state 174
+	field:  name ':' name arguments_opt directives_opt selection_set_opt.    (54)
+
+	.  reduce 54 (src line 291)
+
+
+state 175
+	argument:  name ':' value_const.    (60)
+
+	.  reduce 60 (src line 316)
+
+
+state 176
+	value_const:  VALUE.    (66)
+
+	.  reduce 66 (src line 360)
+
+
+state 177
+	value_const:  boolean_value.    (67)
+
+	.  reduce 67 (src line 361)
+
+
+state 178
+	value_const:  VARIABLE.    (68)
+
+	.  reduce 68 (src line 362)
+
+
+state 179
+	value_const:  list_value.    (69)
+
+	.  reduce 69 (src line 363)
+
+
+state 180
+	value_const:  enum_value.    (70)
+
+	.  reduce 70 (src line 364)
+
+
+state 181
+	value_const:  object_value.    (71)
+
+	.  reduce 71 (src line 365)
+
+
+state 182
+	value_const:  NULL.    (72)
+
+	.  reduce 72 (src line 366)
+
+
+state 183
+	boolean_value:  TRUE.    (73)
+
+	.  reduce 73 (src line 369)
+
+
+state 184
+	boolean_value:  FALSE.    (74)
+
+	.  reduce 74 (src line 370)
+
+
+state 185
+	list_value:  '['.value_list ']' 
+	value_list: .    (92)
+
+	.  reduce 92 (src line 396)
+
+	value_list  goto 210
+
+state 186
+	enum_value:  DIRECTIVE.    (75)
+
+	.  reduce 75 (src line 373)
+
+
+state 187
+	enum_value:  ENUM.    (76)
+
+	.  reduce 76 (src line 374)
+
+
+state 188
+	enum_value:  EXTEND.    (77)
+
+	.  reduce 77 (src line 375)
+
+
+state 189
+	enum_value:  FRAGMENT.    (78)
+
+	.  reduce 78 (src line 376)
+
+
+state 190
+	enum_value:  IDENTIFIER.    (79)
+
+	.  reduce 79 (src line 377)
+
+
+state 191
+	enum_value:  IMPLEMENTS.    (80)
+
+	.  reduce 80 (src line 378)
+
+
+state 192
+	enum_value:  INPUT.    (81)
+
+	.  reduce 81 (src line 379)
+
+
+state 193
+	enum_value:  INTERFACE.    (82)
+
+	.  reduce 82 (src line 380)
+
+
+state 194
+	enum_value:  MUTATION.    (83)
+
+	.  reduce 83 (src line 381)
+
+
+state 195
+	enum_value:  ON.    (84)
+
+	.  reduce 84 (src line 382)
+
+
+state 196
+	enum_value:  QUERY.    (85)
+
+	.  reduce 85 (src line 383)
+
+
+state 197
+	enum_value:  SCALAR.    (86)
+
+	.  reduce 86 (src line 384)
+
+
+state 198
+	enum_value:  SCHEMA.    (87)
+
+	.  reduce 87 (src line 385)
+
+
+state 199
+	enum_value:  SUBSCRIPTION.    (88)
+
+	.  reduce 88 (src line 386)
+
+
+state 200
+	enum_value:  TYPE.    (89)
+
+	.  reduce 89 (src line 387)
+
+
+state 201
+	enum_value:  UNION.    (90)
+
+	.  reduce 90 (src line 388)
+
+
+state 202
+	object_value:  '{'.object_field_list '}' 
+	object_field_list: .    (95)
+
+	.  reduce 95 (src line 404)
+
+	object_field_list  goto 211
+
+state 203
+	object_type_definition:  TYPE name implements_interfaces_opt directives_opt '{' field_definition_list '}'.    (122)
+
+	.  reduce 122 (src line 484)
+
+
+state 204
+	field_definition:  name arguments_definition_opt ':'.type directives_opt 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'['  shift 151
+	.  error
+
+	fragment_name  goto 21
+	name  goto 86
+	type  goto 212
+	type_name  goto 148
+	list_type  goto 149
+	non_null_type  goto 150
+
+state 205
+	arguments_definition:  '(' input_value_definition_list.')' 
+	input_value_definition_list:  input_value_definition_list.input_value_definition 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	')'  shift 213
+	.  error
+
+	fragment_name  goto 21
+	name  goto 145
+	input_value_definition  goto 165
+
+state 206
+	union_members:  union_members '|' type_name.    (139)
+
+	.  reduce 139 (src line 544)
+
+
+state 207
+	input_value_definition:  name ':' type.default_value_opt directives_opt 
+	default_value_opt: .    (42)
+
+	'='  shift 170
+	.  reduce 42 (src line 254)
+
+	default_value_opt  goto 214
+	default_value  goto 169
+
+state 208
+	default_value:  '=' value_const.    (44)
+
+	.  reduce 44 (src line 259)
+
+
+state 209
+	list_type:  '[' type ']'.    (102)
+
+	.  reduce 102 (src line 421)
+
+
+state 210
+	list_value:  '[' value_list.']' 
+	value_list:  value_list.value_const 
+
+	DIRECTIVE  shift 186
+	ENUM  shift 187
+	EXTEND  shift 188
+	FALSE  shift 184
+	FRAGMENT  shift 189
+	IMPLEMENTS  shift 191
+	INPUT  shift 192
+	INTERFACE  shift 193
+	MUTATION  shift 194
+	NULL  shift 182
+	QUERY  shift 196
+	ON  shift 195
+	SCALAR  shift 197
+	SCHEMA  shift 198
+	SUBSCRIPTION  shift 199
+	TRUE  shift 183
+	TYPE  shift 200
+	UNION  shift 201
+	VARIABLE  shift 178
+	IDENTIFIER  shift 190
+	VALUE  shift 176
+	'{'  shift 202
+	'['  shift 185
+	']'  shift 215
+	.  error
+
+	enum_value  goto 180
+	value_const  goto 216
+	boolean_value  goto 177
+	list_value  goto 179
+	object_value  goto 181
+
+state 211
+	object_value:  '{' object_field_list.'}' 
+	object_field_list:  object_field_list.object_field 
+
+	DIRECTIVE  shift 23
+	ENUM  shift 24
+	EXTEND  shift 25
+	FALSE  shift 26
+	FRAGMENT  shift 27
+	IMPLEMENTS  shift 29
+	INPUT  shift 30
+	INTERFACE  shift 31
+	MUTATION  shift 32
+	NULL  shift 33
+	QUERY  shift 34
+	ON  shift 22
+	SCALAR  shift 35
+	SCHEMA  shift 36
+	SUBSCRIPTION  shift 37
+	TRUE  shift 38
+	TYPE  shift 39
+	UNION  shift 40
+	IDENTIFIER  shift 28
+	'}'  shift 217
+	.  error
+
+	fragment_name  goto 21
+	name  goto 219
+	object_field  goto 218
+
+state 212
+	field_definition:  name arguments_definition_opt ':' type.directives_opt 
+	directives_opt: .    (105)
+
+	.  reduce 105 (src line 441)
+
+	directives_opt  goto 220
+
+state 213
+	arguments_definition:  '(' input_value_definition_list ')'.    (132)
+
+	.  reduce 132 (src line 518)
+
+
+state 214
+	input_value_definition:  name ':' type default_value_opt.directives_opt 
+	directives_opt: .    (105)
+
+	.  reduce 105 (src line 441)
+
+	directives_opt  goto 221
+
+state 215
+	list_value:  '[' value_list ']'.    (91)
+
+	.  reduce 91 (src line 393)
+
+
+state 216
+	value_list:  value_list value_const.    (93)
+
+	.  reduce 93 (src line 397)
+
+
+state 217
+	object_value:  '{' object_field_list '}'.    (94)
+
+	.  reduce 94 (src line 401)
+
+
+state 218
+	object_field_list:  object_field_list object_field.    (96)
+
+	.  reduce 96 (src line 405)
+
+
+state 219
+	object_field:  name.':' value_const 
+
+	':'  shift 222
+	.  error
+
+
+state 220
+	directives_opt:  directives_opt.directive 
+	field_definition:  name arguments_definition_opt ':' type directives_opt.    (127)
+
+	'@'  shift 57
+	.  reduce 127 (src line 504)
+
+	directive  goto 55
+
+state 221
+	directives_opt:  directives_opt.directive 
+	input_value_definition:  name ':' type default_value_opt directives_opt.    (135)
+
+	'@'  shift 57
+	.  reduce 135 (src line 525)
+
+	directive  goto 55
+
+state 222
+	object_field:  name ':'.value_const 
+
+	DIRECTIVE  shift 186
+	ENUM  shift 187
+	EXTEND  shift 188
+	FALSE  shift 184
+	FRAGMENT  shift 189
+	IMPLEMENTS  shift 191
+	INPUT  shift 192
+	INTERFACE  shift 193
+	MUTATION  shift 194
+	NULL  shift 182
+	QUERY  shift 196
+	ON  shift 195
+	SCALAR  shift 197
+	SCHEMA  shift 198
+	SUBSCRIPTION  shift 199
+	TRUE  shift 183
+	TYPE  shift 200
+	UNION  shift 201
+	VARIABLE  shift 178
+	IDENTIFIER  shift 190
+	VALUE  shift 176
+	'{'  shift 202
+	'['  shift 185
+	.  error
+
+	enum_value  goto 180
+	value_const  goto 223
+	boolean_value  goto 177
+	list_value  goto 179
+	object_value  goto 181
+
+state 223
+	object_field:  name ':' value_const.    (97)
+
+	.  reduce 97 (src line 408)
+
+
+37 terminals, 65 nonterminals
+145 grammar rules, 224/8000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
-90 working sets used
-memory: parser 115/120000
-58 extra closures
-338 shift entries, 2 exceptions
-72 goto entries
-32 entries saved by goto default
-Optimizer space used: output 302/120000
-302 table entries, 45 zero
-maximum spread: 35, maximum offset: 135
+114 working sets used
+memory: parser 245/120000
+92 extra closures
+840 shift entries, 2 exceptions
+140 goto entries
+85 entries saved by goto default
+Optimizer space used: output 586/120000
+586 table entries, 109 zero
+maximum spread: 37, maximum offset: 222
