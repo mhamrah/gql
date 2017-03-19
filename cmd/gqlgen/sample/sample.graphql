@@ -1,0 +1,9 @@
+type Query {
+   human(id: String!): Human
+ }
+
+type Human implements Character {
+    id: String!
+    name: String
+    homePlanet: String
+}

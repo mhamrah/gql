@@ -8,5 +8,3 @@ _Experimental_
 A Ragel + Yacc toolkit for GraphQL support in Go
 
 
-
-

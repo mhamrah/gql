@@ -9,6 +9,7 @@
 debug
 *.out
 *.output
+*.coverprofile
 
 # Ignore generated code
 example/example

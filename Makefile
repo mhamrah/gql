@@ -11,6 +11,7 @@ dependencies:
 	@echo "Installing test dependencies..."
 	go get github.com/mattn/goveralls
 	go get golang.org/x/tools/cmd/goyacc
+	go get github.com/go-playground/overalls
 
 .PHONY: generate
 generate:
@@ -22,4 +23,5 @@ test: generate
 
 .PHONY: coveralls
 coveralls:
-	goveralls -service=travis-ci
+ 	overalls -project=github.com/mhamrah/gql -covermode=count
+	goveralls -coverprofile=overalls.coverprofile -service=travis-ci
