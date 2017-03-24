@@ -3,7 +3,7 @@ package parser
 
 import (
         "reflect"
-        "github.com/mhamrah/gql/ast"
+        "github.com/mhamrah/gql"
 )
 %}
 
@@ -12,41 +12,41 @@ import (
     strs []string
     val reflect.Value
     vals []reflect.Value
-    doc ast.Document
+    doc gql.Document
 
-    definitions []ast.Definition
-    definition ast.Definition
+    definitions []gql.Definition
+    definition gql.Definition
 
-    directives []ast.Directive
-    directive ast.Directive
+    directives []gql.Directive
+    directive gql.Directive
 
-    arguments map[string]ast.Argument
-    argument ast.Argument
+    arguments map[string]gql.Argument
+    argument gql.Argument
 
-    variables []ast.Variable
-    variable ast.Variable
+    variables []gql.Variable
+    variable gql.Variable
 
-    selectionSet []ast.Selection
-    selection ast.Selection
+    selectionSet []gql.Selection
+    selection gql.Selection
 
-    operation ast.Operation
-    opType ast.OpType
-    field ast.Field
-    fragment ast.Fragment
-    fragmentSpread ast.FragmentSpread
-    objectField ast.ObjectField
-    objectFields []ast.ObjectField
+    operation gql.Operation
+    opType gql.OpType
+    field gql.Field
+    fragment gql.Fragment
+    fragmentSpread gql.FragmentSpread
+    objectField gql.ObjectField
+    objectFields []gql.ObjectField
 
-    schema ast.Schema
-    operationTypeDefinition ast.OperationTypeDefinition
-    operationTypeDefinitions []ast.OperationTypeDefinition
-    typeDefinition ast.TypeDefinition
-    typeDefinitions map[string]ast.TypeDefinition
-    inputDefinitions map[string]ast.InputValueDefinition
-    inputDefinition ast.InputValueDefinition
-    fieldDef ast.FieldDefinition
-    fieldsDef []ast.FieldDefinition
-    typeDesc ast.TypeDescription
+    schema gql.Schema
+    operationTypeDefinition gql.OperationTypeDefinition
+    operationTypeDefinitions []gql.OperationTypeDefinition
+    typeDefinition gql.TypeDefinition
+    typeDefinitions map[string]gql.TypeDefinition
+    inputDefinitions map[string]gql.InputValueDefinition
+    inputDefinition gql.InputValueDefinition
+    fieldDef gql.FieldDefinition
+    fieldsDef []gql.FieldDefinition
+    typeDesc gql.TypeDescription
 }
 
 %token <str> DIRECTIVE
@@ -187,7 +187,7 @@ name_opt: /* nothing */ { $$ = "" }
 document
         : definition_list schema
                 {
-                       $$ = ast.Document{Definitions: $1, Schema: $2 }
+                       $$ = gql.Document{Definitions: $1, Schema: $2 }
                 }
         ;
 
@@ -198,38 +198,38 @@ definition_list
         ;
 
 definition
-        : operation_definition { $$ = ast.Definition{ Operation: $1 } }
-        | fragment_definition { $$ = ast.Definition{ Fragment: $1 } }
+        : operation_definition { $$ = gql.Definition{ Operation: $1 } }
+        | fragment_definition { $$ = gql.Definition{ Fragment: $1 } }
         ;
 
 /* 2.2.1 Operations */
 operation_definition
         : selection_set
                 {
-                        $$ = ast.Operation{OpType: ast.Query, SelectionSet: $1 }
+                        $$ = gql.Operation{OpType: gql.Query, SelectionSet: $1 }
                 }
         | operation_type name_opt selection_set
                 {
-                        $$ = ast.Operation{OpType: $1, Name: $2, SelectionSet: $3}
+                        $$ = gql.Operation{OpType: $1, Name: $2, SelectionSet: $3}
                 }
         | operation_type name_opt variable_definitions selection_set
                 {
-                        $$ = ast.Operation{OpType: $1, Name: $2, Variables: $3, SelectionSet: $4 }
+                        $$ = gql.Operation{OpType: $1, Name: $2, Variables: $3, SelectionSet: $4 }
                 }
         | operation_type name_opt directives selection_set
                 {
-                        $$ = ast.Operation{OpType: $1, Name: $2, Directives: $3, SelectionSet: $4 }
+                        $$ = gql.Operation{OpType: $1, Name: $2, Directives: $3, SelectionSet: $4 }
                 }
         | operation_type name_opt variable_definitions directives selection_set
                 {
-                        $$ = ast.Operation{OpType: $1, Name: $2, Variables: $3, Directives: $4, SelectionSet: $5 }
+                        $$ = gql.Operation{OpType: $1, Name: $2, Variables: $3, Directives: $4, SelectionSet: $5 }
                 }
         ;
 
 operation_type
-        : QUERY { $$ = ast.Query }
-        | MUTATION { $$ = ast.Mutation }
-        | SUBSCRIPTION { $$ = ast.Subscription }
+        : QUERY { $$ = gql.Query }
+        | MUTATION { $$ = gql.Mutation }
+        | SUBSCRIPTION { $$ = gql.Subscription }
         ;
 
 variable_definitions
@@ -244,7 +244,7 @@ variable_definition_list
 variable_definition
         : VARIABLE ':' type default_value_opt
                 {
-                        $$ = ast.Variable{Name: $1, Type: $3, Default: $4}
+                        $$ = gql.Variable{Name: $1, Type: $3, Default: $4}
                 }
         ;
 
@@ -271,14 +271,14 @@ selection_list
         ;
 
 selection
-        : field { $$ = ast.Selection{ Field: $1 } }
-        | fragment_spread { $$ = ast.Selection{ FragmentSpread: $1 } }
-        | inline_fragment { $$ = ast.Selection{ InlineFragment: $1 } }
+        : field { $$ = gql.Selection{ Field: $1 } }
+        | fragment_spread { $$ = gql.Selection{ FragmentSpread: $1 } }
+        | inline_fragment { $$ = gql.Selection{ InlineFragment: $1 } }
         ;
 
 field
         : name arguments_opt directives_opt selection_set_opt {
-                $$ = ast.Field{
+                $$ = gql.Field{
                         Name: $1,
                         Arguments: $2,
                         Directives: $3,
@@ -286,7 +286,7 @@ field
                         }
                 }
         | name ':' name arguments_opt directives_opt selection_set_opt {
-                $$ = ast.Field{
+                $$ = gql.Field{
                         Name: $1,
                         Arguments: $4,
                         Directives: $5,
@@ -303,22 +303,22 @@ arguments_opt: /* nothing */ { $$ = nil }
         | arguments { $$ = $1; }
         ;
 
-argument_list: /* nothing */ { $$ = make(map[string]ast.Argument) }
+argument_list: /* nothing */ { $$ = make(map[string]gql.Argument) }
         | argument_list argument { $1[$2.Name] = $2; $$ = $1; }
         ;
 
-argument: name ':' value_const { $$ = ast.Argument{Name: $1, Value: $3} }
+argument: name ':' value_const { $$ = gql.Argument{Name: $1, Value: $3} }
         ;
 
 /* 2.2.6 Fragments */
 fragment_spread
-        : SPREAD fragment_name directives_opt { $$ = ast.FragmentSpread{ Name: $2, Directives: $3 } }
+        : SPREAD fragment_name directives_opt { $$ = gql.FragmentSpread{ Name: $2, Directives: $3 } }
         ;
 
 inline_fragment
         : SPREAD ON type_condition directives_opt selection_set
                 {
-                        $$ = ast.Fragment{
+                        $$ = gql.Fragment{
                                 TypeCondition: $3,
                                 Directives: $4,
                                 SelectionSet: $5,
@@ -326,7 +326,7 @@ inline_fragment
                 }
         | SPREAD directives_opt selection_set
                 {
-                        $$ = ast.Fragment{
+                        $$ = gql.Fragment{
                                 Directives: $2,
                                 SelectionSet: $3,
                         }
@@ -336,7 +336,7 @@ inline_fragment
 fragment_definition
         : FRAGMENT fragment_name ON type_condition directives_opt selection_set
                 {
-                        $$ = ast.Fragment{
+                        $$ = gql.Fragment{
                                         Name: $2,
                                         TypeCondition: $4,
                                         Directives: $5,
@@ -398,12 +398,12 @@ object_field_list: /* nothing */ { $$ = nil }
         | object_field_list object_field { $$ = append($1, $2) }
         ;
 
-object_field: name ':' value_const { $$ = ast.ObjectField{ Key: $1, Value: $3 }}
+object_field: name ':' value_const { $$ = gql.ObjectField{ Key: $1, Value: $3 }}
         ;
 
 /* 2.2.9 Types */
 
-type: type_name { $$ = ast.TypeDescription{ Name: $1 } }
+type: type_name { $$ = gql.TypeDescription{ Name: $1 } }
         | list_type { $$ = $1 }
         | non_null_type { $$ = $1 }
         ;
@@ -413,18 +413,18 @@ type_name: name { $$ = $1 }
 
 list_type: '[' type ']'
         {
-                $2.Flags |= ast.List
+                $2.Flags |= gql.List
                 $$ = $2
         }
         ;
 
 non_null_type: type_name '!'
                 {
-                        $$ = ast.TypeDescription{ Name: $1, Flags: ast.Required }
+                        $$ = gql.TypeDescription{ Name: $1, Flags: gql.Required }
                 }
         | list_type '!'
                 {
-                        $1.Flags |= ast.Required;
+                        $1.Flags |= gql.Required;
                         $$ = $1
                 }
         ;
@@ -438,13 +438,13 @@ directives_opt: /* nothing */ { $$ = nil }
 directives: directives_opt directive { $$ = append($1, $2) }
         ;
 
-directive: '@' name arguments_opt { $$ = ast.Directive{ Name: $2, Arguments: $3}; }
+directive: '@' name arguments_opt { $$ = gql.Directive{ Name: $2, Arguments: $3}; }
         ;
 
 /* Schema Support */
 
-schema: schema_definition type_definitions { $$ = ast.Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 } }
-      | type_definitions { $$ = ast.Schema{TypeDefinitions: $1}}
+schema: schema_definition type_definitions { $$ = gql.Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 } }
+      | type_definitions { $$ = gql.Schema{TypeDefinitions: $1}}
         ;
 
 
@@ -460,11 +460,11 @@ operation_type_definition_list: /* nothing */ { $$ = nil }
 
 operation_type_definition: operation_type ':' type_name
         {
-                $$ = ast.OperationTypeDefinition{OpType: $1, Name: $3}
+                $$ = gql.OperationTypeDefinition{OpType: $1, Name: $3}
         }
         ;
 
-type_definitions: /* nothing */ { $$ = make(map[string]ast.TypeDefinition) }
+type_definitions: /* nothing */ { $$ = make(map[string]gql.TypeDefinition) }
         | type_definitions scalar_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
         | type_definitions object_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
         | type_definitions interface_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
@@ -473,12 +473,12 @@ type_definitions: /* nothing */ { $$ = make(map[string]ast.TypeDefinition) }
         | type_definitions input_object_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
         ;
 
-scalar_type_definition: SCALAR name directives_opt { $$ = ast.ScalarDefinition{Name: $2, Directives: $3 } }
+scalar_type_definition: SCALAR name directives_opt { $$ = gql.ScalarDefinition{Name: $2, Directives: $3 } }
         ;
 
 object_type_definition: TYPE name implements_interfaces_opt directives_opt '{' field_definition_list '}'
                 {
-                        $$ = ast.ObjectDefinition{
+                        $$ = gql.ObjectDefinition{
                                 Name: $2,
                                 Implements: $3,
                                 Fields: $6,
@@ -498,11 +498,11 @@ type_name_list: type_name { $$ = []string{$1}}
 
 field_definition: name arguments_definition_opt ':' type directives_opt
                 {
-                        $$ = ast.FieldDefinition{ Name: $1, Arguments: $2, Type: $4, Directives: $5 }
+                        $$ = gql.FieldDefinition{ Name: $1, Arguments: $2, Type: $4, Directives: $5 }
                 }
         ;
 
-field_definition_list: field_definition { $$ = []ast.FieldDefinition{$1} }
+field_definition_list: field_definition { $$ = []gql.FieldDefinition{$1} }
         | field_definition_list field_definition { $$ = append($1, $2) }
         ;
 
@@ -513,25 +513,25 @@ arguments_definition_opt: /* nothing */ { $$ = nil; }
 arguments_definition: '(' input_value_definition_list ')' { $$ = $2; }
         ;
 
-input_value_definition_list: input_value_definition { $$ = make(map[string]ast.InputValueDefinition); $$[$1.Name] = $1; }
+input_value_definition_list: input_value_definition { $$ = make(map[string]gql.InputValueDefinition); $$[$1.Name] = $1; }
         | input_value_definition_list input_value_definition { $1[$2.Name] = $2; $$ = $1 }
         ;
 
 input_value_definition: name ':' type default_value_opt directives_opt
         {
-                $$ = ast.InputValueDefinition{ Name: $1, Type: $3, Default: $4, Directives: $5 }
+                $$ = gql.InputValueDefinition{ Name: $1, Type: $3, Default: $4, Directives: $5 }
         }
         ;
 
 interface_type_definition: INTERFACE name directives_opt '{' field_definition_list '}'
         {
-                $$ = ast.InterfaceDefinition{ Name: $2, Fields: $5, Directives: $3 }
+                $$ = gql.InterfaceDefinition{ Name: $2, Fields: $5, Directives: $3 }
         }
         ;
 
 union_type_definition: UNION name directives_opt '=' union_members
         {
-                $$ = ast.UnionDefinition{ Name: $2, Types: $5, Directives: $3 }
+                $$ = gql.UnionDefinition{ Name: $2, Types: $5, Directives: $3 }
         }
         ;
 
@@ -541,7 +541,7 @@ union_members: type_name { $$ = []string{$1} }
 
 enum_type_definition: ENUM name directives_opt '{' enum_value_definition_list '}'
         {
-                $$ = ast.EnumDefinition{ Name: $2, Values: $5, Directives: $3 }
+                $$ = gql.EnumDefinition{ Name: $2, Values: $5, Directives: $3 }
         }
         ;
 
@@ -554,7 +554,7 @@ enum_value_definition_list: enum_value_definition { $$ = []string{$1} }
 
 input_object_type_definition: INPUT name directives_opt '{' input_value_definition_list '}'
         {
-                $$ = ast.InputObjectDefinition{
+                $$ = gql.InputObjectDefinition{
                         Name: $2,
                         InputDefs: $5,
                         Directives: $3,

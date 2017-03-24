@@ -4,15 +4,15 @@
 package parser
 
 import (
-	"github.com/mhamrah/gql/ast"
+	"github.com/mhamrah/gql"
 )
 
 // ParseString
-func ParseString(q string) (*ast.Document, error) {
+func ParseString(q string) (*gql.Document, error) {
 	return ParseBytes([]byte(q))
 }
 
-func ParseBytes(b []byte) (*ast.Document, error) {
+func ParseBytes(b []byte) (*gql.Document, error) {
 	lex := newLexer(b)
 	p := yyNewParser()
 	e := p.Parse(lex)

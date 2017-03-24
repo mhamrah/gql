@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/mhamrah/gql"
+	"github.com/mhamrah/gql/handler"
 	"github.com/mhamrah/gql/cmd/gqlgen/sample/sample"
 )
 
@@ -17,7 +17,7 @@ func (s *svc) Human(ctx context.Context, id string) (sample.Human, error) {
 
 func main() {
 	svc := sample.New(&svc{})
-	s := gql.NewQueryServer(svc)
+	s := handler.NewQueryServer(svc)
 	fs := http.FileServer(http.Dir("public"))
 
 	http.Handle("/graphql", s)
