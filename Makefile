@@ -23,5 +23,5 @@ test: generate
 
 .PHONY: coveralls
 coveralls:
- 	overalls -project=github.com/mhamrah/gql -covermode=count
+	overalls -project=github.com/mhamrah/gql -covermode=count
 	goveralls -coverprofile=overalls.coverprofile -service=travis-ci
