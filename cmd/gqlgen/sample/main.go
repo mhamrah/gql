@@ -18,6 +18,9 @@ func (s *svc) Human(ctx context.Context, id string) (sample.Human, error) {
 func main() {
 	svc := sample.New(&svc{})
 	s := gql.NewQueryServer(svc)
-	http.Handle("/", s)
+	fs := http.FileServer(http.Dir("public"))
+
+	http.Handle("/graphql", s)
+	http.Handle("/", fs)
 	http.ListenAndServe(":8080", nil)
 }

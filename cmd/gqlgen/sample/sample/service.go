@@ -6,8 +6,10 @@ package sample
 import (
 	"fmt"
 	"context"
+	"io/ioutil"
 	"github.com/mhamrah/gql"
 	"github.com/mhamrah/gql/ast"
+	"github.com/mhamrah/gql/parser"
 )
 
 type Query interface {
@@ -16,16 +18,23 @@ type Query interface {
 
 type query_impl struct {
 	impl Query
+	schema ast.Schema
 }
 
 func New(impl Query) gql.Service {
-	return query_impl{impl: impl}
+	b, _ := ioutil.ReadFile("sample.graphql")
+	doc, _ := parser.ParseBytes(b)
+	return query_impl{impl: impl, schema: doc.Schema}
 }
 
 func (s query_impl) Handlers() map[string]gql.GqlFunc {
 	return map[string]gql.GqlFunc{
 		"human": s.Human,
 	}
+}
+
+func (s query_impl) Schema() ast.Schema {
+	return s.schema
 }
 
 func (s query_impl) Human(ctx context.Context, operation ast.Selection) (gql.NamedLookup, error) {
