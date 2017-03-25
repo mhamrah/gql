@@ -1,9 +1,13 @@
-package ast
+package gql
 
 import (
 	"io"
 	"reflect"
 )
+
+type Selectable interface {
+	ValueFromName(string) interface{}
+}
 
 type Document struct {
 	Definitions []Definition
@@ -82,6 +86,10 @@ type ObjectField struct {
 type Schema struct {
 	OperationTypeDefinitions []OperationTypeDefinition
 	TypeDefinitions          map[string]TypeDefinition
+}
+
+func (s Schema) ValueFromName(field string) interface{} {
+	return "foo"
 }
 
 type OperationTypeDefinition struct {

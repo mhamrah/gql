@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"context"
 	"github.com/mhamrah/gql"
-	"github.com/mhamrah/gql/ast"
 )
 
 type Query interface {
@@ -22,13 +21,13 @@ func New(impl Query) gql.Service {
 	return query_impl{impl: impl}
 }
 
-func (s query_impl) Handlers() map[string]gql.GqlFunc {
-	return map[string]gql.GqlFunc{
+func (s query_impl) Handlers() map[string]gql.HandlerFunc {
+	return map[string]gql.HandlerFunc{
 		"human": s.Human,
 	}
 }
 
-func (s query_impl) Human(ctx context.Context, operation ast.Selection) (gql.NamedLookup, error) {
+func (s query_impl) Human(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 
 	id := ""
 	if input, ok := operation.Field.Arguments["id"]; ok {
@@ -36,7 +35,7 @@ func (s query_impl) Human(ctx context.Context, operation ast.Selection) (gql.Nam
 		if !input.Value.IsValid() {
 			return nil, fmt.Errorf("%v does not contain a valid value", id)
 		}
-		id, err = ast.GetString(input.Value)
+		id, err = gql.GetString(input.Value)
 		if err != nil {
 			return nil, err
 		}

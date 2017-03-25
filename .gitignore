@@ -11,5 +11,7 @@ debug
 *.output
 *.coverprofile
 
+node_modules
+
 # Ignore generated code
 example/example

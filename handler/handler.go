@@ -1,31 +1,20 @@
-package gql
+package handler
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 
-	"github.com/mhamrah/gql/ast"
+	"github.com/mhamrah/gql"
 	"github.com/mhamrah/gql/parser"
 )
 
-type GqlFunc func(context.Context, ast.Selection) (NamedLookup, error)
-
-type Service interface {
-	Handlers() map[string]GqlFunc
-}
-
-type NamedLookup interface {
-	ValueFromName(string) interface{}
-}
-
 type gqlHandler struct {
-	handlers map[string]GqlFunc
+	handlers map[string]gql.HandlerFunc
 }
 
-func NewQueryServer(s Service) http.Handler {
+func NewGqlHandler(s gql.Service) http.Handler {
 	return &gqlHandler{handlers: s.Handlers()}
 }
 
@@ -43,7 +32,7 @@ func (h *gqlHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(doc.Definitions) == 0 {
-		// no defs?
+		http.Error(w, "no query present", http.StatusBadRequest)
 	}
 
 	for _, op := range doc.Definitions {
@@ -61,17 +50,24 @@ func (h *gqlHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, fmt.Sprintf("impl returned error for %v", name), http.StatusBadRequest)
 			}
 
-			result := make(map[string]interface{})
-			for _, s := range selection.Field.SelectionSet {
-				f := s.Field
-
-				result[f.Name] = response.ValueFromName(f.Name)
-			}
-
-			if err := json.NewEncoder(w).Encode(result); err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-			}
+			renderSelection(w, response, selection)
 		}
 	}
+}
 
+func renderSelection(w http.ResponseWriter, result gql.Selectable, selection gql.Selection) {
+	r := make(map[string]interface{})
+	for _, s := range selection.Field.SelectionSet {
+		f := s.Field
+
+		r[f.Name] = result.ValueFromName(f.Name)
+	}
+
+	if err := json.NewEncoder(w).Encode(GraphqlResonse{Data: r}); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+}
+
+type GraphqlResonse struct {
+	Data map[string]interface{} `json:"data"`
 }

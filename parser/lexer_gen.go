@@ -6,7 +6,7 @@ import (
         "fmt"
         "reflect"
         "strconv"
-        "github.com/mhamrah/gql/ast"
+        "github.com/mhamrah/gql"
 )
 
 
@@ -22,7 +22,7 @@ const graphql_en_main int = 3
 
 
 type lexer struct {
-    doc ast.Document
+    doc gql.Document
     err error
     parseFailed bool
 

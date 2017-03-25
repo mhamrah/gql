@@ -4,7 +4,7 @@ import (
         "fmt"
         "reflect"
         "strconv"
-        "github.com/mhamrah/gql/ast"
+        "github.com/mhamrah/gql"
 )
 
 %%{
@@ -16,7 +16,7 @@ import (
 }%%
 
 type lexer struct {
-    doc ast.Document
+    doc gql.Document
     err error
     parseFailed bool
 

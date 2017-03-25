@@ -1,4 +1,4 @@
-package ast
+package gql
 
 import (
 	"io"
@@ -78,8 +78,8 @@ func (o ObjectDefinition) genService(w io.Writer) error {
 			return {{ lower .Name }}_impl{ impl: impl }
 		}
 
-		func (s {{ lower .Name }}_impl) Handlers() map[string]gql.GqlFunc {
-			return map[string]gql.GqlFunc{
+		func (s {{ lower .Name }}_impl) Handlers() map[string]gql.HandlerFunc {
+			return map[string]gql.HandlerFunc{
 				{{ range .Fields -}}
 					"{{ .Name }}": s.{{ title .Name }},
 				{{- end }}
@@ -87,7 +87,7 @@ func (o ObjectDefinition) genService(w io.Writer) error {
 		}
 
 		{{ $s := lower .Name }}{{ range .Fields }}
-			func (s {{ $s }}_impl) {{ title .Name }}(ctx context.Context, operation ast.Selection) (gql.NamedLookup, error) {
+			func (s {{ $s }}_impl) {{ title .Name }}(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 				{{ range $key, $arg := .Arguments }}
 					{{ $init := typeInitializer $arg }}
 					{{ $init.Init }}
