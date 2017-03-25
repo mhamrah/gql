@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"bytes"
 	"testing"
 
 	_ "github.com/kr/pretty"
@@ -28,13 +29,50 @@ const defaultSchema = `
 		someField: String
 	}`
 
+const noQuery = `
+	type Foo {
+		nana: String
+	}
+`
+
+const invalidQuery = `
+	scalar Query
+`
+
+type verifyGenCode func(t *testing.T, input map[string]bytes.Buffer)
+
+func verifyNotNil(t *testing.T, input map[string]bytes.Buffer) {
+	assert.NotNil(t, input)
+}
+
+func verifyNil(t *testing.T, input map[string]bytes.Buffer) {
+	assert.Nil(t, input)
+}
+
 func TestGenerateDefaultSchema(t *testing.T) {
-	ast, err := parser.ParseString(defaultSchema)
+	testCases := []struct {
+		title  string
+		schema string
+		err    error
+		verify verifyGenCode
+	}{
+		{"simple", simpleSchema, nil, verifyNotNil},
+		{"default", defaultSchema, nil, verifyNotNil},
+		{"noQuery", noQuery, ErrNoQuery, verifyNil},
+		{"invalidQuery", invalidQuery, ErrInvalidQueryType, verifyNil},
+	}
 
-	assert.NoError(t, err)
-	assert.NotNil(t, ast)
+	for _, test := range testCases {
+		t.Run(test.title, func(t *testing.T) {
+			ast, err := parser.ParseString(test.schema)
 
-	result, err := Generate(&ast.Schema, "test")
-	assert.NoError(t, err)
-	assert.NotNil(t, result)
+			assert.NoError(t, err)
+			assert.NotNil(t, ast)
+
+			result, err := Generate(&ast.Schema, "test")
+			assert.Equal(t, test.err, err)
+			test.verify(t, result)
+		})
+	}
+
 }

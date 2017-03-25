@@ -17,10 +17,10 @@ func (s *svc) Human(ctx context.Context, id string) (sample.Human, error) {
 
 func main() {
 	svc := sample.New(&svc{})
-	s := handler.NewGqlHandler(svc)
+	h := handler.NewGqlHandler(svc)
 	fs := http.FileServer(http.Dir("public"))
 
-	http.Handle("/graphql", s)
+	http.Handle("/graphql", h)
 	http.Handle("/", fs)
 	http.ListenAndServe(":8080", nil)
 }
