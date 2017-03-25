@@ -464,7 +464,7 @@ operation_type_definition: operation_type ':' type_name
         }
         ;
 
-type_definitions: /* nothing */ { $$ = make(map[string]gql.TypeDefinition) }
+type_definitions: /* nothing */ { $$ = gql.BuiltinDefinitions() }
         | type_definitions scalar_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
         | type_definitions object_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
         | type_definitions interface_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }

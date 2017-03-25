@@ -1386,7 +1386,7 @@ yydefault:
 		yyDollar = yyS[yypt-0 : yypt+1]
 		//line parser.y:467
 		{
-			yyVAL.typeDefinitions = make(map[string]gql.TypeDefinition)
+			yyVAL.typeDefinitions = gql.BuiltinDefinitions()
 		}
 	case 115:
 		yyDollar = yyS[yypt-2 : yypt+1]

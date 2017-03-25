@@ -88,8 +88,29 @@ type Schema struct {
 	TypeDefinitions          map[string]TypeDefinition
 }
 
-func (s Schema) ValueFromName(field string) interface{} {
-	return "foo"
+func BuiltinDefinitions() map[string]TypeDefinition {
+	builtin := make(map[string]TypeDefinition)
+
+	builtin["Int"] = ScalarDefinition{Name: "Int"}
+	builtin["Float"] = ScalarDefinition{Name: "Float"}
+
+	builtin["String"] = ScalarDefinition{Name: "Float"}
+	builtin["Boolean"] = BooleanDefinition{}
+	builtin["ID"] = ScalarDefinition{Name: "ID"}
+	builtin["Float"] = ScalarDefinition{Name: "Float"}
+
+	return builtin
+}
+
+type BooleanDefinition struct {
+}
+
+func (b BooleanDefinition) Generate(w io.Writer) error {
+	return nil
+}
+
+func (b BooleanDefinition) NamedType() string {
+	return "Boolean"
 }
 
 type OperationTypeDefinition struct {
