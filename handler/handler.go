@@ -10,15 +10,11 @@ import (
 	"github.com/mhamrah/gql/parser"
 )
 
-type Service interface {
-	Handlers() map[string]gql.GqlFunc
-}
-
 type gqlHandler struct {
-	handlers map[string]gql.GqlFunc
+	handlers map[string]gql.HandlerFunc
 }
 
-func NewQueryServer(s Service) http.Handler {
+func NewGqlHandler(s gql.Service) http.Handler {
 	return &gqlHandler{handlers: s.Handlers()}
 }
 
@@ -36,7 +32,7 @@ func (h *gqlHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(doc.Definitions) == 0 {
-		// no defs?
+		http.Error(w, "no query present", http.StatusBadRequest)
 	}
 
 	for _, op := range doc.Definitions {
@@ -59,18 +55,17 @@ func (h *gqlHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func renderSelection(w http.ResponseWriter, response gql.NamedLookup, selection gql.Selection) {
-		result := make(map[string]interface{})
-			for _, s := range selection.Field.SelectionSet {
-				f := s.Field
+func renderSelection(w http.ResponseWriter, result gql.Selectable, selection gql.Selection) {
+	r := make(map[string]interface{})
+	for _, s := range selection.Field.SelectionSet {
+		f := s.Field
 
-				result[f.Name] = response.ValueFromName(f.Name)
-			}
+		r[f.Name] = result.ValueFromName(f.Name)
+	}
 
-
-			if err := json.NewEncoder(w).Encode(GraphqlResonse{Data:result}); err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-			}
+	if err := json.NewEncoder(w).Encode(GraphqlResonse{Data: r}); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
 }
 
 type GraphqlResonse struct {

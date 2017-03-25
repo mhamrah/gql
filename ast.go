@@ -3,12 +3,9 @@ package gql
 import (
 	"io"
 	"reflect"
-	"context"
 )
 
-type GqlFunc func(context.Context, Selection) (NamedLookup, error)
-
-type NamedLookup interface {
+type Selectable interface {
 	ValueFromName(string) interface{}
 }
 

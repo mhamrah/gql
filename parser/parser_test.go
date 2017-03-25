@@ -7,18 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFoo(t *testing.T) {
-	doc, err := ParseString(`
-		query {
-			human(id: 1000) {
-			name
-		}
-		}
-	`)
-	assert.NoError(t, err)
-	assert.NotNil(t, doc)
-}
-
 func TestQueryParse(t *testing.T) {
 	doc, err := ParseString(simpleQuery)
 	assert.NoError(t, err)

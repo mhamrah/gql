@@ -4,9 +4,10 @@ set -e
 
 . "$(dirname $0)/variables.sh"
 
-echo "Generating: $PACKAGE/$1"
-
 find . -name "*_gen.go" -exec rm {} \;
 
-go generate $PACKAGE/$1
-
+for p in $@; do
+  echo "Generating: $PACKAGE/$p"
+  go generate $PACKAGE/$p
+done
+#

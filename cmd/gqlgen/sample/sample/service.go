@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"context"
 	"github.com/mhamrah/gql"
-	"github.com/mhamrah/gql/handler"
 )
 
 type Query interface {
@@ -18,17 +17,17 @@ type query_impl struct {
 	impl Query
 }
 
-func New(impl Query) handler.Service {
+func New(impl Query) gql.Service {
 	return query_impl{impl: impl}
 }
 
-func (s query_impl) Handlers() map[string]gql.GqlFunc {
-	return map[string]gql.GqlFunc{
+func (s query_impl) Handlers() map[string]gql.HandlerFunc {
+	return map[string]gql.HandlerFunc{
 		"human": s.Human,
 	}
 }
 
-func (s query_impl) Human(ctx context.Context, operation gql.Selection) (gql.NamedLookup, error) {
+func (s query_impl) Human(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 
 	id := ""
 	if input, ok := operation.Field.Arguments["id"]; ok {

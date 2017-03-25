@@ -16,8 +16,17 @@ import (
 	"github.com/mhamrah/gql/parser"
 )
 
+//go:generate go run main.go sample/sample.graphql
+
 func main() {
-	filename := "sample/sample.graphql"
+	args := os.Args[1:]
+
+	if len(args) != 1 {
+		log.Fatal("gqlgen requires a graphql input file")
+	}
+
+	filename := args[0]
+
 	dir := filepath.Dir(filename)
 	name := strings.TrimSuffix(filepath.Base(filename), filepath.Ext(filename))
 
@@ -25,11 +34,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	err = Generate(dir, name, f)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
 
 func Generate(dir, name string, schema io.Reader) error {

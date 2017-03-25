@@ -1,7 +1,6 @@
 package gql
 
 import (
-	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -49,20 +48,13 @@ func typeInitializer(input InputValueDefinition) callInit {
 
 	return callInit{
 		Init:   fmt.Sprintf("%v := %v", input.Name, rhs),
-		Setter: fmt.Sprintf("%v, err = ast.%v(input.Value)", input.Name, f),
+		Setter: fmt.Sprintf("%v, err = gql.%v(input.Value)", input.Name, f),
 	}
 }
 
 type callInit struct {
 	Init   string
 	Setter string
-}
-
-func setValue(source, dest reflect.Value) (reflect.Value, error) {
-	if source.Type() != dest.Type() && dest.IsValid() && dest.CanSet() {
-		return reflect.Value{}, errors.New("cannot set value")
-	}
-	return source, nil
 }
 
 func GetInt(input reflect.Value) (int, error) {
