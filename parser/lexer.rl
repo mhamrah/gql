@@ -16,7 +16,7 @@ import (
 }%%
 
 type lexer struct {
-    doc gql.Document
+    doc gql.ParsedDocument
     err error
     parseFailed bool
 
@@ -117,4 +117,7 @@ func (lex *lexer) Error(e string) {
     fmt.Println("errorx:", e)
     fmt.Println("t", string(lex.data[lex.ts:lex.te]))
     fmt.Println("p", string(lex.data[lex.p:lex.pe]))
+
+    lex.parseFailed = true
+    lex.err = fmt.Errorf("parse failed at token %v: %v", string(lex.data[lex.ts:lex.te]), e)
 }

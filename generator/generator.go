@@ -52,7 +52,7 @@ func writeOperation(od gql.ObjectDefinition, packageName string) (bytes.Buffer, 
 	var op bytes.Buffer
 	writeHeader(&op, packageName)
 	writeImports(&op)
-	if err := od.GenerateOperation(&op); err != nil {
+	if err := GenerateService(&op, od); err != nil {
 		return op, err
 	}
 	return op, nil
@@ -76,7 +76,7 @@ func writeTypes(types map[string]gql.TypeDefinition, packageName string) (bytes.
 
 	writeHeader(&b, packageName)
 	for _, t := range types {
-		t.Generate(&b)
+		GenerateTypeDefinition(&b, t)
 	}
 
 	return b, nil

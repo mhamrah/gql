@@ -12,7 +12,7 @@ import (
     strs []string
     val reflect.Value
     vals []reflect.Value
-    doc gql.Document
+    doc gql.ParsedDocument
 
     definitions []gql.Definition
     definition gql.Definition
@@ -187,7 +187,7 @@ name_opt: /* nothing */ { $$ = "" }
 document
         : definition_list schema
                 {
-                       $$ = gql.Document{Definitions: $1, Schema: $2 }
+                       $$ = gql.ParsedDocument{Definitions: $1, Schema: $2 }
                 }
         ;
 
@@ -443,7 +443,10 @@ directive: '@' name arguments_opt { $$ = gql.Directive{ Name: $2, Arguments: $3}
 
 /* Schema Support */
 
-schema: schema_definition type_definitions { $$ = gql.Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 } }
+schema: schema_definition type_definitions
+        {
+                $$ = gql.Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 }
+        }
       | type_definitions { $$ = gql.Schema{TypeDefinitions: $1}}
         ;
 
@@ -465,12 +468,12 @@ operation_type_definition: operation_type ':' type_name
         ;
 
 type_definitions: /* nothing */ { $$ = gql.BuiltinDefinitions() }
-        | type_definitions scalar_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
-        | type_definitions object_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
-        | type_definitions interface_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
-        | type_definitions union_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
-        | type_definitions enum_type_definition { $1[$2.NamedType()] = $2; $$ = $1}
-        | type_definitions input_object_type_definition { $1[$2.NamedType()] = $2; $$ = $1 }
+        | type_definitions scalar_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
+        | type_definitions object_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
+        | type_definitions interface_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
+        | type_definitions union_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
+        | type_definitions enum_type_definition { $1[$2.TypeName()] = $2; $$ = $1}
+        | type_definitions input_object_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
         ;
 
 scalar_type_definition: SCALAR name directives_opt { $$ = gql.ScalarDefinition{Name: $2, Directives: $3 } }

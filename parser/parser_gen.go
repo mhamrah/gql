@@ -16,7 +16,7 @@ type yySymType struct {
 	strs []string
 	val  reflect.Value
 	vals []reflect.Value
-	doc  gql.Document
+	doc  gql.ParsedDocument
 
 	definitions []gql.Definition
 	definition  gql.Definition
@@ -826,7 +826,7 @@ yydefault:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:189
 		{
-			yyVAL.doc = gql.Document{Definitions: yyDollar[1].definitions, Schema: yyDollar[2].schema}
+			yyVAL.doc = gql.ParsedDocument{Definitions: yyDollar[1].definitions, Schema: yyDollar[2].schema}
 		}
 	case 25:
 		yyDollar = yyS[yypt-0 : yypt+1]
@@ -1348,97 +1348,97 @@ yydefault:
 		}
 	case 108:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:446
+		//line parser.y:447
 		{
 			yyVAL.schema = gql.Schema{OperationTypeDefinitions: yyDollar[1].operationTypeDefinitions, TypeDefinitions: yyDollar[2].typeDefinitions}
 		}
 	case 109:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:447
+		//line parser.y:450
 		{
 			yyVAL.schema = gql.Schema{TypeDefinitions: yyDollar[1].typeDefinitions}
 		}
 	case 110:
 		yyDollar = yyS[yypt-5 : yypt+1]
-		//line parser.y:452
+		//line parser.y:455
 		{
 			yyVAL.operationTypeDefinitions = yyDollar[4].operationTypeDefinitions
 		}
 	case 111:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line parser.y:457
+		//line parser.y:460
 		{
 			yyVAL.operationTypeDefinitions = nil
 		}
 	case 112:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:458
+		//line parser.y:461
 		{
 			yyVAL.operationTypeDefinitions = append(yyDollar[1].operationTypeDefinitions, yyDollar[2].operationTypeDefinition)
 		}
 	case 113:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.y:462
+		//line parser.y:465
 		{
 			yyVAL.operationTypeDefinition = gql.OperationTypeDefinition{OpType: yyDollar[1].opType, Name: yyDollar[3].str}
 		}
 	case 114:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line parser.y:467
+		//line parser.y:470
 		{
 			yyVAL.typeDefinitions = gql.BuiltinDefinitions()
 		}
 	case 115:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:468
+		//line parser.y:471
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.NamedType()] = yyDollar[2].typeDefinition
+			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
 			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
 		}
 	case 116:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:469
+		//line parser.y:472
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.NamedType()] = yyDollar[2].typeDefinition
+			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
 			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
 		}
 	case 117:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:470
+		//line parser.y:473
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.NamedType()] = yyDollar[2].typeDefinition
+			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
 			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
 		}
 	case 118:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:471
+		//line parser.y:474
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.NamedType()] = yyDollar[2].typeDefinition
+			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
 			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
 		}
 	case 119:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:472
+		//line parser.y:475
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.NamedType()] = yyDollar[2].typeDefinition
+			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
 			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
 		}
 	case 120:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:473
+		//line parser.y:476
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.NamedType()] = yyDollar[2].typeDefinition
+			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
 			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
 		}
 	case 121:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.y:476
+		//line parser.y:479
 		{
 			yyVAL.typeDefinition = gql.ScalarDefinition{Name: yyDollar[2].str, Directives: yyDollar[3].directives}
 		}
 	case 122:
 		yyDollar = yyS[yypt-7 : yypt+1]
-		//line parser.y:480
+		//line parser.y:483
 		{
 			yyVAL.typeDefinition = gql.ObjectDefinition{
 				Name:       yyDollar[2].str,
@@ -1449,135 +1449,135 @@ yydefault:
 		}
 	case 123:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line parser.y:490
+		//line parser.y:493
 		{
 			yyVAL.strs = nil
 		}
 	case 124:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:491
+		//line parser.y:494
 		{
 			yyVAL.strs = yyDollar[2].strs
 		}
 	case 125:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:494
+		//line parser.y:497
 		{
 			yyVAL.strs = []string{yyDollar[1].str}
 		}
 	case 126:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:495
+		//line parser.y:498
 		{
 			yyVAL.strs = append(yyDollar[1].strs, yyDollar[2].str)
 		}
 	case 127:
 		yyDollar = yyS[yypt-5 : yypt+1]
-		//line parser.y:500
+		//line parser.y:503
 		{
 			yyVAL.fieldDef = gql.FieldDefinition{Name: yyDollar[1].str, Arguments: yyDollar[2].inputDefinitions, Type: yyDollar[4].typeDesc, Directives: yyDollar[5].directives}
 		}
 	case 128:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:505
+		//line parser.y:508
 		{
 			yyVAL.fieldsDef = []gql.FieldDefinition{yyDollar[1].fieldDef}
 		}
 	case 129:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:506
+		//line parser.y:509
 		{
 			yyVAL.fieldsDef = append(yyDollar[1].fieldsDef, yyDollar[2].fieldDef)
 		}
 	case 130:
 		yyDollar = yyS[yypt-0 : yypt+1]
-		//line parser.y:509
+		//line parser.y:512
 		{
 			yyVAL.inputDefinitions = nil
 		}
 	case 131:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:510
+		//line parser.y:513
 		{
 			yyVAL.inputDefinitions = yyDollar[1].inputDefinitions
 		}
 	case 132:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.y:513
+		//line parser.y:516
 		{
 			yyVAL.inputDefinitions = yyDollar[2].inputDefinitions
 		}
 	case 133:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:516
+		//line parser.y:519
 		{
 			yyVAL.inputDefinitions = make(map[string]gql.InputValueDefinition)
 			yyVAL.inputDefinitions[yyDollar[1].inputDefinition.Name] = yyDollar[1].inputDefinition
 		}
 	case 134:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:517
+		//line parser.y:520
 		{
 			yyDollar[1].inputDefinitions[yyDollar[2].inputDefinition.Name] = yyDollar[2].inputDefinition
 			yyVAL.inputDefinitions = yyDollar[1].inputDefinitions
 		}
 	case 135:
 		yyDollar = yyS[yypt-5 : yypt+1]
-		//line parser.y:521
+		//line parser.y:524
 		{
 			yyVAL.inputDefinition = gql.InputValueDefinition{Name: yyDollar[1].str, Type: yyDollar[3].typeDesc, Default: yyDollar[4].val, Directives: yyDollar[5].directives}
 		}
 	case 136:
 		yyDollar = yyS[yypt-6 : yypt+1]
-		//line parser.y:527
+		//line parser.y:530
 		{
 			yyVAL.typeDefinition = gql.InterfaceDefinition{Name: yyDollar[2].str, Fields: yyDollar[5].fieldsDef, Directives: yyDollar[3].directives}
 		}
 	case 137:
 		yyDollar = yyS[yypt-5 : yypt+1]
-		//line parser.y:533
+		//line parser.y:536
 		{
 			yyVAL.typeDefinition = gql.UnionDefinition{Name: yyDollar[2].str, Types: yyDollar[5].strs, Directives: yyDollar[3].directives}
 		}
 	case 138:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:538
+		//line parser.y:541
 		{
 			yyVAL.strs = []string{yyDollar[1].str}
 		}
 	case 139:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line parser.y:539
+		//line parser.y:542
 		{
 			yyVAL.strs = append(yyDollar[1].strs, yyDollar[3].str)
 		}
 	case 140:
 		yyDollar = yyS[yypt-6 : yypt+1]
-		//line parser.y:543
+		//line parser.y:546
 		{
 			yyVAL.typeDefinition = gql.EnumDefinition{Name: yyDollar[2].str, Values: yyDollar[5].strs, Directives: yyDollar[3].directives}
 		}
 	case 141:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:548
+		//line parser.y:551
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 142:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line parser.y:551
+		//line parser.y:554
 		{
 			yyVAL.strs = []string{yyDollar[1].str}
 		}
 	case 143:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line parser.y:552
+		//line parser.y:555
 		{
 			yyVAL.strs = append(yyDollar[1].strs, yyDollar[2].str)
 		}
 	case 144:
 		yyDollar = yyS[yypt-6 : yypt+1]
-		//line parser.y:556
+		//line parser.y:559
 		{
 			yyVAL.typeDefinition = gql.InputObjectDefinition{
 				Name:       yyDollar[2].str,

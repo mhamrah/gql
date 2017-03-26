@@ -1,9 +1,10 @@
-package gql
+package generator
 
 import (
 	"fmt"
-	"reflect"
 	"strings"
+
+	"github.com/mhamrah/gql"
 
 	"text/template"
 )
@@ -24,7 +25,7 @@ func typeMap(input string) string {
 	}
 }
 
-func typeInitializer(input InputValueDefinition) callInit {
+func typeInitializer(input gql.InputValueDefinition) callInit {
 	rhs := "\"\""
 	f := ""
 
@@ -33,14 +34,14 @@ func typeInitializer(input InputValueDefinition) callInit {
 		if input.Default.IsValid() {
 			rhs = input.Default.String()
 		}
-		f = "GetString"
+		f = "ValueAsString"
 	case "Int":
 		d := int64(0)
 		if input.Default.IsValid() {
 			d = input.Default.Int()
 		}
 		rhs = fmt.Sprintf("%v", d)
-		f = "GetInt"
+		f = "ValueAsInt"
 	default:
 		rhs = fmt.Sprintf("&%v{}", input.Type.Name)
 		//f = "copyStruct"
@@ -55,18 +56,4 @@ func typeInitializer(input InputValueDefinition) callInit {
 type callInit struct {
 	Init   string
 	Setter string
-}
-
-func GetInt(input reflect.Value) (int, error) {
-	if input.Kind() != reflect.Int {
-		return 0, fmt.Errorf("%v not an int", input.Kind())
-	}
-	return int(input.Int()), nil
-}
-
-func GetString(input reflect.Value) (string, error) {
-	if input.Kind() != reflect.String {
-		return "", fmt.Errorf("%v not a string", input.Kind())
-	}
-	return input.String(), nil
 }

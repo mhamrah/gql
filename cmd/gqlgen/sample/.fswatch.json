@@ -1,0 +1,17 @@
+{
+    "paths": [
+        "."
+    ],
+    "depth": 0,
+    "exclude": ["node_modules"],
+    "include": [
+        "\\.(go)$"
+    ],
+    "command": "go test -v ./...",
+    "env": {
+        "POWERD_BY": "github.com/codeskyblue/fswatch"
+    },
+    "autorestart": false,
+    "restart-interval": 0,
+    "kill-signal": "KILL"
+}

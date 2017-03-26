@@ -8,11 +8,11 @@ import (
 )
 
 // ParseString
-func ParseString(q string) (*gql.Document, error) {
+func ParseString(q string) (*gql.ParsedDocument, error) {
 	return ParseBytes([]byte(q))
 }
 
-func ParseBytes(b []byte) (*gql.Document, error) {
+func ParseBytes(b []byte) (*gql.ParsedDocument, error) {
 	lex := newLexer(b)
 	p := yyNewParser()
 	e := p.Parse(lex)

@@ -35,7 +35,7 @@ func (s query_impl) Human(ctx context.Context, operation gql.Selection) (gql.Sel
 		if !input.Value.IsValid() {
 			return nil, fmt.Errorf("%v does not contain a valid value", id)
 		}
-		id, err = gql.GetString(input.Value)
+		id, err = gql.ValueAsString(input.Value)
 		if err != nil {
 			return nil, err
 		}

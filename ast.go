@@ -9,7 +9,7 @@ type Selectable interface {
 	ValueFromName(string) interface{}
 }
 
-type Document struct {
+type ParsedDocument struct {
 	Definitions []Definition
 	Schema      Schema
 }
@@ -83,44 +83,13 @@ type ObjectField struct {
 	Value reflect.Value
 }
 
-type Schema struct {
-	OperationTypeDefinitions []OperationTypeDefinition
-	TypeDefinitions          map[string]TypeDefinition
-}
-
-func BuiltinDefinitions() map[string]TypeDefinition {
-	builtin := make(map[string]TypeDefinition)
-
-	builtin["Int"] = ScalarDefinition{Name: "Int"}
-	builtin["Float"] = ScalarDefinition{Name: "Float"}
-
-	builtin["String"] = ScalarDefinition{Name: "Float"}
-	builtin["Boolean"] = BooleanDefinition{}
-	builtin["ID"] = ScalarDefinition{Name: "ID"}
-	builtin["Float"] = ScalarDefinition{Name: "Float"}
-
-	return builtin
-}
-
-type BooleanDefinition struct {
-}
-
-func (b BooleanDefinition) Generate(w io.Writer) error {
-	return nil
-}
-
-func (b BooleanDefinition) NamedType() string {
-	return "Boolean"
-}
-
 type OperationTypeDefinition struct {
 	OpType OpType
 	Name   string
 }
 
 type TypeDefinition interface {
-	Generate(w io.Writer) error
-	NamedType() string
+	TypeName() string
 }
 
 type ScalarDefinition struct {
@@ -128,11 +97,7 @@ type ScalarDefinition struct {
 	Directives []Directive
 }
 
-func (s ScalarDefinition) Generate(w io.Writer) error {
-	return nil
-}
-
-func (s ScalarDefinition) NamedType() string {
+func (s ScalarDefinition) TypeName() string {
 	return s.Name
 }
 
@@ -150,11 +115,7 @@ type InputValueDefinition struct {
 	Directives []Directive
 }
 
-func (i InputValueDefinition) Generate(w io.Writer) error {
-	return nil
-}
-
-func (i InputValueDefinition) NamedType() string {
+func (i InputValueDefinition) TypeName() string {
 	return i.Name
 }
 
@@ -165,11 +126,7 @@ type InterfaceDefinition struct {
 	Directives []Directive
 }
 
-func (i InterfaceDefinition) Generate(w io.Writer) error {
-	return nil
-}
-
-func (i InterfaceDefinition) NamedType() string {
+func (i InterfaceDefinition) TypeName() string {
 	return i.Name
 }
 
@@ -179,11 +136,7 @@ type UnionDefinition struct {
 	Directives []Directive
 }
 
-func (u UnionDefinition) Generate(w io.Writer) error {
-	return nil
-}
-
-func (u UnionDefinition) NamedType() string {
+func (u UnionDefinition) TypeName() string {
 	return u.Name
 }
 
@@ -193,11 +146,7 @@ type EnumDefinition struct {
 	Directives []Directive
 }
 
-func (e EnumDefinition) Generate(w io.Writer) error {
-	return nil
-}
-
-func (e EnumDefinition) NamedType() string {
+func (e EnumDefinition) TypeName() string {
 	return e.Name
 }
 
@@ -211,7 +160,7 @@ func (i InputObjectDefinition) Generate(w io.Writer) error {
 	return nil
 }
 
-func (i InputObjectDefinition) NamedType() string {
+func (i InputObjectDefinition) TypeName() string {
 	return i.Name
 }
 
