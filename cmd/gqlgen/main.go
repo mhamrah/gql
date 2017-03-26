@@ -53,7 +53,7 @@ func Generate(dir, name string, schema io.Reader) error {
 		return err
 	}
 
-	s, err := validator.Validate(doc.Schema)
+	s, err := validator.BuildSchema(doc.Schema)
 	if err != nil {
 		return err
 	}
