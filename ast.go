@@ -9,11 +9,6 @@ type Selectable interface {
 	ValueFromName(string) interface{}
 }
 
-type ParsedDocument struct {
-	Definitions []Definition
-	Schema      Schema
-}
-
 type OpType int
 
 const (

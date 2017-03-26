@@ -7,12 +7,22 @@ import (
 	"github.com/mhamrah/gql"
 )
 
+type Document struct {
+	Definitions []gql.Definition
+	Schema      Schema
+}
+
+type Schema struct {
+	OperationTypeDefinitions []gql.OperationTypeDefinition
+	TypeDefinitions          map[string]gql.TypeDefinition
+}
+
 // ParseString
-func ParseString(q string) (*gql.ParsedDocument, error) {
+func ParseString(q string) (*Document, error) {
 	return ParseBytes([]byte(q))
 }
 
-func ParseBytes(b []byte) (*gql.ParsedDocument, error) {
+func ParseBytes(b []byte) (*Document, error) {
 	lex := newLexer(b)
 	p := yyNewParser()
 	e := p.Parse(lex)

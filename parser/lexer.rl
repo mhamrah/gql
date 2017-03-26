@@ -4,7 +4,6 @@ import (
         "fmt"
         "reflect"
         "strconv"
-        "github.com/mhamrah/gql"
 )
 
 %%{
@@ -16,7 +15,7 @@ import (
 }%%
 
 type lexer struct {
-    doc gql.ParsedDocument
+    doc Document
     err error
     parseFailed bool
 

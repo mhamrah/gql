@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/kr/pretty"
 	"github.com/mhamrah/gql/parser"
+	"github.com/mhamrah/gql/validator"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -69,7 +70,8 @@ func TestGenerateDefaultSchema(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, ast)
 
-			result, err := Generate(&ast.Schema, "test")
+			s, _ := validator.Validate(ast.Schema)
+			result, err := Generate(s, "test")
 			assert.Equal(t, test.err, err)
 			test.verify(t, result)
 		})

@@ -1,10 +1,5 @@
 package gql
 
-type ParsedSchema struct {
-	OperationTypeDefinitions []OperationTypeDefinition
-	TypeDefinitions          map[string]TypeDefinition
-}
-
 type Schema struct {
 	OperationTypeDefinitions []OperationTypeDefinition
 	TypeDefinitions          map[string]TypeDefinition

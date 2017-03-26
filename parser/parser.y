@@ -12,7 +12,7 @@ import (
     strs []string
     val reflect.Value
     vals []reflect.Value
-    doc gql.ParsedDocument
+    doc Document
 
     definitions []gql.Definition
     definition gql.Definition
@@ -37,7 +37,7 @@ import (
     objectField gql.ObjectField
     objectFields []gql.ObjectField
 
-    schema gql.Schema
+    schema Schema
     operationTypeDefinition gql.OperationTypeDefinition
     operationTypeDefinitions []gql.OperationTypeDefinition
     typeDefinition gql.TypeDefinition
@@ -187,7 +187,7 @@ name_opt: /* nothing */ { $$ = "" }
 document
         : definition_list schema
                 {
-                       $$ = gql.ParsedDocument{Definitions: $1, Schema: $2 }
+                       $$ = Document{Definitions: $1, Schema: $2 }
                 }
         ;
 
@@ -445,9 +445,9 @@ directive: '@' name arguments_opt { $$ = gql.Directive{ Name: $2, Arguments: $3}
 
 schema: schema_definition type_definitions
         {
-                $$ = gql.Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 }
+                $$ = Schema{ OperationTypeDefinitions: $1, TypeDefinitions: $2 }
         }
-      | type_definitions { $$ = gql.Schema{TypeDefinitions: $1}}
+      | type_definitions { $$ = Schema{TypeDefinitions: $1}}
         ;
 
 

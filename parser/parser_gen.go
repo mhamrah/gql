@@ -16,7 +16,7 @@ type yySymType struct {
 	strs []string
 	val  reflect.Value
 	vals []reflect.Value
-	doc  gql.ParsedDocument
+	doc  Document
 
 	definitions []gql.Definition
 	definition  gql.Definition
@@ -41,7 +41,7 @@ type yySymType struct {
 	objectField    gql.ObjectField
 	objectFields   []gql.ObjectField
 
-	schema                   gql.Schema
+	schema                   Schema
 	operationTypeDefinition  gql.OperationTypeDefinition
 	operationTypeDefinitions []gql.OperationTypeDefinition
 	typeDefinition           gql.TypeDefinition
@@ -826,7 +826,7 @@ yydefault:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:189
 		{
-			yyVAL.doc = gql.ParsedDocument{Definitions: yyDollar[1].definitions, Schema: yyDollar[2].schema}
+			yyVAL.doc = Document{Definitions: yyDollar[1].definitions, Schema: yyDollar[2].schema}
 		}
 	case 25:
 		yyDollar = yyS[yypt-0 : yypt+1]
@@ -1350,13 +1350,13 @@ yydefault:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:447
 		{
-			yyVAL.schema = gql.Schema{OperationTypeDefinitions: yyDollar[1].operationTypeDefinitions, TypeDefinitions: yyDollar[2].typeDefinitions}
+			yyVAL.schema = Schema{OperationTypeDefinitions: yyDollar[1].operationTypeDefinitions, TypeDefinitions: yyDollar[2].typeDefinitions}
 		}
 	case 109:
 		yyDollar = yyS[yypt-1 : yypt+1]
 		//line parser.y:450
 		{
-			yyVAL.schema = gql.Schema{TypeDefinitions: yyDollar[1].typeDefinitions}
+			yyVAL.schema = Schema{TypeDefinitions: yyDollar[1].typeDefinitions}
 		}
 	case 110:
 		yyDollar = yyS[yypt-5 : yypt+1]

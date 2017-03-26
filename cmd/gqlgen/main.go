@@ -14,6 +14,7 @@ import (
 
 	"github.com/mhamrah/gql/generator"
 	"github.com/mhamrah/gql/parser"
+	"github.com/mhamrah/gql/validator"
 )
 
 //go:generate go run main.go sample/sample.graphql
@@ -47,12 +48,17 @@ func Generate(dir, name string, schema io.Reader) error {
 		return err
 	}
 
-	s, err := parser.ParseBytes(b)
+	doc, err := parser.ParseBytes(b)
 	if err != nil {
 		return err
 	}
 
-	files, err := generator.Generate(&s.Schema, name)
+	s, err := validator.Validate(doc.Schema)
+	if err != nil {
+		return err
+	}
+
+	files, err := generator.Generate(s, name)
 	if err != nil {
 		return err
 	}

@@ -6,11 +6,10 @@ import (
         "fmt"
         "reflect"
         "strconv"
-        "github.com/mhamrah/gql"
 )
 
 
-//line lexer_gen.go:14
+//line lexer_gen.go:13
 const graphql_start int = 3
 const graphql_first_final int = 3
 const graphql_error int = -1
@@ -18,11 +17,11 @@ const graphql_error int = -1
 const graphql_en_main int = 3
 
 
-//line lexer.rl:16
+//line lexer.rl:15
 
 
 type lexer struct {
-    doc gql.ParsedDocument
+    doc Document
     err error
     parseFailed bool
 
@@ -38,7 +37,7 @@ func newLexer(data []byte) *lexer {
         parseFailed: false,
     }
     
-//line lexer_gen.go:42
+//line lexer_gen.go:41
 	{
 	 lex.cs = graphql_start
 	 lex.ts = 0
@@ -46,7 +45,7 @@ func newLexer(data []byte) *lexer {
 	 lex.act = 0
 	}
 
-//line lexer.rl:35
+//line lexer.rl:34
     return lex
 }
 
@@ -54,7 +53,7 @@ func (lex *lexer) Lex(out *yySymType) int {
     eof := lex.pe
     tok := 0
     
-//line lexer_gen.go:58
+//line lexer_gen.go:57
 	{
 	if ( lex.p) == ( lex.pe) {
 		goto _test_eof
@@ -253,12 +252,12 @@ func (lex *lexer) Lex(out *yySymType) int {
 	}
 	goto st_out
 tr0:
-//line lexer.rl:107
+//line lexer.rl:106
 ( lex.p) = ( lex.te) - 1
 { }
 	goto st3
 tr2:
-//line lexer.rl:92
+//line lexer.rl:91
  lex.te = ( lex.p)+1
 {
                 out.val = reflect.ValueOf(string(lex.data[lex.ts+1:lex.te-1]));
@@ -267,7 +266,7 @@ tr2:
             }
 	goto st3
 tr4:
-//line lexer.rl:70
+//line lexer.rl:69
  lex.te = ( lex.p)+1
 {
                 tok = SPREAD;
@@ -275,17 +274,17 @@ tr4:
             }
 	goto st3
 tr5:
-//line lexer.rl:107
+//line lexer.rl:106
  lex.te = ( lex.p)+1
 { }
 	goto st3
 tr6:
-//line lexer.rl:106
+//line lexer.rl:105
  lex.te = ( lex.p)+1
 
 	goto st3
 tr7:
-//line lexer.rl:97
+//line lexer.rl:96
  lex.te = ( lex.p)+1
 {
                 tok = int(lex.data[lex.ts])
@@ -293,7 +292,7 @@ tr7:
             }
 	goto st3
 tr25:
-//line lexer.rl:107
+//line lexer.rl:106
  lex.te = ( lex.p)
 ( lex.p)--
 { }
@@ -376,7 +375,7 @@ tr26:
 	
 	goto st3
 tr28:
-//line lexer.rl:83
+//line lexer.rl:82
  lex.te = ( lex.p)
 ( lex.p)--
 {
@@ -390,7 +389,7 @@ tr28:
             }
 	goto st3
 tr30:
-//line lexer.rl:78
+//line lexer.rl:77
  lex.te = ( lex.p)
 ( lex.p)--
 {
@@ -410,7 +409,7 @@ tr30:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lexer_gen.go:414
+//line lexer_gen.go:413
 		switch  lex.data[( lex.p)] {
 		case 32:
 			goto tr6
@@ -496,7 +495,7 @@ tr8:
 			goto _test_eof4
 		}
 	st_case_4:
-//line lexer_gen.go:500
+//line lexer_gen.go:499
 		switch  lex.data[( lex.p)] {
 		case 10:
 			goto tr25
@@ -530,14 +529,14 @@ tr9:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:107
+//line lexer.rl:106
  lex.act = 27;
 	goto st5
 tr27:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:101
+//line lexer.rl:100
  lex.act = 25;
 	goto st5
 	st5:
@@ -545,7 +544,7 @@ tr27:
 			goto _test_eof5
 		}
 	st_case_5:
-//line lexer_gen.go:549
+//line lexer_gen.go:548
 		if  lex.data[( lex.p)] == 95 {
 			goto tr27
 		}
@@ -590,7 +589,7 @@ tr11:
 			goto _test_eof8
 		}
 	st_case_8:
-//line lexer_gen.go:594
+//line lexer_gen.go:593
 		if  lex.data[( lex.p)] == 46 {
 			goto st2
 		}
@@ -608,133 +607,133 @@ tr13:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:78
+//line lexer.rl:77
  lex.act = 21;
 	goto st9
 tr38:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:52
+//line lexer.rl:51
  lex.act = 1;
 	goto st9
 tr42:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:53
+//line lexer.rl:52
  lex.act = 2;
 	goto st9
 tr46:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:54
+//line lexer.rl:53
  lex.act = 3;
 	goto st9
 tr51:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:55
+//line lexer.rl:54
  lex.act = 4;
 	goto st9
 tr57:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:56
+//line lexer.rl:55
  lex.act = 5;
 	goto st9
 tr67:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:57
+//line lexer.rl:56
  lex.act = 6;
 	goto st9
 tr71:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:58
+//line lexer.rl:57
  lex.act = 7;
 	goto st9
 tr77:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:59
+//line lexer.rl:58
  lex.act = 8;
 	goto st9
 tr84:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:60
+//line lexer.rl:59
  lex.act = 9;
 	goto st9
 tr87:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:61
+//line lexer.rl:60
  lex.act = 10;
 	goto st9
 tr88:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:63
+//line lexer.rl:62
  lex.act = 12;
 	goto st9
 tr92:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:62
+//line lexer.rl:61
  lex.act = 11;
 	goto st9
 tr99:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:64
+//line lexer.rl:63
  lex.act = 13;
 	goto st9
 tr102:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:65
+//line lexer.rl:64
  lex.act = 14;
 	goto st9
 tr112:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:66
+//line lexer.rl:65
  lex.act = 15;
 	goto st9
 tr116:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:67
+//line lexer.rl:66
  lex.act = 16;
 	goto st9
 tr118:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:68
+//line lexer.rl:67
  lex.act = 17;
 	goto st9
 tr122:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lexer.rl:69
+//line lexer.rl:68
  lex.act = 18;
 	goto st9
 	st9:
@@ -742,7 +741,7 @@ tr122:
 			goto _test_eof9
 		}
 	st_case_9:
-//line lexer_gen.go:746
+//line lexer_gen.go:745
 		if  lex.data[( lex.p)] == 95 {
 			goto tr13
 		}
@@ -3107,7 +3106,7 @@ tr122:
 	_out: {}
 	}
 
-//line lexer.rl:111
+//line lexer.rl:110
 
 
     return tok;
