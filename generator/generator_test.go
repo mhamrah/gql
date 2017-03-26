@@ -36,10 +36,6 @@ const noQuery = `
 	}
 `
 
-// const invalidQuery = `
-// 	scalar Query
-// `
-
 type verifyGenCode func(t *testing.T, input map[string]bytes.Buffer)
 
 func verifyNotNil(t *testing.T, input map[string]bytes.Buffer) {
@@ -60,7 +56,6 @@ func TestGenerateDefaultSchema(t *testing.T) {
 		{"simple", simpleSchema, nil, verifyNotNil},
 		{"default", defaultSchema, nil, verifyNotNil},
 		{"noQuery", noQuery, validator.ErrNoQuery, verifyNil},
-		//	{"invalidQuery", invalidQuery, validator.ErrInvalidQueryType, verifyNil},
 	}
 
 	for _, test := range testCases {

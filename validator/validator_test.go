@@ -62,26 +62,28 @@ func TestBuildSchema(t *testing.T) {
 
 }
 
-// func TestBuildSchemaErrors(t *testing.T) {
-// 	testCases := []struct {
-// 		title   string
-// 		input   gql.ObjectDefinition
-// 		typeDef string
-// 	}{
-// 		{"queryType", queryType, "Query"},
-// 	}
+func TestBuildSchemaErrors(t *testing.T) {
+	testCases := []struct {
+		title       string
+		input       gql.TypeDefinition
+		typeDef     string
+		expectedErr error
+	}{
+		{"queryType", scalarQuery, "Query", ErrInvalidQueryType},
+	}
 
-// 	for _, test := range testCases {
-// 		t.Run(test.title, func(t *testing.T) {
-// 			schema := parser.Schema{
-// 				TypeDefinitions: map[string]gql.TypeDefinition{
-// 					test.typeDef: test.input,
-// 				},
-// 			}
-// 			result, err := BuildSchema(schema)
-// 			assert.NoError(t, err)
-// 			assert.Equal(t, test.input, result.QueryType)
-// 		})
-// 	}
+	for _, test := range testCases {
+		t.Run(test.title, func(t *testing.T) {
+			schema := parser.Schema{
+				TypeDefinitions: map[string]gql.TypeDefinition{
+					test.typeDef: test.input,
+				},
+			}
+			result, err := BuildSchema(schema)
+			assert.Equal(t, test.expectedErr, err)
+			assert.Nil(t, result)
 
-// }
+		})
+	}
+
+}
