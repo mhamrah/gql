@@ -40,23 +40,22 @@ var (
 func TestBuildSchema(t *testing.T) {
 
 	testCases := []struct {
-		title   string
-		input   gql.ObjectDefinition
-		typeDef string
+		title    string
+		opDefs   []gql.OperationTypeDefinition
+		typeDefs []gql.TypeDefinition
 	}{
-		{"queryType", queryType, "Query"},
+		{"queryType", nil, []gql.TypeDefinition{queryType}},
 	}
 
 	for _, test := range testCases {
 		t.Run(test.title, func(t *testing.T) {
 			schema := parser.Schema{
-				TypeDefinitions: map[string]gql.TypeDefinition{
-					test.typeDef: test.input,
-				},
+				OperationTypeDefinitions: test.opDefs,
+				TypeDefinitions:          test.typeDefs,
 			}
 			result, err := BuildSchema(schema)
 			assert.NoError(t, err)
-			assert.Equal(t, test.input, result.QueryType)
+			assert.Equal(t, test.typeDefs[0], result.QueryType)
 		})
 	}
 
@@ -65,19 +64,18 @@ func TestBuildSchema(t *testing.T) {
 func TestBuildSchemaErrors(t *testing.T) {
 	testCases := []struct {
 		title       string
-		input       gql.TypeDefinition
-		typeDef     string
+		opDefs      []gql.OperationTypeDefinition
+		typeDefs    []gql.TypeDefinition
 		expectedErr error
 	}{
-		{"queryType", scalarQuery, "Query", ErrInvalidQueryType},
+		{"queryType", nil, []gql.TypeDefinition{scalarQuery}, ErrInvalidQueryType},
 	}
 
 	for _, test := range testCases {
 		t.Run(test.title, func(t *testing.T) {
 			schema := parser.Schema{
-				TypeDefinitions: map[string]gql.TypeDefinition{
-					test.typeDef: test.input,
-				},
+				OperationTypeDefinitions: test.opDefs,
+				TypeDefinitions:          test.typeDefs,
 			}
 			result, err := BuildSchema(schema)
 			assert.Equal(t, test.expectedErr, err)

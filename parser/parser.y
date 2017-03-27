@@ -41,7 +41,7 @@ import (
     operationTypeDefinition gql.OperationTypeDefinition
     operationTypeDefinitions []gql.OperationTypeDefinition
     typeDefinition gql.TypeDefinition
-    typeDefinitions map[string]gql.TypeDefinition
+    typeDefinitions []gql.TypeDefinition
     inputDefinitions map[string]gql.InputValueDefinition
     inputDefinition gql.InputValueDefinition
     fieldDef gql.FieldDefinition
@@ -467,13 +467,13 @@ operation_type_definition: operation_type ':' type_name
         }
         ;
 
-type_definitions: /* nothing */ { $$ = gql.BuiltinDefinitions() }
-        | type_definitions scalar_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
-        | type_definitions object_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
-        | type_definitions interface_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
-        | type_definitions union_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
-        | type_definitions enum_type_definition { $1[$2.TypeName()] = $2; $$ = $1}
-        | type_definitions input_object_type_definition { $1[$2.TypeName()] = $2; $$ = $1 }
+type_definitions: /* nothing */ { $$ = nil }
+        | type_definitions scalar_type_definition { $$ = append($1, $2) }
+        | type_definitions object_type_definition { $$ = append($1, $2) }
+        | type_definitions interface_type_definition { $$ = append($1, $2) }
+        | type_definitions union_type_definition { $$ = append($1, $2) }
+        | type_definitions enum_type_definition { $$ = append($1, $2) }
+        | type_definitions input_object_type_definition { $$ = append($1, $2) }
         ;
 
 scalar_type_definition: SCALAR name directives_opt { $$ = gql.ScalarDefinition{Name: $2, Directives: $3 } }

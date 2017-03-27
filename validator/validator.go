@@ -15,13 +15,18 @@ var (
 func BuildSchema(input parser.Schema) (*gql.Schema, error) {
 
 	var query gql.ObjectDefinition
+	typeDefs := make(map[string]gql.TypeDefinition)
+
+	for _, td := range input.TypeDefinitions {
+		typeDefs[td.TypeName()] = td
+	}
 
 	if len(input.OperationTypeDefinitions) == 0 {
-		q, ok := input.TypeDefinitions["Query"]
+		q, ok := typeDefs["Query"]
 		if !ok {
 			return nil, ErrNoQuery
 		}
-		delete(input.TypeDefinitions, "Query")
+		delete(typeDefs, "Query")
 		od, ok := q.(gql.ObjectDefinition)
 		if !ok {
 			return nil, ErrInvalidQueryType
@@ -29,5 +34,5 @@ func BuildSchema(input parser.Schema) (*gql.Schema, error) {
 		query = od
 	}
 
-	return &gql.Schema{QueryType: query, Types: input.TypeDefinitions}, nil
+	return &gql.Schema{QueryType: query, Types: typeDefs}, nil
 }

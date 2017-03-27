@@ -45,7 +45,7 @@ type yySymType struct {
 	operationTypeDefinition  gql.OperationTypeDefinition
 	operationTypeDefinitions []gql.OperationTypeDefinition
 	typeDefinition           gql.TypeDefinition
-	typeDefinitions          map[string]gql.TypeDefinition
+	typeDefinitions          []gql.TypeDefinition
 	inputDefinitions         map[string]gql.InputValueDefinition
 	inputDefinition          gql.InputValueDefinition
 	fieldDef                 gql.FieldDefinition
@@ -1386,49 +1386,43 @@ yydefault:
 		yyDollar = yyS[yypt-0 : yypt+1]
 		//line parser.y:470
 		{
-			yyVAL.typeDefinitions = gql.BuiltinDefinitions()
+			yyVAL.typeDefinitions = nil
 		}
 	case 115:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:471
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
-			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
+			yyVAL.typeDefinitions = append(yyDollar[1].typeDefinitions, yyDollar[2].typeDefinition)
 		}
 	case 116:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:472
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
-			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
+			yyVAL.typeDefinitions = append(yyDollar[1].typeDefinitions, yyDollar[2].typeDefinition)
 		}
 	case 117:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:473
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
-			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
+			yyVAL.typeDefinitions = append(yyDollar[1].typeDefinitions, yyDollar[2].typeDefinition)
 		}
 	case 118:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:474
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
-			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
+			yyVAL.typeDefinitions = append(yyDollar[1].typeDefinitions, yyDollar[2].typeDefinition)
 		}
 	case 119:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:475
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
-			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
+			yyVAL.typeDefinitions = append(yyDollar[1].typeDefinitions, yyDollar[2].typeDefinition)
 		}
 	case 120:
 		yyDollar = yyS[yypt-2 : yypt+1]
 		//line parser.y:476
 		{
-			yyDollar[1].typeDefinitions[yyDollar[2].typeDefinition.TypeName()] = yyDollar[2].typeDefinition
-			yyVAL.typeDefinitions = yyDollar[1].typeDefinitions
+			yyVAL.typeDefinitions = append(yyDollar[1].typeDefinitions, yyDollar[2].typeDefinition)
 		}
 	case 121:
 		yyDollar = yyS[yypt-3 : yypt+1]

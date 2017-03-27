@@ -53,8 +53,8 @@ func TestSchemaHelloWorld(t *testing.T) {
 	schema := doc.Schema
 	assert.NotNil(t, schema)
 	assert.Nil(t, schema.OperationTypeDefinitions)
-	assert.Len(t, schema.TypeDefinitions, 6)
-	td := schema.TypeDefinitions["Hello"]
+	assert.Len(t, schema.TypeDefinitions, 1)
+	td := schema.TypeDefinitions[0]
 	assert.IsType(t, gql.ObjectDefinition{}, td)
 	od, _ := td.(gql.ObjectDefinition)
 	assert.Equal(t, "Hello", od.Name)
@@ -69,5 +69,5 @@ func TestSchemaKitchenSink(t *testing.T) {
 	assert.NotNil(t, doc)
 	schema := doc.Schema
 	assert.Len(t, schema.OperationTypeDefinitions, 2)
-	assert.Len(t, schema.TypeDefinitions, 17)
+	assert.Len(t, schema.TypeDefinitions, 12)
 }

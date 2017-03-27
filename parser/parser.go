@@ -14,7 +14,7 @@ type Document struct {
 
 type Schema struct {
 	OperationTypeDefinitions []gql.OperationTypeDefinition
-	TypeDefinitions          map[string]gql.TypeDefinition
+	TypeDefinitions          []gql.TypeDefinition
 }
 
 // ParseString
