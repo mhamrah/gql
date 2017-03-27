@@ -8,4 +8,5 @@ type HandlerFunc func(context.Context, Selection) (Selectable, error)
 
 type Service interface {
 	Handlers() map[string]HandlerFunc
+	Schema() Schema
 }

@@ -13,3 +13,7 @@ type ObjectDefinition struct {
 func (o ObjectDefinition) TypeName() string {
 	return o.Name
 }
+
+func (o ObjectDefinition) ValueFromName(input string) interface{} {
+	return o.Name
+}

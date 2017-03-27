@@ -27,6 +27,10 @@ func (s query_impl) Handlers() map[string]gql.HandlerFunc {
 	}
 }
 
+func (s query_impl) Schema() gql.Schema {
+	return gql.Schema{}
+}
+
 func (s query_impl) Human(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 
 	id := ""

@@ -53,6 +53,10 @@ func genService(w io.Writer, od gql.ObjectDefinition) error {
 			}
 		}
 
+		func (s {{ lower .Name}}_impl) Schema() gql.Schema {
+			return gql.Schema{}
+		}
+
 		{{ $s := lower .Name }}{{ range .Fields }}
 			func (s {{ $s }}_impl) {{ title .Name }}(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 				{{ range $key, $arg := .Arguments }}

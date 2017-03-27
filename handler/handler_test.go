@@ -23,6 +23,8 @@ var handlers = map[string]gql.HandlerFunc{
 	"success": returnsSuccess,
 }
 
+var schema = gql.Schema{}
+
 func TestHandler(t *testing.T) {
 	testCases := []struct {
 		title        string
@@ -39,6 +41,7 @@ func TestHandler(t *testing.T) {
 
 	svc := mocks.NewMockService(mockCtrl)
 	svc.EXPECT().Handlers().Return(handlers)
+	svc.EXPECT().Schema().Return(schema)
 	h := NewGqlHandler(svc)
 
 	ts := httptest.NewServer(h)

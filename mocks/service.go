@@ -38,3 +38,13 @@ func (_m *MockService) Handlers() map[string]gql.HandlerFunc {
 func (_mr *_MockServiceRecorder) Handlers() *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "Handlers")
 }
+
+func (_m *MockService) Schema() gql.Schema {
+	ret := _m.ctrl.Call(_m, "Schema")
+	ret0, _ := ret[0].(gql.Schema)
+	return ret0
+}
+
+func (_mr *_MockServiceRecorder) Schema() *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "Schema")
+}

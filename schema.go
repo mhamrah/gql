@@ -7,6 +7,10 @@ type Schema struct {
 	Directives   map[string]Directive      //[__Directive!]!
 }
 
+func (s Schema) ValueFromName(field string) interface{} {
+	return "foo"
+}
+
 func BuiltinDefinitions() map[string]TypeDefinition {
 	builtin := make(map[string]TypeDefinition)
 

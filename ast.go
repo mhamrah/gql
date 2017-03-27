@@ -1,9 +1,6 @@
 package gql
 
-import (
-	"io"
-	"reflect"
-)
+import "reflect"
 
 type Selectable interface {
 	ValueFromName(string) interface{}
@@ -84,6 +81,7 @@ type OperationTypeDefinition struct {
 }
 
 type TypeDefinition interface {
+	Selectable
 	TypeName() string
 }
 
@@ -93,6 +91,10 @@ type ScalarDefinition struct {
 }
 
 func (s ScalarDefinition) TypeName() string {
+	return s.Name
+}
+
+func (s ScalarDefinition) ValueFromName(input string) interface{} {
 	return s.Name
 }
 
@@ -114,6 +116,10 @@ func (i InputValueDefinition) TypeName() string {
 	return i.Name
 }
 
+func (i InputValueDefinition) ValueFromName(input string) interface{} {
+	return i.Name
+}
+
 type InterfaceDefinition struct {
 	Name string
 
@@ -122,6 +128,10 @@ type InterfaceDefinition struct {
 }
 
 func (i InterfaceDefinition) TypeName() string {
+	return i.Name
+}
+
+func (i InterfaceDefinition) ValueFromName(input string) interface{} {
 	return i.Name
 }
 
@@ -135,6 +145,10 @@ func (u UnionDefinition) TypeName() string {
 	return u.Name
 }
 
+func (u UnionDefinition) ValueFromName(input string) interface{} {
+	return u.Name
+}
+
 type EnumDefinition struct {
 	Name       string
 	Values     []string
@@ -145,17 +159,21 @@ func (e EnumDefinition) TypeName() string {
 	return e.Name
 }
 
+func (e EnumDefinition) ValueFromName(input string) interface{} {
+	return e.Name
+}
+
 type InputObjectDefinition struct {
 	Name       string
 	InputDefs  map[string]InputValueDefinition
 	Directives []Directive
 }
 
-func (i InputObjectDefinition) Generate(w io.Writer) error {
-	return nil
+func (i InputObjectDefinition) TypeName() string {
+	return i.Name
 }
 
-func (i InputObjectDefinition) TypeName() string {
+func (i InputObjectDefinition) ValueFromName(input string) interface{} {
 	return i.Name
 }
 
