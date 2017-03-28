@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -49,7 +48,8 @@ func (h *gqlHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 			response, err := handler(r.Context(), selection)
 			if err != nil {
-				http.Error(w, fmt.Sprintf("impl returned error for %v", name), http.StatusBadRequest)
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
 			}
 
 			renderSelection(w, response, selection)
@@ -77,8 +77,7 @@ func (h *gqlHandler) schemaHandler(context context.Context, operation gql.Select
 }
 
 func (h *gqlHandler) typeHandler(context context.Context, operation gql.Selection) (gql.Selectable, error) {
-	name := ""
-	name, err := argumentAsString(operation.Field, "name", name)
+	name, err := operation.Field.StringValue("name", "", true)
 	if err != nil {
 		return nil, err
 	}
@@ -88,47 +87,4 @@ func (h *gqlHandler) typeHandler(context context.Context, operation gql.Selectio
 		return nil, fmt.Errorf("type %v not defined in schema", name)
 	}
 	return success, nil
-}
-
-func argumentAsString(field gql.Field, arg string, current string) (string, error) {
-	result := current
-	if input, ok := field.Arguments[arg]; ok {
-		var err error
-		if !input.Value.IsValid() {
-			return result, fmt.Errorf("%v does not contain a valid value", arg)
-		}
-		result, err = gql.ValueAsString(input.Value)
-		if err != nil {
-			return result, err
-		}
-	}
-	return result, nil
-}
-
-func renderSelection(w http.ResponseWriter, result gql.Selectable, selection gql.Selection) {
-	r := make(map[string]interface{})
-	for _, s := range selection.Field.SelectionSet {
-		f := s.Field
-
-		r[f.Name] = result.ValueFromName(f.Name)
-	}
-
-	if err := json.NewEncoder(w).Encode(GraphqlResonse{Data: r}); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	}
-}
-
-type GraphqlResonse struct {
-	Data   map[string]interface{} `json:"data"`
-	Errors []Error                `json:"errors,omitempty"`
-}
-
-type Location struct {
-	Line   int `json:",omitempty"`
-	Column int `json:",omitempty"`
-}
-
-type Error struct {
-	Message  string   `json:"message"`
-	Location Location `json:"location,omitempty"`
 }

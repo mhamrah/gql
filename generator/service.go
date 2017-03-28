@@ -60,18 +60,11 @@ func genService(w io.Writer, od gql.ObjectDefinition) error {
 		{{ $s := lower .Name }}{{ range .Fields }}
 			func (s {{ $s }}_impl) {{ title .Name }}(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 				{{ range $key, $arg := .Arguments }}
-					{{ $init := typeInitializer $arg }}
-					{{ $init.Init }}
-					if input, ok := operation.Field.Arguments["{{ $key }}"]; ok {
-						var err error
-						if !input.Value.IsValid() {
-							return nil, fmt.Errorf("%v does not contain a valid value", {{ $key }})
-						}
-						{{ $init.Setter }}
+					{{ typeInitializer $arg }}
 						if err != nil {
 							return nil, err
 						}
-					}
+
 
 				{{ end }}
 

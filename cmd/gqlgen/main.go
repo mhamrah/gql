@@ -70,7 +70,8 @@ func Generate(dir, name string, schema io.Reader) error {
 		fset := token.NewFileSet()
 		f, err := gparser.ParseFile(fset, name, v.Bytes(), gparser.ParseComments)
 		if err != nil {
-			//log.Println(string(v.Bytes()))
+			log.Println("zzzzzzzzzzzz")
+			log.Println(string(v.Bytes()))
 			log.Fatal(err)
 		}
 		cfg := printer.Config{

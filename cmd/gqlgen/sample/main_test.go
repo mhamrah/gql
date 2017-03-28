@@ -26,8 +26,9 @@ func TestGraphqlIntrospection(t *testing.T) {
 		response     string
 	}{
 		{"no query", "", http.StatusBadRequest, "no query present\n"},
-		{"simple", "{ human {} }", http.StatusOK, "{\"data\":{}}\n"},
-		{"simple", "{ human { name } }", http.StatusOK, "{\"data\":{\"name\":\"foo\"}}\n"},
+		{"missing param", "{ human {} }", http.StatusBadRequest, "id is not an present in argument list to human\n"},
+		{"simple", "{ human(id: \"101\") {} }", http.StatusOK, "{\"data\":{}}\n"},
+		{"simple", "{ human(id: \"101\") { name } }", http.StatusOK, "{\"data\":{\"name\":\"foo\"}}\n"},
 		//	{"simple", "{ __schema { queryType } }", http.StatusOK, "{\"data\":{\"name\":\"foo\"}}\n"},
 	}
 

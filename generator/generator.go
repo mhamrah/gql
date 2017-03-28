@@ -52,7 +52,6 @@ func writeHeader(b *bytes.Buffer, packageName string) {
 
 func writeImports(b *bytes.Buffer) {
 	b.WriteString("import (\n")
-	b.WriteString("\"fmt\"\n")
 	b.WriteString("\"context\"\n")
 	b.WriteString("\"github.com/mhamrah/gql\"\n")
 	b.WriteString(")\n\n")

@@ -25,35 +25,28 @@ func typeMap(input string) string {
 	}
 }
 
-func typeInitializer(input gql.InputValueDefinition) callInit {
+func typeInitializer(input gql.InputValueDefinition) string {
 	rhs := "\"\""
-	f := ""
+	funcName := ""
 
 	switch input.Type.Name {
 	case "String":
 		if input.Default.IsValid() {
 			rhs = input.Default.String()
 		}
-		f = "ValueAsString"
+		funcName = "StringValue"
 	case "Int":
 		d := int64(0)
 		if input.Default.IsValid() {
 			d = input.Default.Int()
 		}
 		rhs = fmt.Sprintf("%v", d)
-		f = "ValueAsInt"
+		funcName = "IntValue"
 	default:
 		rhs = fmt.Sprintf("&%v{}", input.Type.Name)
 		//f = "copyStruct"
 	}
 
-	return callInit{
-		Init:   fmt.Sprintf("%v := %v", input.Name, rhs),
-		Setter: fmt.Sprintf("%v, err = gql.%v(input.Value)", input.Name, f),
-	}
-}
+	return fmt.Sprintf("%v, err := operation.Field.%v(\"%v\", %v, %v)", input.Name, funcName, input.Name, rhs, gql.IsRequired(input.Type.Flags))
 
-type callInit struct {
-	Init   string
-	Setter string
 }

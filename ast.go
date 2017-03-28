@@ -33,15 +33,6 @@ type Selection struct {
 	InlineFragment Fragment
 }
 
-type Field struct {
-	Name         string
-	Arguments    map[string]Argument
-	SelectionSet []Selection
-	Directives   []Directive
-	Alias        string
-	Ix           int
-}
-
 type Argument struct {
 	Name  string
 	Value reflect.Value
@@ -187,4 +178,8 @@ const (
 type TypeDescription struct {
 	Name  string
 	Flags TypeFlags
+}
+
+func IsRequired(input TypeFlags) bool {
+	return input&Required != 0
 }

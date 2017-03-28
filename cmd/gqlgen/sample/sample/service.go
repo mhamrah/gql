@@ -4,7 +4,6 @@
 package sample
 
 import (
-	"fmt"
 	"context"
 	"github.com/mhamrah/gql"
 )
@@ -33,16 +32,9 @@ func (s query_impl) Schema() gql.Schema {
 
 func (s query_impl) Human(ctx context.Context, operation gql.Selection) (gql.Selectable, error) {
 
-	id := ""
-	if input, ok := operation.Field.Arguments["id"]; ok {
-		var err error
-		if !input.Value.IsValid() {
-			return nil, fmt.Errorf("%v does not contain a valid value", id)
-		}
-		id, err = gql.ValueAsString(input.Value)
-		if err != nil {
-			return nil, err
-		}
+	id, err := operation.Field.StringValue("id", "", true)
+	if err != nil {
+		return nil, err
 	}
 
 	success, err := s.impl.Human(ctx, id)
