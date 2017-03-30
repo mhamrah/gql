@@ -14,7 +14,7 @@ type Field struct {
 func (f Field) StringValue(arg, defaultValue string, required bool) (string, error) {
 	input, ok := f.Arguments[arg]
 	if !ok && required {
-		return "", fmt.Errorf("%v is not an present in argument list to %v", arg, f.Name)
+		return "", fmt.Errorf("required argument %v is not present in list to %v", arg, f.Name)
 	}
 
 	if !ok && !required {
