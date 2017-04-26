@@ -15,12 +15,6 @@ type Operation struct {
 	Directives   []Directive
 }
 
-type Selection struct {
-	Field          Field
-	FragmentSpread FragmentSpread
-	InlineFragment Fragment
-}
-
 type Argument struct {
 	Name  string
 	Value reflect.Value
@@ -57,13 +51,6 @@ type ObjectField struct {
 type OperationTypeDefinition struct {
 	OpType OpType
 	Name   string
-}
-
-type FieldDefinition struct {
-	Name       string
-	Arguments  map[string]InputValueDefinition
-	Type       TypeDescription
-	Directives []Directive
 }
 
 type TypeDescription struct {

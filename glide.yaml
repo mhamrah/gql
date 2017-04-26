@@ -1,2 +1,4 @@
 package: github.com/mhamrah/gql
-import: []
+import:
+- package: github.com/stretchr/testify
+  version: ^1.1.4

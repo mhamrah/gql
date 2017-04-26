@@ -12,6 +12,7 @@ debug
 *.coverprofile
 
 node_modules
+vendor/*
 
 # Ignore generated code
 example/example

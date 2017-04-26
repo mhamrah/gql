@@ -1,8 +1,5 @@
 package gql
 
-type Selectable interface {
-	ValueFromName(string) interface{}
-}
 
 type TypeDefinition interface {
 	Selectable
